@@ -3,20 +3,20 @@
     <el-menu class="menu-container" :default-active="selectData[2]" :default-openeds="[selectData[1]]" :collapse="asideCollapse" :collapse-transition="true" unique-opened>
       <!-- 首页 -->
       <router-link :to="{name: 'home'}">
-        <el-menu-item class="no-submenu" index="首页">
-          <i class="menu-icon iconfont-shouye"></i>
+        <el-menu-item class="no-submenu" index="home">
+          <i class="menu-icon iconfont-shouye" style="font-size: 20px"></i>
           <span class="title-text">首页</span>
         </el-menu-item>
       </router-link>
       <!-- 循环渲染的列表页 -->
-      <el-submenu :index="menuItem.resName" v-for="menuItem in authMenu" :key="menuItem.resName">
+      <el-submenu :index="menuItem.resUrl" v-for="menuItem in authMenu" :key="menuItem.resUrl">
         <template slot="title">
           <i class="submenu-icon" :class="menuItem.icon"></i>
           <span class="title-text">{{menuItem.resName}}</span>
         </template>
         <el-menu-item-group>
           <router-link :to="{name: submenuItem.resUrl}" v-for="submenuItem in menuItem.childResources" :key="submenuItem.resUrl">
-            <el-menu-item class="sub-item" :index="submenuItem.resName">{{submenuItem.resName}}</el-menu-item>
+            <el-menu-item class="sub-item" :index="submenuItem.resUrl">{{submenuItem.resName}}</el-menu-item>
           </router-link>
         </el-menu-item-group>
       </el-submenu>
@@ -154,7 +154,10 @@ export default {
         i {
           font-size: 18px;
           color: $iconNormalColor;
-          margin-top: -2px;
+
+          &.submenu-icon {
+            font-size: 20px;
+          }
 
           &.el-submenu__icon-arrow {
             color: #fff;

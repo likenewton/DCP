@@ -128,10 +128,11 @@
           <el-form-item label="导入日志：">
             <el-input type="textarea" placeholder="请输入导入日志" rows="4"></el-input>
           </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('uploadForm')">保存</el-button>
+            <el-button type="warning" @click="resetForm('uploadForm')">重置</el-button>
+          </el-form-item>
         </el-form>
-      </div>
-      <div slot="footer">
-        <el-button size="small" type="primary" @click="submitForm('uploadForm')">导入</el-button>
       </div>
     </el-dialog>
     <!-- 查看设备生命轨迹信息 -->
@@ -245,6 +246,10 @@ export default {
           return false;
         }
       })
+    },
+    resetForm(formName) {
+      this.$refs[formName] && this.$refs[formName].resetFields()
+      this.$refs.upload.clearFileList()
     },
     // 设备失效
     disabled() {

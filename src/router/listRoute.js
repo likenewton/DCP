@@ -5,6 +5,8 @@ const Blank = r => require.ensure([], () => r(require('@/components/container/bl
 // [chunk4](展示列表,页面里面的二级页面)
 const DevRecord = r => require.ensure([], () => r(require('@/components/list/devRecord.vue')), 'chunk4')
 const BatImpDetail = r => require.ensure([], () => r(require('@/components/list/batImpDetail.vue')), 'chunk4')
+const Carmodel = r => require.ensure([], () => r(require('@/components/list/carmodel.vue')), 'chunk4')
+const Relyinfo = r => require.ensure([], () => r(require('@/components/list/relyinfo.vue')), 'chunk4')
 
 let listRoute = {
     // 展示列表
@@ -19,6 +21,14 @@ let listRoute = {
       path: 'batImpDetail',
       name: 'batImpDetail',
       component: BatImpDetail
+    }, {
+      path: 'carmodel',
+      name: 'carmodel',
+      component: Carmodel
+    }, {
+      path: 'relyinfo',
+      name: 'relyinfo',
+      component: Relyinfo
     }]
   }
 

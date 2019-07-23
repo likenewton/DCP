@@ -17,7 +17,9 @@
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="" label="图片" width="100">
             <template slot-scope="scope">
-              <el-image :src="scope.row.src" fit="cover" @click="showPicView(scope)"></el-image>
+              <el-tooltip content="点击查看原图" placement="top">
+                <el-image :src="scope.row.src" fit="cover" @click="showPicView(scope)" class="pointer"></el-image>
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column prop="" label="设备SN号" sortable="custom"></el-table-column>

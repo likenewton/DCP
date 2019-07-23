@@ -25,7 +25,7 @@
           <el-table-column prop="" label="手机号码" sortable="custom"></el-table-column>
           <el-table-column prop="" label="状态" sortable="custom"></el-table-column>
           <el-table-column prop="" label="创建时间" sortable="custom"></el-table-column>
-          <el-table-column flxed="right" label="操作" sortable="custom"></el-table-column>
+          <el-table-column fixed="right" label="操作"></el-table-column>
         </el-table>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list.currentPage" :page-sizes="pageSizes" :page-size="list.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list.total" class="clearfix pagination-table">
         </el-pagination>

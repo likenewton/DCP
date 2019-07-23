@@ -6,6 +6,9 @@ const Blank = r => require.ensure([], () => r(require('@/components/container/bl
 const Addbrand = r => require.ensure([], () => r(require('@/components/forms/addbrand.vue')), 'chunk3')
 const Directive = r => require.ensure([], () => r(require('@/components/forms/directive.vue')), 'chunk3')
 const Addbatch = r => require.ensure([], () => r(require('@/components/forms/addbatch.vue')), 'chunk3')
+const Addcarbrand = r => require.ensure([], () => r(require('@/components/forms/addcarbrand.vue')), 'chunk3')
+const Addcarmodel = r => require.ensure([], () => r(require('@/components/forms/addcarmodel.vue')), 'chunk3')
+const Addcoreapp = r => require.ensure([], () => r(require('@/components/forms/addcoreapp.vue')), 'chunk3')
 
 let formRoute = {
     // 表单文件
@@ -24,6 +27,18 @@ let formRoute = {
       path: 'addbatch',
       name: 'addbatch',
       component: Addbatch
+    }, {
+      path: 'addcarbrand',
+      name: 'addcarbrand',
+      component: Addcarbrand
+    }, {
+      path: 'addcarmodel',
+      name: 'addcarmodel',
+      component: Addcarmodel
+    }, {
+      path: 'addcoreapp',
+      name: 'addcoreapp',
+      component: Addcoreapp
     }]
   }
 

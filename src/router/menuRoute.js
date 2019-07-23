@@ -17,6 +17,15 @@ const Spedev = r => require.ensure([], () => r(require('@/components/_03_equipme
 const Remoteplat = r => require.ensure([], () => r(require('@/components/_03_equipment/remoteplat.vue')), 'chunk2')
 const Onpic = r => require.ensure([], () => r(require('@/components/_03_equipment/onpic.vue')), 'chunk2')
 const Exinfo = r => require.ensure([], () => r(require('@/components/_03_equipment/exinfo.vue')), 'chunk2')
+// 汽车管理
+const Carbrand = r => require.ensure([], () => r(require('@/components/_06_car/carbrand.vue')), 'chunk2')
+// 缓存同步
+const Sync = r => require.ensure([], () => r(require('@/components/_09_cache/sync.vue')), 'chunk2')
+// 流量卡管理
+const Dev = r => require.ensure([], () => r(require('@/components/_11_card/dev.vue')), 'chunk2')
+const Log = r => require.ensure([], () => r(require('@/components/_11_card/log.vue')), 'chunk2')
+// 配置管理
+const CoreApp = r => require.ensure([], () => r(require('@/components/_12_config/coreApp.vue')), 'chunk2')
 
 // 这里面试所有的配置，后续根据权限动态删除一些路由
 let menuRoute = {
@@ -91,6 +100,46 @@ let menuRoute = {
       path: 'exinfo',
       name: 'exinfo',
       component: Exinfo
+    }]
+  }, {
+    path: 'car',
+    name: 'car',
+    component: Blank,
+    children: [{
+      path: 'carbrand',
+      name: 'carbrand',
+      component: Carbrand
+    }]
+  }, {
+    path: 'cache',
+    name: 'cache',
+    component: Blank,
+    children: [{
+      path: 'sync',
+      name: 'sync',
+      component: Sync
+    }]
+  }, {
+    path: 'card',
+    name: 'card',
+    component: Blank,
+    children: [{
+      path: 'dev',
+      name: 'dev',
+      component: Dev
+    }, {
+      path: 'log',
+      name: 'log',
+      component: Log
+    }]
+  }, {
+    path: 'config',
+    name: 'config',
+    component: Blank,
+    children: [{
+      path: 'coreApp',
+      name: 'coreApp',
+      component: CoreApp
     }]
   }]
 }

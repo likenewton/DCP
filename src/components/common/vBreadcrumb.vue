@@ -1,6 +1,6 @@
 <template>
   <el-breadcrumb v-if="asideFlag.length > 0" separator-class="el-icon-arrow-right">
-    <el-breadcrumb-item :to="{name: getBreadRouteName(item)}" v-for="item in asideFlag" :key="item">{{item}}</el-breadcrumb-item>
+    <el-breadcrumb-item :to="{name: routeName}" v-for="routeName in asideFlag" :key="routeName">{{getBreadTitle(routeName)}}</el-breadcrumb-item>
     <el-breadcrumb-item v-if="thirdTitle">{{thirdTitle}}</el-breadcrumb-item>
   </el-breadcrumb>
 </template>
@@ -29,25 +29,25 @@ export default {
       }
     },
     // 获取跳转路由
-    getBreadRouteName(title) {
-      let routeName = ''
-      if (title === '首页') {
-        return 'home'
+    getBreadTitle(routeName) {
+      let title = ''
+      if (routeName === 'home') {
+        return '首页'
       }
       this.isShowBreadCrumb = true
       this.authMenu.forEach((v1) => {
-        if (v1.resName === title) {
-          routeName = v1.resUrl
+        if (v1.resUrl === routeName) {
+          title = v1.resName
           return false
         }
         v1.childResources.forEach((v2) => {
-          if (v2.resName === title) {
-            routeName = v2.resUrl
+          if (v2.resUrl === routeName) {
+            title = v2.resName
             return false
           }
         })
       })
-      return routeName
+      return title
     }
   },
   computed: {

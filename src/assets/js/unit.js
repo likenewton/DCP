@@ -11,6 +11,7 @@ module.exports = {
       })
     })
     // 如果后台配置的页面在所有已开发的页面中都找不到不让其加到菜单列表当中
+    let newResource = []
     resources.forEach((v1, i1) => {
       let level_1 = false
       asideData.forEach((v2, i2) => {
@@ -19,11 +20,11 @@ module.exports = {
           level_1 = true
         }
       })
-      if (!level_1) {
-        resources.splice(i1, 1)
+      if (level_1) {
+        newResource.push(v1)
       }
     })
-    return resources
+    return newResource
   },
   // 获取菜单动态路由
   getMenuRoute(menuRoute = [], resources = []) {
@@ -95,15 +96,15 @@ module.exports = {
   // 获取页面面包屑数组
   getBreadArr(name, authMenu) {
     let breadArr = []
-    if (name === 'home') return [, , '首页']
+    if (name === 'home') return [, , 'home']
     authMenu.forEach((v1) => {
       if (v1.resUrl === name) {
-        breadArr.push('首页', v1.resName)
+        breadArr.push('home', v1.resUrl)
         return false
       }
       v1.childResources.forEach((v2) => {
         if (v2.resUrl === name) {
-          breadArr.push('首页', v1.resName, v2.resName)
+          breadArr.push('home', v1.resUrl, v2.resUrl)
           return false
         }
       })
@@ -119,7 +120,7 @@ module.exports = {
         breadArr = breadArr.split(',')
       } else {
         // 如果没有数据就代表是直接通过url进入的默认进入 第一个菜单第一项
-        breadArr = ['首页', authMenu[0].resName, authMenu[0].childResources[0].resName]
+        breadArr = ['home', authMenu[0].resUrl, authMenu[0].childResources[0].resUrl]
       }
     }
     return breadArr

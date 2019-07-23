@@ -15,7 +15,8 @@
       "level": 3,
       "seqNum": 1,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "资源管理",
       "resUrl": "resource",
@@ -25,7 +26,8 @@
     }],
     "checkedFlag": 0,
     "childNum": null
-  }, {
+  },
+  {
     "rescCode": "",
     "resName": "推送管理",
     "resUrl": "push",
@@ -43,7 +45,8 @@
     }],
     "checkedFlag": 0,
     "childNum": null
-  }, {
+  },
+  {
     "rescCode": "",
     "resName": "设备管理",
     "resUrl": "equipment",
@@ -58,68 +61,161 @@
       "level": 3,
       "seqNum": 1,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "设备查询",
       "resUrl": "devInfo",
       "level": 3,
       "seqNum": 2,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "蓝牙报表",
       "resUrl": "bluetooth",
       "level": 3,
       "seqNum": 3,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "批次管理",
       "resUrl": "batch",
       "level": 3,
       "seqNum": 4,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "语音报表",
       "resUrl": "voicereport",
       "level": 3,
       "seqNum": 5,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "客户管理",
       "resUrl": "client",
       "level": 3,
       "seqNum": 6,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "特殊设备处理",
       "resUrl": "spedev",
       "level": 3,
       "seqNum": 7,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "远程平台",
       "resUrl": "remoteplat",
       "level": 3,
       "seqNum": 8,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "开机图片",
       "resUrl": "onpic",
       "level": 3,
       "seqNum": 9,
       "iconUrl": ""
-    }, {
+    },
+    {
       "rescCode": "",
       "resName": "设备扩展信息",
       "resUrl": "exinfo",
       "level": 3,
       "seqNum": 10,
+      "iconUrl": ""
+    }],
+    "checkedFlag": 0,
+    "childNum": null
+  },
+  {
+    "rescCode": "",
+    "resName": "汽车管理",
+    "resUrl": "car",
+    "level": 2,
+    "seqNum": 6,
+    "iconUrl": "",
+    "childResources": [
+    {
+      "rescCode": "",
+      "resName": "汽车品牌管理",
+      "resUrl": "carbrand",
+      "level": 3,
+      "seqNum": 1,
+      "iconUrl": ""
+    }],
+    "checkedFlag": 0,
+    "childNum": null
+  },
+  {
+    "rescCode": "",
+    "resName": "缓存同步",
+    "resUrl": "cache",
+    "level": 2,
+    "seqNum": 9,
+    "iconUrl": "",
+    "childResources": [
+    {
+      "rescCode": "",
+      "resName": "缓存管理",
+      "resUrl": "sync",
+      "level": 3,
+      "seqNum": 1,
+      "iconUrl": ""
+    }],
+    "checkedFlag": 0,
+    "childNum": null
+  },
+  {
+    "rescCode": "",
+    "resName": "流量卡管理",
+    "resUrl": "card",
+    "level": 2,
+    "seqNum": 11,
+    "iconUrl": "",
+    "childResources": [
+    {
+      "rescCode": "",
+      "resName": "设备管理",
+      "resUrl": "dev",
+      "level": 3,
+      "seqNum": 1,
+      "iconUrl": ""
+    },
+    {
+      "rescCode": "",
+      "resName": "日志管理",
+      "resUrl": "log",
+      "level": 3,
+      "seqNum": 2,
+      "iconUrl": ""
+    }],
+    "checkedFlag": 0,
+    "childNum": null
+  },
+  {
+    "rescCode": "",
+    "resName": "配置管理",
+    "resUrl": "config",
+    "level": 2,
+    "seqNum": 12,
+    "iconUrl": "",
+    "childResources": [
+    {
+      "rescCode": "",
+      "resName": "核心应用升级管理",
+      "resUrl": "coreApp",
+      "level": 3,
+      "seqNum": 1,
       "iconUrl": ""
     }],
     "checkedFlag": 0,
