@@ -5,9 +5,17 @@ module.exports = {
     icon: 'iconfont-shebei',
     name: 'equipment'
   }, {
+    title: '版本管理',
+    icon: 'iconfont-banbenxinjian',
+    name: 'versions'
+  }, {
     title: '汽车管理',
     icon: 'iconfont-qiche',
     name: 'car'
+  }, {
+    title: '运营统计',
+    icon: 'iconfont-tongji',
+    name: 'statistics'
   }, {
     title: '缓存同步',
     icon: 'iconfont-lucenehuancun',
@@ -53,6 +61,25 @@ module.exports = {
     },
     name: 'addcoreapp'
   }, {
+    title: {
+      create: '新增IP白名单信息',
+      update: '修改IP白名单信息'
+    },
+    name: 'addipwlist'
+  }, {
+    title: {
+      create: '新增提醒策略',
+      update: '修改提醒策略'
+    },
+    name: 'addremind'
+  }, {
+    title: {
+      create: '新增版本信息',
+      update: '修改版本信息',
+      upgrade: '升级版本信息'
+    },
+    name: 'addversions'
+  }, {
     title: '下发指令',
     name: 'directive'
   }, {
@@ -67,6 +94,9 @@ module.exports = {
   }, {
     title: '核心应用依赖信息查询',
     name: 'relyinfo'
+  }, {
+    title: '历史版本',
+    name: 'hisVersions'
   }],
   token: 'iov-token',
   // 分页器公共配置项

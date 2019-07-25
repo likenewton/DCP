@@ -33,7 +33,7 @@
           <el-table-column prop="" label="更新时间" sortable="custom"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
-              <el-button type="text" @click="showRely('修改')">修改</el-button>
+              <el-button type="text" class="text_editor" @click="showRely('修改')">修改</el-button>
               <el-button type="text" class="text_danger" @click="disabled">失效</el-button>
             </template>
           </el-table-column>

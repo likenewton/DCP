@@ -1,20 +1,20 @@
 <template>
   <el-card class="addbrand" shadow="never" v-loading="loadData">
     <div slot="header" class="clearfix">
-      <span>品牌信息</span>
+      <span>IP白名单信息</span>
     </div>
-    <el-form class="editor-form" :inline="false" :model="formInline" :rules="rules" ref="ruleForm" label-width="140px" size="small">
+    <el-form class="editor-form" :inline="false" :model="formInline" :rules="rules" ref="ruleForm" label-width="100px" size="small">
       <el-form-item prop="">
-        <span slot="label">品牌名称：</span>
+        <span slot="label">IP：</span>
         <el-input placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item prop="">
-        <span slot="label">分销商：</span>
+        <span slot="label">子网掩码：</span>
         <el-input placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item prop="">
-        <span slot="label">公司名称：</span>
-        <el-select filterable clearable placeholder="请选择"></el-select>
+        <span slot="label">描述：</span>
+        <el-input type="textarea" rows="4" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="$router.back()">返回</el-button>

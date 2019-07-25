@@ -3,12 +3,12 @@
     <el-card class="clearfix" shadow="never">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="success" @click="$router.push({name:'addcoreapp'})">添加核心应用配置</el-button>
+          <el-button size="small" type="success" @click="$router.push({name:'addremind'})">新增</el-button>
           <v-dropdown></v-dropdown>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-input @keyup.enter.native="" placeholder="应用包名"></el-input>
+            <el-select filterable clearable placeholder="客户名称"></el-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="">查询</el-button>
@@ -18,28 +18,24 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="a" label="应用包名" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="应用名称" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="版本名称" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="版本代码" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="指定ROM版本" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="指定经销商" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="配置文件下载地址" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="APP下载地址" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="是否核心服务" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="专栏类型" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="版本描述" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="升级方式" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="指定设备SN" sortable="custom"></el-table-column>
+          <el-table-column prop="a" label="客户名称" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="客户项目名称" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="适用场景" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="是否提醒" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="关闭方式" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="自动关闭时间(S)" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="提醒内容" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="TTS播报内容" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="触发周期" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="显示周期(H,M,S)" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="时速(KM/H)" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="状态" sortable="custom"></el-table-column>
           <el-table-column prop="" label="创建人" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="最后更新人" sortable="custom"></el-table-column>
           <el-table-column prop="" label="创建时间" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="更新时间" sortable="custom"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="230">
+          <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
-              <el-button type="text" class="text_editor" @click="$router.push({name:'addcoreapp',query:{type:'update'}})">修改</el-button>
-              <el-button type="text" class="text_danger" @click="disabled">失效</el-button>
-              <el-button type="text" @click="$router.push({name:'relyinfo'})">App版本依赖信息</el-button>
+              <el-button type="text" class="text_editor" @click="$router.push({name:'addremind',query:{type:'update'}})">修改</el-button>
+              <el-button type="text" class="text_danger" @click="close">关闭</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -52,25 +48,28 @@
       <div slot>
         <div class="searchForm_vip" style="width:100%;overflow: auto">
           <el-form :inline="false" :model="formInline" size="small" label-width="110px">
-            <el-form-item label="应用包名">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="应用名称">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="版本名称">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="版本代码">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="指定经销商">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="是否核心应用">
+            <el-form-item label="客户名称">
               <el-select filterable clearable placeholder="请选择"></el-select>
             </el-form-item>
-            <el-form-item>
+            <el-form-item label="客户项目名称">
+              <el-select filterable clearable placeholder="请选择"></el-select>
+            </el-form-item>
+            <el-form-item label="是否提示">
+              <el-select filterable clearable placeholder="请选择"></el-select>
+            </el-form-item>
+            <el-form-item label="关闭方式">
+              <el-select filterable clearable placeholder="请选择"></el-select>
+            </el-form-item>
+            <el-form-item label="场景">
+              <el-select filterable clearable placeholder="请选择"></el-select>
+            </el-form-item>
+            <el-form-item label="触发周期">
+              <el-select filterable clearable placeholder="请选择"></el-select>
+            </el-form-item>
+            <el-form-item label="状态">
+              <el-select filterable clearable placeholder="请选择"></el-select>
+            </el-form-item>
+            <el-form-item style="width:100%">
               <el-button type="primary" @click="searchData">查询</el-button>
               <el-button type="warning" @click="resetData">重置</el-button>
             </el-form-item>
@@ -100,9 +99,9 @@ export default {
   },
   methods: {
     getData() {},
-    disabled() {
+    close() {
       this.showCfmBox({
-        message: '确定使记录失效吗？',
+        message: '是否确认关闭配置？关闭后提醒配置将立即失效',
         cb: () => {
           this.showMsgBox({
             type: 'success',

@@ -1,12 +1,12 @@
 // [chunk2](侧边栏菜单动态路由)
 const Container = r => require.ensure([], () => r(require('@/components/container/index.vue')), 'chunk2')
 const Blank = r => require.ensure([], () => r(require('@/components/container/blank.vue')), 'chunk2')
-// 内容管理
+// 内容管理01
 const Channel = r => require.ensure([], () => r(require('@/components/_01_content/channel.vue')), 'chunk2')
 const Resource = r => require.ensure([], () => r(require('@/components/_01_content/resource.vue')), 'chunk2')
-// 推送管理
+// 推送管理02
 const Multimedia = r => require.ensure([], () => r(require('@/components/_02_push/multimedia.vue')), 'chunk2')
-// 设备管理
+// 设备管理03
 const Brand = r => require.ensure([], () => r(require('@/components/_03_equipment/brand.vue')), 'chunk2')
 const DevInfo = r => require.ensure([], () => r(require('@/components/_03_equipment/devInfo.vue')), 'chunk2')
 const Bluetooth = r => require.ensure([], () => r(require('@/components/_03_equipment/bluetooth.vue')), 'chunk2')
@@ -17,8 +17,16 @@ const Spedev = r => require.ensure([], () => r(require('@/components/_03_equipme
 const Remoteplat = r => require.ensure([], () => r(require('@/components/_03_equipment/remoteplat.vue')), 'chunk2')
 const Onpic = r => require.ensure([], () => r(require('@/components/_03_equipment/onpic.vue')), 'chunk2')
 const Exinfo = r => require.ensure([], () => r(require('@/components/_03_equipment/exinfo.vue')), 'chunk2')
-// 汽车管理
+// 版本管理05
+const Dictionary = r => require.ensure([], () => r(require('@/components/_05_versions/dictionary.vue')), 'chunk2')
+const SysUpgrade = r => require.ensure([], () => r(require('@/components/_05_versions/sysUpgrade.vue')), 'chunk2')
+const DevUprecorde = r => require.ensure([], () => r(require('@/components/_05_versions/devUprecorde.vue')), 'chunk2')
+// 汽车管理06
 const Carbrand = r => require.ensure([], () => r(require('@/components/_06_car/carbrand.vue')), 'chunk2')
+// 运营统计07
+const BindAct = r => require.ensure([], () => r(require('@/components/_07_statistics/bindAct.vue')), 'chunk2')
+const Deliver = r => require.ensure([], () => r(require('@/components/_07_statistics/deliver.vue')), 'chunk2')
+const Iccid = r => require.ensure([], () => r(require('@/components/_07_statistics/iccid.vue')), 'chunk2')
 // 缓存同步
 const Sync = r => require.ensure([], () => r(require('@/components/_09_cache/sync.vue')), 'chunk2')
 // 流量卡管理
@@ -26,6 +34,8 @@ const Dev = r => require.ensure([], () => r(require('@/components/_11_card/dev.v
 const Log = r => require.ensure([], () => r(require('@/components/_11_card/log.vue')), 'chunk2')
 // 配置管理
 const CoreApp = r => require.ensure([], () => r(require('@/components/_12_config/coreApp.vue')), 'chunk2')
+const Ipwhitelist = r => require.ensure([], () => r(require('@/components/_12_config/ipwhitelist.vue')), 'chunk2')
+const Remind = r => require.ensure([], () => r(require('@/components/_12_config/remind.vue')), 'chunk2')
 
 // 这里面试所有的配置，后续根据权限动态删除一些路由
 let menuRoute = {
@@ -102,6 +112,23 @@ let menuRoute = {
       component: Exinfo
     }]
   }, {
+    path: 'versions',
+    name: 'versions',
+    component: Blank,
+    children: [{
+      path: 'dictionary',
+      name: 'dictionary',
+      component: Dictionary
+    }, {
+      path: 'sysUpgrade',
+      name: 'sysUpgrade',
+      component: SysUpgrade
+    }, {
+      path: 'devUprecorde',
+      name: 'devUprecorde',
+      component: DevUprecorde
+    }]
+  }, {
     path: 'car',
     name: 'car',
     component: Blank,
@@ -109,6 +136,23 @@ let menuRoute = {
       path: 'carbrand',
       name: 'carbrand',
       component: Carbrand
+    }]
+  }, {
+    path: 'statistics',
+    name: 'statistics',
+    component: Blank,
+    children: [{
+      path: 'bindAct',
+      name: 'bindAct',
+      component: BindAct
+    }, {
+      path: 'iccid',
+      name: 'iccid',
+      component: Iccid
+    }, {
+      path: 'deliver',
+      name: 'deliver',
+      component: Deliver
     }]
   }, {
     path: 'cache',
@@ -140,6 +184,14 @@ let menuRoute = {
       path: 'coreApp',
       name: 'coreApp',
       component: CoreApp
+    }, {
+      path: 'ipwhitelist',
+      name: 'ipwhitelist',
+      component: Ipwhitelist
+    }, {
+      path: 'remind',
+      name: 'remind',
+      component: Remind
     }]
   }]
 }

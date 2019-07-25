@@ -139,6 +139,41 @@
   },
   {
     "rescCode": "",
+    "resName": "版本管理",
+    "resUrl": "versions",
+    "level": 2,
+    "seqNum": 5,
+    "iconUrl": "",
+    "childResources": [
+    {
+      "rescCode": "",
+      "resName": "版本字典",
+      "resUrl": "dictionary",
+      "level": 3,
+      "seqNum": 1,
+      "iconUrl": ""
+    },
+    {
+      "rescCode": "",
+      "resName": "系统升级",
+      "resUrl": "sysUpgrade",
+      "level": 3,
+      "seqNum": 2,
+      "iconUrl": ""
+    },
+    {
+      "rescCode": "",
+      "resName": "设备升级记录",
+      "resUrl": "devUprecorde",
+      "level": 3,
+      "seqNum": 3,
+      "iconUrl": ""
+    }],
+    "checkedFlag": 0,
+    "childNum": null
+  },
+  {
+    "rescCode": "",
     "resName": "汽车管理",
     "resUrl": "car",
     "level": 2,
@@ -151,6 +186,39 @@
       "resUrl": "carbrand",
       "level": 3,
       "seqNum": 1,
+      "iconUrl": ""
+    }],
+    "checkedFlag": 0,
+    "childNum": null
+  },
+  {
+    "rescCode": "",
+    "resName": "运营统计",
+    "resUrl": "statistics",
+    "level": 2,
+    "seqNum": 7,
+    "iconUrl": "",
+    "childResources": [
+    {
+      "rescCode": "",
+      "resName": "绑定激活统计",
+      "resUrl": "bindAct",
+      "level": 3,
+      "seqNum": 1,
+      "iconUrl": ""
+    }, {
+      "rescCode": "",
+      "resName": "ICCID统计",
+      "resUrl": "iccid",
+      "level": 3,
+      "seqNum": 2,
+      "iconUrl": ""
+    }, {
+      "rescCode": "",
+      "resName": "出货统计",
+      "resUrl": "deliver",
+      "level": 3,
+      "seqNum": 6,
       "iconUrl": ""
     }],
     "checkedFlag": 0,
@@ -216,6 +284,20 @@
       "resUrl": "coreApp",
       "level": 3,
       "seqNum": 1,
+      "iconUrl": ""
+    }, {
+      "rescCode": "",
+      "resName": "IP白名单管理",
+      "resUrl": "ipwhitelist",
+      "level": 3,
+      "seqNum": 2,
+      "iconUrl": ""
+    }, {
+      "rescCode": "",
+      "resName": "提醒策略配置",
+      "resUrl": "remind",
+      "level": 3,
+      "seqNum": 3,
       "iconUrl": ""
     }],
     "checkedFlag": 0,
