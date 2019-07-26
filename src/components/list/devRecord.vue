@@ -5,7 +5,7 @@
       <el-tabs @tab-click="changeTab" v-model="tabIndex">
         <el-tab-pane v-loading="loadData">
           <span slot="label">历史照片</span>
-          <el-row class="resource_container" :gutter="20">
+          <el-row class="resource_container shadow-wrappr" :gutter="20" v-shadow>
             <el-col :span="4" v-for="(item, index) in list_0.data" :key="index" style="margin-bottom: 12px">
               <el-card class="resource_wrapper" :body-style="{ padding: '6px' }" shadow="hover">
                 <div class="block">
@@ -204,6 +204,13 @@ export default {
     }
   }
 
+  .shadow-wrappr {
+
+    .el-card {
+      background: transparent;
+
+    }
+  }
 }
 
 </style>

@@ -129,11 +129,12 @@ class Echarts {
     let _this = this;
     this.data = Object.assign(this.data, para)
     let xAxisData = this.data.xAxis.data
+    para.showNum = para.showNum || 20
     this.option.series = []
     this.option.legend.data = this.data.legend.data
     this.option.xAxis.data = xAxisData
     this.option.dataZoom = {
-      startValue: (xAxisData.length - 20) >= 0 ? xAxisData[xAxisData.length - 20] : xAxisData[0],
+      startValue: (xAxisData.length - para.showNum) >= 0 ? xAxisData[xAxisData.length - para.showNum] : xAxisData[0],
       type: 'inside'
     }
     if (this.data.title) {

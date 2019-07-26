@@ -215,6 +215,27 @@
       "iconUrl": ""
     }, {
       "rescCode": "",
+      "resName": "活跃统计",
+      "resUrl": "active",
+      "level": 3,
+      "seqNum": 3,
+      "iconUrl": ""
+    }, {
+      "rescCode": "",
+      "resName": "汇总统计",
+      "resUrl": "summary",
+      "level": 3,
+      "seqNum": 4,
+      "iconUrl": ""
+    }, {
+      "rescCode": "",
+      "resName": "车机上报统计",
+      "resUrl": "c_car",
+      "level": 3,
+      "seqNum": 5,
+      "iconUrl": ""
+    }, {
+      "rescCode": "",
       "resName": "出货统计",
       "resUrl": "deliver",
       "level": 3,

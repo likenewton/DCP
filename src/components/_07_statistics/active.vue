@@ -1,36 +1,34 @@
 <template>
-  <div class="bindAct-container">
+  <div class="active-container">
     <el-card class="clearfix" shadow="never">
       <el-row>
-        <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="primary" @click="showEchart">图表</el-button>
-        </el-button-group>
-        <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
-          <el-form-item>
-            <el-select filterable clearable placeholder="所属机构"></el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
-          </el-form-item>
-        </el-form>
-      </el-row>
-      <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="a" label="机构" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="运营商" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="数量" sortable="custom"></el-table-column>
-        </el-table>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list.currentPage" :page-sizes="pageSizes" :page-size="list.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list.total" class="clearfix pagination-table">
-        </el-pagination>
+        <el-row class="exp-search">
+          <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
+            <el-form-item>
+              <el-select filterable clearable placeholder="所属机构"></el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="">查询</el-button>
+              <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            </el-form-item>
+          </el-form>
+        </el-row>
+        <el-tabs @tab-click="changeTab" v-model="tabIndex" style="margin-top: 8px">
+          <el-tab-pane label="活跃统计" v-loading="loadData">
+            <div id="myChart" style="height: 500px"></div>
+          </el-tab-pane>
+        </el-tabs>
       </el-row>
     </el-card>
     <!-- 高级查询 -->
-    <el-dialog title="高级查询" :visible.sync="searchVipVisible" width="650px" :close-on-click-modal="false">
+    <el-dialog title="高级查询" :visible.sync="searchVipVisible" width="630px" :close-on-click-modal="false">
       <div slot>
         <div class="searchForm_vip" style="width:100%;overflow: auto">
           <el-form :inline="false" :model="formInline" size="small" label-width="90px">
             <el-form-item label="所属机构">
+              <el-select filterable clearable placeholder="请选择"></el-select>
+            </el-form-item>
+            <el-form-item label="活跃天数">
               <el-select filterable clearable placeholder="请选择"></el-select>
             </el-form-item>
             <el-form-item label="省/市">
@@ -49,12 +47,6 @@
         </div>
       </div>
     </el-dialog>
-    <!-- 图表 -->
-    <el-dialog title="ICCID卡统计" :visible.sync="echartVisible" center width="800px" :close-on-click-modal="false">
-      <div slot>
-        <div id="myChart" style="height: 400px" v-loading="echartLoadData"></div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -63,19 +55,6 @@ const _echart = new Api.ECHARTS()
 export default {
   data() {
     return {
-      echartVisible: false,
-      echartLoadData: false,
-      formInline: {
-        timeType: 0
-      },
-      list: {
-        data: [{
-          a: 1
-        }],
-        pagesize: Api.STATIC.pageSizes[2],
-        currentPage: 1,
-        total: 0,
-      },
       myChart: null,
       // 展示图表的视图
       option: {
@@ -84,7 +63,7 @@ export default {
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
-          data: ['中国移动', '中国电信', '中国联通', '其他']
+          data: ['设备数', '绑定用户数', '活跃数'],
         },
         grid: {
           left: '3%',
@@ -113,7 +92,7 @@ export default {
                 ${function a() {
                   let str = ''
                   series.forEach((v) => {
-                    str += `<tr><td style="font-weight:bold">${v.name}</td><td style="font-weight:bold">ICCID数量</td></tr>`
+                    str += `<tr><td style="font-weight:bold">${v.name}</td><td style="font-weight:bold">活跃数量</td></tr>`
                     v.data.forEach((v2) => {
                       str += `<tr><td>${v2.name}</td><td>${v2.value}</td></tr>`
                     })
@@ -152,9 +131,9 @@ export default {
           }
         },
         series: [{
-          name: 'ICCID卡统计',
+          name: '活跃统计',
           type: 'pie',
-          radius: '65%',
+          radius: '70%',
           label: {
             normal: {
               show: true,
@@ -164,21 +143,18 @@ export default {
           },
           data: [{
             value: 561,
-            name: '中国移动'
+            name: '设备数'
           }, {
             value: 652,
-            name: '中国电信'
+            name: '绑定用户数'
           }, {
             value: 485,
-            name: '中国联通'
-          }, {
-            value: 198,
-            name: '其他'
+            name: '活跃数'
           }],
           itemStyle: {
             normal: {
               color(params) {
-                return Api.UNITS.getColorList(['danger', 'primary', 'purple', 'warning'])[params.dataIndex]
+                return Api.UNITS.getColorList(['purple', 'danger', 'primary'])[params.dataIndex]
               }
             },
             emphasis: {
@@ -191,23 +167,21 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    this.showEchart()
+  },
   methods: {
     getData() {},
     getEchartData() {
-      this.echartLoadData = true
+      this.loadData = true
       setTimeout(() => {
-        this.echartLoadData = false
+        this.loadData = false
         // 获取数据之后渲染
-        // let label = this.option.xAxis.data = [] // 底坐标标签
-        // let data1 = this.option.series[0].data = [] // 分类一数据
-        // let data2 = this.option.series[1].data = [] // 分类二数据
         this.myChart.setOption(this.option)
         $("[_echarts_instance_]").find(":last-child").trigger('click')
       }, 600)
     },
     showEchart() {
-      this.echartVisible = true
       this.$nextTick(() => {
         this.myChart = this.$echarts.init(document.getElementById('myChart'))
         this.getEchartData()
@@ -217,4 +191,14 @@ export default {
 }
 
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.active-container {
+  .exp-search {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+
+  }
+}
+
+</style>

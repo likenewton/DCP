@@ -11,7 +11,7 @@
           </el-form-item>
         </el-form>
       </el-row>
-      <el-row :gutter="20" class="collapse-wrapper" :style="{height: maxCollapseHeight + 'px', boxShadow}" @scroll.native="scroll">
+      <el-row :gutter="20" v-shadow:[collapse] class="collapse-wrapper" :style="{height: maxCollapseHeight + 'px'}">
         <div class="nodata" v-show="dictionary_0.length === 0">暂无数据</div>
         <el-col :span="8" v-if="dictionary_0.length > 0">
           <el-collapse accordion @change="handleCollapseChange">
@@ -64,6 +64,7 @@ import Api from 'assets/js/api.js'
 export default {
   data() {
     return {
+      collapse: true,
       versions: '', // 默认查询版本
       maxCollapseHeight: Api.UNITS.maxTableHeight(258),
       boxShadow: '',
@@ -101,9 +102,12 @@ export default {
         })
       }
       this.dispatch(this.dictionary)
-      this.$nextTick(() => {
-        this.shadow()
-      })
+    },
+    handleCollapseChange() {
+      // 这里之所有要加一个定时器是因为要在动画结束之后再进行shadow指令计算
+      setTimeout(() => {
+        this.collapse = !this.collapse
+      }, 250)
     },
     filterData() {
       if (this.versions) {
@@ -114,9 +118,6 @@ export default {
       } else {
         this.dispatch(this.dictionary)
       }
-      this.$nextTick(() => {
-        this.shadow()
-      })
       return false
     },
     dispatch(data) {
@@ -143,43 +144,6 @@ export default {
           type: 'upgrade'
         }
       })
-    },
-    scroll(e) {
-      this.shadow(e.target)
-    },
-    handleCollapseChange(activeNames) {
-      setTimeout(() => {
-        let $box = $('.el-collapse')
-        this.shadow({
-          offsetHeight: $('.collapse-wrapper').height(), // 外部盒子高度
-          scrollHeight: Math.max($box.eq(0).height(), $box.eq(1).height(), $box.eq(2).height()), // 内部区域的高度
-          scrollTop: $('.collapse-wrapper').scrollTop()
-        })
-      }, 300)
-    },
-    // 给外层的盒子添加阴影效果
-    shadow(paras) {
-      if (paras) {
-        if (paras.scrollTop === 0) {
-          if (paras.scrollHeight > paras.offsetHeight) {
-            this.boxShadow = 'inset 0px -12px 5px -12px rgba(0, 0, 0, 0.12)'
-          } else {
-            this.boxShadow = ''
-          }
-        } else {
-          if (paras.scrollHeight > paras.offsetHeight + paras.scrollTop) {
-            this.boxShadow = 'inset 0px 12px 5px -12px rgba(0, 0, 0, 0.12), inset 0px -12px 5px -12px rgba(0, 0, 0, 0.12)'
-          } else {
-            this.boxShadow = 'inset 0px 12px 5px -12px rgba(0, 0, 0, 0.12)'
-          }
-        }
-      } else {
-        if ($('.collapse-wrapper').height() < $('.el-collapse').height()) {
-          this.boxShadow = 'inset 0px -12px 5px -12px rgba(0, 0, 0, 0.12)'
-        } else {
-          this.boxShadow = ''
-        }
-      }
     }
   }
 }

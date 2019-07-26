@@ -27,6 +27,9 @@ const Carbrand = r => require.ensure([], () => r(require('@/components/_06_car/c
 const BindAct = r => require.ensure([], () => r(require('@/components/_07_statistics/bindAct.vue')), 'chunk2')
 const Deliver = r => require.ensure([], () => r(require('@/components/_07_statistics/deliver.vue')), 'chunk2')
 const Iccid = r => require.ensure([], () => r(require('@/components/_07_statistics/iccid.vue')), 'chunk2')
+const Active = r => require.ensure([], () => r(require('@/components/_07_statistics/active.vue')), 'chunk2')
+const Summary = r => require.ensure([], () => r(require('@/components/_07_statistics/summary.vue')), 'chunk2') // 汇总统计
+const C_car = r => require.ensure([], () => r(require('@/components/_07_statistics/c_car.vue')), 'chunk2') // 车机上报统计
 // 缓存同步
 const Sync = r => require.ensure([], () => r(require('@/components/_09_cache/sync.vue')), 'chunk2')
 // 流量卡管理
@@ -149,6 +152,18 @@ let menuRoute = {
       path: 'iccid',
       name: 'iccid',
       component: Iccid
+    }, {
+      path: 'active',
+      name: 'active',
+      component: Active
+    }, {
+      path: 'summary',
+      name: 'summary',
+      component: Summary
+    }, {
+      path: 'c_car',
+      name: 'c_car',
+      component: C_car
     }, {
       path: 'deliver',
       name: 'deliver',
