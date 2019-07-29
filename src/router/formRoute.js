@@ -12,6 +12,7 @@ const Addcoreapp = r => require.ensure([], () => r(require('@/components/forms/a
 const Addipwlist = r => require.ensure([], () => r(require('@/components/forms/addipwlist.vue')), 'chunk3') // 添加IP白名单
 const Addremind = r => require.ensure([], () => r(require('@/components/forms/addremind.vue')), 'chunk3') // 添加提醒策略
 const Addversions = r => require.ensure([], () => r(require('@/components/forms/addversions.vue')), 'chunk3') // 添加版本
+const Addupinfo = r => require.ensure([], () => r(require('@/components/forms/addupinfo.vue')), 'chunk3') // 新增升级信息
 
 let formRoute = {
     // 表单文件
@@ -54,6 +55,10 @@ let formRoute = {
       path: 'addversions',
       name: 'addversions',
       component: Addversions
+    }, {
+      path: 'addupinfo',
+      name: 'addupinfo',
+      component: Addupinfo
     }]
   }
 

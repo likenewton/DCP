@@ -59,6 +59,7 @@ export default {
       this.formInline = {}
       this.isUpdate && this.getData()
     },
+    getColorList: Api.UNITS.getColorList,
     showMsgBox: Api.UNITS.showMsgBox,
     showCfmBox: Api.UNITS.showCfmBox,
   },

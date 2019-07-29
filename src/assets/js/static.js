@@ -80,6 +80,12 @@ module.exports = {
     },
     name: 'addversions'
   }, {
+    title: {
+      create: '新增升级信息',
+      update: '修改升级信息',
+    },
+    name: 'addupinfo'
+  }, {
     title: '下发指令',
     name: 'directive'
   }, {

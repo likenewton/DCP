@@ -59,7 +59,7 @@ router.beforeEach((to, from, next) => {
     if (targetHref) location.href = targetHref
     else location.href = location.href.split('?')[0]
   }
-
+  
   // 验证是否登录
   if (!store.state.isLogin) {
     _axios.send({

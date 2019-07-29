@@ -3,7 +3,7 @@
     <el-card class="clearfix" shadow="never">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="success" @click="">添加升级包</el-button>
+          <el-button size="small" type="success" @click="$router.push({name: 'addupinfo'})">添加升级包</el-button>
           <v-dropdown></v-dropdown>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>

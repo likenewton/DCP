@@ -27,9 +27,7 @@ export default {
   },
   methods: {
     showPicView(src) {
-      if (src) {
-        this.src = src
-      }
+      this.src = src
       this.picviewVisible = true
     },
     closePicView() {
