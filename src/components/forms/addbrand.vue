@@ -46,6 +46,9 @@ export default {
     // 获取数据
     getData() {
       this.loadData = true
+      setTimeout(() => {
+        this.loadData = false
+      }, 1000)
     },
     // 提交表单
     submitForm(formName) {

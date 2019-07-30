@@ -77,12 +77,6 @@
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list_7.currentPage" :page-sizes="pageSizes" :page-size="list_7.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list_7.total" class="clearfix pagination-table">
           </el-pagination>
         </el-tab-pane>
-        <el-tab-pane v-loading="loadData">
-          <span slot="label">直播</span>
-        </el-tab-pane>
-        <el-tab-pane v-loading="loadData">
-          <span slot="label">录播</span>
-        </el-tab-pane>
       </el-tabs>
     </el-card>
     <v-picview ref="picview"></v-picview>

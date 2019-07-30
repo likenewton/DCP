@@ -186,7 +186,8 @@ module.exports = {
   },
   maxTableHeight(leftHeight = 316) {
     let winWidth = $(window).width()
-    let zoom = winWidth > 1200 ? winWidth / window.screen.width : 1
+    // let zoom = winWidth > 1200 ? winWidth / window.screen.width : 1
+    let zoom = 1
     let calcHeight = ($(window).height() - leftHeight * zoom) / zoom
     return calcHeight
   },

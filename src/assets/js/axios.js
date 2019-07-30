@@ -58,6 +58,7 @@ class AXIOS {
         if (res.data.status === 0) {
           return data.done && data.done(res.data)
         } else {
+          // 除了 status === 0 其他消息都通过boxMsg通知用户
           Vue.prototype.$notify.error({
             title: '错误',
             message: res.data.msg

@@ -21,6 +21,7 @@ const Exinfo = r => require.ensure([], () => r(require('@/components/_03_equipme
 const Dictionary = r => require.ensure([], () => r(require('@/components/_05_versions/dictionary.vue')), 'chunk2')
 const SysUpgrade = r => require.ensure([], () => r(require('@/components/_05_versions/sysUpgrade.vue')), 'chunk2')
 const DevUprecorde = r => require.ensure([], () => r(require('@/components/_05_versions/devUprecorde.vue')), 'chunk2')
+const CoreApp = r => require.ensure([], () => r(require('@/components/_05_versions/coreApp.vue')), 'chunk2')
 // 汽车管理06
 const Carbrand = r => require.ensure([], () => r(require('@/components/_06_car/carbrand.vue')), 'chunk2')
 // 运营统计07
@@ -36,7 +37,6 @@ const Sync = r => require.ensure([], () => r(require('@/components/_09_cache/syn
 const Dev = r => require.ensure([], () => r(require('@/components/_11_card/dev.vue')), 'chunk2')
 const Log = r => require.ensure([], () => r(require('@/components/_11_card/log.vue')), 'chunk2')
 // 配置管理
-const CoreApp = r => require.ensure([], () => r(require('@/components/_12_config/coreApp.vue')), 'chunk2')
 const Ipwhitelist = r => require.ensure([], () => r(require('@/components/_12_config/ipwhitelist.vue')), 'chunk2')
 const Remind = r => require.ensure([], () => r(require('@/components/_12_config/remind.vue')), 'chunk2')
 
@@ -130,6 +130,10 @@ let menuRoute = {
       path: 'devUprecorde',
       name: 'devUprecorde',
       component: DevUprecorde
+    }, {
+      path: 'coreApp',
+      name: 'coreApp',
+      component: CoreApp
     }]
   }, {
     path: 'car',
@@ -196,10 +200,6 @@ let menuRoute = {
     name: 'config',
     component: Blank,
     children: [{
-      path: 'coreApp',
-      name: 'coreApp',
-      component: CoreApp
-    }, {
       path: 'ipwhitelist',
       name: 'ipwhitelist',
       component: Ipwhitelist

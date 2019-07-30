@@ -1,5 +1,5 @@
 <template>
-  <div class="batch-container">
+  <div class="onpic-container">
     <el-card class="clearfix" shadow="never">
       <el-row>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
@@ -22,7 +22,7 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="" label="设备SN号" sortable="custom"></el-table-column>
+          <el-table-column prop="a" label="设备SN号" sortable="custom"></el-table-column>
           <el-table-column prop="" label="车主姓名" sortable="custom"></el-table-column>
           <el-table-column prop="" label="车主电话" sortable="custom"></el-table-column>
           <el-table-column prop="" label="车牌号" sortable="custom"></el-table-column>
@@ -72,7 +72,14 @@ export default {
     return {
       list: {
         data: [{
-          src: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+          src: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+          a: '这里有很长的文案，这里有很长的文案，这里有很长的文案'
+        }, {
+          src: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+          a: '这里有很长的文案，这里有很长的文案，这里有很长的文案'
+        }, {
+          src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
+          a: '这里有很长的文案，这里有很长的文案，这里有很长的文案'
         }],
         pagesize: Api.STATIC.pageSizes[2],
         currentPage: 1,
@@ -92,4 +99,15 @@ export default {
 }
 
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.onpic-container {
+  .el-table {
+    .el-image {
+      height: 50px;
+      width: 100%;
+    }
+  }
+
+}
+
+</style>

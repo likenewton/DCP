@@ -66,7 +66,7 @@ export default {
     return {
       collapse: true,
       versions: '', // 默认查询版本
-      maxCollapseHeight: Api.UNITS.maxTableHeight(258),
+      maxCollapseHeight: Api.UNITS.maxTableHeight(259),
       boxShadow: '',
       dictionary: [], // 总数据
       dictionary_0: [], // 分支一
