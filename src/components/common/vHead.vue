@@ -40,13 +40,13 @@ export default {
     }
   },
   mounted() {
-    // _axios.send({
-    //   method: 'get',
-    //   url: _axios.ajaxAd.getLoginInfo,
-    //   done: (res) => {
-    //     this.userInfo = res.data
-    //   }
-    // })
+    _axios.send({
+      method: 'get',
+      url: _axios.ajaxAd.getLoginInfo,
+      done: (res) => {
+        this.userInfo = res.data
+      }
+    })
   },
   methods: {
     ...mapMutations([

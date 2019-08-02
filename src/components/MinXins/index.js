@@ -65,6 +65,7 @@ export default {
   },
   computed: {
     ...mapState({
+      orgs: 'orgs', // 机构/公司列表
       authMenu: 'authMenu', // 菜单权限
       authButtons: 'authButtons', // 按钮权限
       asideCollapse: 'asideCollapse', // 侧边栏是否隐藏

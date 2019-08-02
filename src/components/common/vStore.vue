@@ -12,10 +12,17 @@ export default {
   },
   created() {
     // this.getAuthButtons()
+    // this.getCardTypes()
+    this.getOrgs()
+    // this.getNotifySelect()
+    // this.getMonths()
+    // this.getPayMethodSelect()
+    // this.getLiveMonth()
   },
   methods: {
     ...mapActions([
-      'getAuthButtons'
+      'getAuthButtons',
+      'getOrgs',
     ])
   }
 }

@@ -15,10 +15,23 @@ class AXIOS {
     // ajax请求地址
     this.ajaxAd = {
       // 登录
-      isLogin: '/fc/api/sso/isLogin',
-      getLoginInfo: '/fc/api/sso/getLoginInfo',
-      getAuthMenu: '/fc/api/sso/menus',
-      getAuthButtons: '/fc/api/sso/buttons',
+      isLogin: '/mpk_app/api/sso/isLogin',
+      getLoginInfo: '/mpk_app/api/sso/getLoginInfo',
+      getAuthMenu: '/mpk_app/api/sso/menus',
+      getAuthButtons: '/mpk_app/api/sso/buttons',
+      // drapdown
+      getOrgs: '/mpk_app/api/deviceBrand/queryCooperateOrganList',
+      getBrands: '/mpk_app/api/deviceBrand/getDeviceBrandList',
+      // list
+      getDeviceBrand: '/mpk_app/api/deviceBrand/pageDeviceBrand',
+      getDeviceList: '/mpk_app/api/device/devicelistByOrg',
+      // detail
+      detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
+      // form
+      updateDeviceBrand: '/mpk_app/api/deviceBrand/updateDeviceBrand', // 品牌修改
+      addDeviceBrand: '/mpk_app/api/deviceBrand/addDeviceBrand', //品牌新增
+      // diabled
+      brandChangeState: '/mpk_app/api/deviceBrand/changeState',
     }
   }
 
@@ -58,11 +71,16 @@ class AXIOS {
         if (res.data.status === 0) {
           return data.done && data.done(res.data)
         } else {
+          data.fail && data.fail()
           // 除了 status === 0 其他消息都通过boxMsg通知用户
           Vue.prototype.$notify.error({
             title: '错误',
             message: res.data.msg
           })
+        }
+        // status === 400代表表单验证失败，需要进行处理
+        if (res.data.status === 400) {
+          return data.done && data.done(res.data)
         }
       }
     }).catch(error => {

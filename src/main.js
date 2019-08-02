@@ -66,7 +66,7 @@ router.beforeEach((to, from, next) => {
       method: 'get',
       url: _axios.ajaxAd.isLogin,
       done: (res) => {
-        // 这里一定登录了
+        // 这里一定登录了, 如果没有获取菜单权限就去获取
         if (store.state.authMenu.length === 0) store.dispatch('getAuthMenu')
         store.commit('SET_ISLOGIN', { isLogin: true })
         next()

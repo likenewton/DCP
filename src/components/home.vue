@@ -200,7 +200,7 @@ export default {
         if (this.tabIndex_2 === '0') {
           let xAxisData = []
           let data = []
-          for(let i = 1; i <= 30; i++) {
+          for (let i = 1; i <= 30; i++) {
             xAxisData.push(`2019-07-${i}`)
             data.push(200 + Math.ceil(Math.random() * 300))
           }

@@ -182,6 +182,7 @@ export default {
 <style lang="scss">
 .devrecord-container {
   .resource_container {
+    position: relative;
     overflow: auto;
 
     .resource_wrapper {

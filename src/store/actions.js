@@ -23,5 +23,15 @@ export default {
         context.commit('SET_AUTHBUTTONS', { authButtons: res.data }) // 保存功能按钮权限
       })
     })
+  },
+  // 获取机构名称/公司名称
+  getOrgs(context) {
+    _axios.send({
+      method: 'get',
+      url: _axios.ajaxAd.getOrgs,
+      done: ((res) => {
+        context.commit('SET_ORGS', { orgs: res.data }) // 保存功能按钮权限
+      })
+    })
   }
 }

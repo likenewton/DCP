@@ -4,6 +4,7 @@ const SET_DIALOGVISIBLE = 'SET_DIALOGVISIBLE' // 公共dialog对话框是否显�
 const SET_AUTHMENU = 'SET_AUTHMENU' // 设置菜单权限列表
 const SET_AUTHBUTTONS = 'SET_AUTHBUTTONS' // 设置授权页面中的功能按钮权限
 const SET_ISLOGIN = 'SET_ISLOGIN' // 是否登录
+const SET_ORGS = 'SET_ORGS' // 机构列表
 
 export default {
   [SET_ASIDECOLLAPSE](state, paras) {
@@ -23,5 +24,8 @@ export default {
   },
   [SET_ISLOGIN](state, paras) {
     state.isLogin = paras.isLogin
+  },
+  [SET_ORGS](state, paras) {
+    state.orgs = paras.orgs
   }
 }

@@ -81,14 +81,14 @@ module.exports = {
       params: $.extend({}, formInline, {
         ascs: sort.ascs,
         descs: sort.descs,
-        size: list.pagesize,
-        current: list.currentPage
+        pageSize: list.pagesize,
+        pageNo: list.currentPage
       }),
       done: (res) => {
         para.vue[para.loadData || 'loadData'] = false
         para.vue.searchVipVisible = false // 高级查询功能
-        list.data = res.data ? (res.data.page.records ? res.data.page.records : []) : []
-        list.total = res.data ? res.data.page.total : 0
+        list.data = res.data ? (res.data.data ? res.data.data : []) : []
+        list.total = res.data ? res.data.rowCount : 0
         para.cb && para.cb(res)
       }
     })
