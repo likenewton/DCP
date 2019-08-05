@@ -40,7 +40,7 @@
             <template slot-scope="scope">
               <el-button type="text" class="text_editor" @click="$router.push({name:'addbrand',query:{type:'update', id:scope.row.id}})">编辑</el-button>
               <el-button type="text" :class="[scope.row.state===1?'text_danger':'text_success']" @click="disabled(scope)">{{scope.row.state ===1?'失效':'生效'}}</el-button>
-              <el-button type="text" class="text_primary" @click="$router.push({name:'devInfo'})">设备详情</el-button>
+              <el-button type="text" class="text_primary" @click="toDevInfo(scope)">设备详情</el-button>
               <el-button type="text" class="text_warning" @click="importDevVisible = true">导入设备</el-button>
             </template>
           </el-table-column>
@@ -119,6 +119,15 @@ export default {
     close() {
       // 关闭弹框的时候清掉选择上传的文件
       this.$refs.upload.clearFileList()
+    },
+    toDevInfo(scope) {
+      this.$router.push({
+        name:'devInfo', 
+        query:{
+          organCode:scope.row.organCode,
+          brandId: scope.row.id
+        }
+      })
     }
   }
 }

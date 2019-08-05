@@ -5,6 +5,7 @@ import menuRoute from '../router/menuRoute.js'
 export default {
   // 菜单权限(同时生成动态路由)
   getAuthMenu(context) {
+    console.log(111)
     _axios.send({
       method: 'get',
       url: '../../static/authMenu.json',

@@ -63,13 +63,13 @@
             <el-col :span="12">
               <el-card shadow="hover" style="border: none" class="pointer">
                 <div class="value">52</div>
-                <div class="key">汽车品牌数</div>
+                <div class="key">软件数</div>
               </el-card>
             </el-col>
             <el-col :span="12">
               <el-card shadow="hover" style="border: none" class="pointer">
                 <div class="value">32</div>
-                <div class="key">IP白名单数</div>
+                <div class="key">硬件数</div>
               </el-card>
             </el-col>
           </el-row>

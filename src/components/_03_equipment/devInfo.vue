@@ -11,10 +11,10 @@
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-input @keyup.enter.native="" placeholder="设备SN号"></el-input>
+            <el-input v-model="formInline.deviceSn" @keyup.enter.native="simpleSearchData" placeholder="设备SN号"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="">查询</el-button>
+            <el-button type="primary" @click="simpleSearchData">查询</el-button>
             <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
           </el-form-item>
         </el-form>
@@ -24,8 +24,8 @@
           <el-table-column fixed="left" prop="organCode" label="机构" sortable="custom" width="135">
             <template slot-scope="scope">{{scope.row.organName}}</template>
           </el-table-column>
-          <el-table-column prop="brandId" label="设备品牌" sortable="custom" width="100">
-            <template slot-scope="scope">{{scope.row.brandName}}</template>
+          <el-table-column prop="deviceBrandId" label="设备品牌" sortable="custom" width="100">
+            <template slot-scope="scope">{{scope.row.deviceBrandName}}</template>
           </el-table-column>
           <el-table-column prop="deviceName" label="设备名称" sortable="custom" width="100"></el-table-column>
           <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" width="153"></el-table-column>
@@ -44,7 +44,12 @@
               <span class="text_success" v-else>可用</span>
             </template>
           </el-table-column>
-          <el-table-column prop="" label="ADAS开关" sortable="custom" width="100"></el-table-column>
+          <el-table-column prop="adasOnoff" label="ADAS开关" sortable="custom" width="100">
+            <template slot-scope="scope">
+              <span class="text_danger" v-if="scope.row.adasOnoff===0">关</span>
+              <span class="text_success" v-else-if="scope.row.adasOnoff===1">开</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="adasUpdateTime" label="ADAS更新时间" sortable="custom" width="153">
             <template slot-scope="scope">{{scope.row.adasUpdateTime | formatDate}}</template>
           </el-table-column>
@@ -73,24 +78,24 @@
     <el-dialog title="高级查询" :visible.sync="searchVipVisible" width="700px" :close-on-click-modal="false">
       <div slot>
         <div class="searchForm_vip" style="width:100%;overflow: auto">
-          <el-form :inline="false" :model="formInline" size="small" label-width="90px">
+          <el-form :inline="false" :model="formInline" size="small" label-width="90px" v-loading="loadData">
             <el-form-item label="设备SN号">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.deviceSn" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="ICCID">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.deviceIccId" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="车主姓名">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.autocarName" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="车主电话">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.autocarTel" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="车牌号码">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.autocarTag" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="设备IMEI">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.deviceImei" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="机构列表">
               <el-select filterable clearable placeholder="请选择" v-model="formInline.organCode" @change="getBrands(formInline.organCode)">
@@ -98,7 +103,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="设备品牌">
-              <el-select filterable clearable placeholder="请选择" v-model="formInline.brandId">
+              <el-select filterable clearable placeholder="请选择" v-model="formInline.deviceBrandId">
                 <el-option v-for="(item, index) in brands" :key="index" :label="item.brandName" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -106,25 +111,28 @@
               <el-select filterable clearable placeholder="请选择"></el-select>
             </el-form-item>
             <el-form-item label="ADAS开关">
-              <el-select filterable clearable placeholder="请选择"></el-select>
+              <el-select filterable clearable placeholder="请选择" v-model="formInline.adasOnoff">
+                <el-option label="关" :value="0"></el-option>
+                <el-option label="开" :value="1"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="软件版本">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.softVersion" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="激活时间">
-              <el-date-picker v-model="formInline.start" type="datetime" placeholder="激活时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.end" type="datetime" placeholder="激活时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.timeAddedbegin" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="激活时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.timeAddedend" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="激活时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="更新时间">
-              <el-date-picker v-model="formInline.start" type="datetime" placeholder="更新时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.end" type="datetime" placeholder="更新时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startTimeLast" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="更新时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endTimeLast" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="更新时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="ADAS时间">
-              <el-date-picker v-model="formInline.start" type="datetime" placeholder="ADAS时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.end" type="datetime" placeholder="ADAS时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startAdasUpdateTime" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="ADAS时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endAdasUpdateTime" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="ADAS时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="getData">查询</el-button>
+              <el-button type="primary" @click="searchData">查询</el-button>
               <el-button type="warning" @click="resetData">重置</el-button>
             </el-form-item>
           </el-form>
@@ -203,6 +211,10 @@ export default {
         status: 1
       },
       brands: [],
+      formInline: {
+        organCode: Api.UNITS.getQuery('organCode'),
+        deviceBrandId: Api.UNITS.getQuery('brandId'),
+      },
       // 生命轨迹
       lifeTrack: {
         data: [{
@@ -242,11 +254,11 @@ export default {
     getBrands(organCode) {
       // 品牌是挂载到机构下的，所以在选中机构的时候选中的品牌要清空
       let formInline = this.formInline
-      delete formInline.brandId
+      if (organCode) delete formInline.deviceBrandId
       _axios.send({
         method: 'get',
         url: _axios.ajaxAd.getBrands,
-        params: { organCode },
+        params: { organCode: organCode || this.formInline.organCode },
         done: ((res) => {
           this.brands = res.data || []
         })
@@ -254,12 +266,26 @@ export default {
     },
     // 简单查询
     simpleSearchData() {
-      let snCode = this.formInline.snCode
+      let deviceSn = this.formInline.deviceSn
       this.formInline = {
-        snCode,
-        organCode: Api.UNITS.getQuery('organCode')
+        deviceSn,
+        organCode: Api.UNITS.getQuery('organCode'),
+        deviceBrandId: Api.UNITS.getQuery('brandId')
       }
       this.searchData()
+    },
+    // 高级查询-重置
+    resetData() {
+      this.list.currentPage = 1
+      this.formInline = {
+        organCode: Api.UNITS.getQuery('organCode'),
+        deviceBrandId: Api.UNITS.getQuery('brandId')
+      }
+      this.sort = {}
+      this.$refs.listTable.clearSort()
+      this.$refs.listTable.clearSelection()
+      this.getData()
+      this.getBrands()
     },
     close() {
       // 关闭弹框的时候清掉选择上传的文件

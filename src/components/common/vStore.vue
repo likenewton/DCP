@@ -3,6 +3,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import Api from 'assets/js/api.js'
 
 // 该组件主要用于vuex 中获取只需获取一次的数据，用于公共的展示
 export default {

@@ -70,7 +70,7 @@ export default {
   },
   watch: {
     '$route': function(newVal, oldVal) {
-
+      
     }
   }
 }
