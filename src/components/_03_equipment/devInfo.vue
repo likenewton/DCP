@@ -85,7 +85,7 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column prop="organCode" label="机构" sortable="custom" min-width="150">
+          <el-table-column v-if="checkedData.includes('organCode')" prop="organCode" label="机构" sortable="custom" min-width="150">
             <template slot-scope="scope">{{scope.row.organName}}</template>
           </el-table-column>
           <el-table-column v-if="checkedData.includes('deviceBrandId')" prop="deviceBrandId" label="设备品牌" sortable="custom" min-width="100">
@@ -93,7 +93,7 @@
           </el-table-column>
           <el-table-column v-if="checkedData.includes('deviceName')" prop="deviceName" label="设备名称" sortable="custom" min-width="100"></el-table-column>
           <el-table-column v-if="checkedData.includes('proName')" prop="proName" label="产品型号" sortable="custom" min-width="85"></el-table-column>
-          <el-table-column v-if="checkedData.includes('deviceSn')" prop="deviceSn" label="设备SN号" sortable="custom" min-width="153"></el-table-column>
+          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" min-width="153"></el-table-column>
           <el-table-column v-if="checkedData.includes('deviceIccId')" prop="deviceIccId" label="设备ICCID" sortable="custom" min-width="182"></el-table-column>
           <el-table-column v-if="checkedData.includes('deviceImei')" prop="deviceImei" label="设备IMEI" sortable="custom" min-width="150"></el-table-column>
           <el-table-column v-if="checkedData.includes('deviceImsi')" prop="deviceImsi" label="上网卡IMSI" sortable="custom" min-width="150"></el-table-column>
@@ -124,14 +124,24 @@
           <el-table-column v-if="checkedData.includes('timeLast')" prop="timeLast" label="更新时间" sortable="custom" min-width="153">
             <template slot-scope="scope">{{scope.row.timeLast | formatDate}}</template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="440">
+          <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
-              <el-button type="text" @click="$router.push({name:'devRecord'})">设备记录</el-button>
-              <el-button type="text" @click="$router.push({name:'directive'})">下发指令</el-button>
-              <el-button type="text" @click="showBandCar">绑定的客户</el-button>
-              <el-button type="text" @click="showLifeTrack">生命轨迹</el-button>
-              <el-button type="text" class="text_danger" @click="disabled">失效</el-button>
-              <el-button type="text" class="text_success" @click="switchADAS">开启ADAS</el-button>
+              <el-dropdown split-button type="primary" size="mini" @click="$router.push({name:'devRecord'})" @command="handleCommand">
+                设备记录
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item :command="{command: 'directive', data: scope.row}">下发指令</el-dropdown-item>
+                  <el-dropdown-item :command="{command: 'bandcar', data: scope.row}">绑定的客户</el-dropdown-item>
+                  <el-dropdown-item :command="{command: 'lifetrack', data: scope.row}">生命轨迹</el-dropdown-item>
+                  <el-dropdown-item :command="{command: 'disabled', data: scope.row}">
+                    <span v-if="scope.row.isDisable === 1">启用</span>
+                    <span v-else>失效</span>
+                  </el-dropdown-item>
+                  <el-dropdown-item :command="{command: 'adas', data: scope.row}">
+                    <span v-if="scope.row.adasOnoff===0">开启ADAS</span>
+                    <span v-else-if="scope.row.adasOnoff===1">关闭ADAS</span>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </el-table>
@@ -286,6 +296,9 @@ export default {
         deviceBrandId: Api.UNITS.getQuery('brandId'),
       },
       checkboxData: [{
+        label: '机构',
+        value: 'organCode'
+      }, {
         label: '设备品牌',
         value: 'deviceBrandId'
       }, {
@@ -294,9 +307,6 @@ export default {
       }, {
         label: '产品型号',
         value: 'proName'
-      }, {
-        label: '设备SN号',
-        value: 'deviceSn'
       }, {
         label: '设备ICCID',
         value: 'deviceIccId'
@@ -340,7 +350,7 @@ export default {
         label: '更新时间',
         value: 'timeLast'
       }],
-      defaultData: ['proName', 'deviceSn', 'deviceIccId', 'softVersion', 'isDisable', 'adasOnoff', 'timeLast'],
+      defaultData: ['organCode', 'proName', 'deviceIccId', 'softVersion', 'isDisable', 'adasOnoff', 'timeLast'],
       checkedData: [],
       // 生命轨迹
       lifeTrack: {
@@ -444,29 +454,35 @@ export default {
       this.$refs[formName] && this.$refs[formName].resetFields()
       this.$refs.upload.clearFileList()
     },
-    // 设备失效
-    disabled() {
-      this.showCfmBox({
-        message: '确定使设备失效吗？',
-        cb: () => {
-          this.showMsgBox({
-            type: 'success',
-            message: '操作成功'
-          })
-        }
-      })
-    },
-    // ADAS切换
-    switchADAS() {
-      this.showCfmBox({
-        message: '确定开启ADAS吗？',
-        cb: () => {
-          this.showMsgBox({
-            type: 'success',
-            message: '操作成功'
-          })
-        }
-      })
+    // 操作
+    handleCommand(para) {
+      if (para.command === 'directive') { // 下发指令
+        this.$router.push({ name: 'directive' })
+      } else if (para.command === 'bandcar') { // 查看绑定的客户
+        this.bandCarVisible = true
+      } else if (para.command === 'lifetrack') { // 查看生命轨迹
+        this.trackInfoVisible = true
+      } else if (para.command === 'disabled') { // 启用与失效
+        this.showCfmBox({
+          message: '确定使设备失效吗？',
+          cb: () => {
+            this.showMsgBox({
+              type: 'success',
+              message: '操作成功'
+            })
+          }
+        })
+      } else if (para.command === 'adas') {
+        this.showCfmBox({
+          message: '确定开启ADAS吗？',
+          cb: () => {
+            this.showMsgBox({
+              type: 'success',
+              message: '操作成功'
+            })
+          }
+        })
+      }
     },
     // 解除绑定
     unbind() {
@@ -479,14 +495,6 @@ export default {
           })
         }
       })
-    },
-    // 查看生命轨迹
-    showLifeTrack() {
-      this.trackInfoVisible = true
-    },
-    // 查看绑定该机车的客户
-    showBandCar() {
-      this.bandCarVisible = true
     },
     // checkbox组件保存后执行 **
     checkSave(data) {

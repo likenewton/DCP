@@ -76,9 +76,9 @@ module.exports = {
     let formInline = para.vue[para.formInline || 'formInline'] || []
     para.vue[para.loadData || 'loadData'] = true
     _axios.send({
-      method: para.method || 'get',
+      method: para.method || 'post',
       url: para.url,
-      params: $.extend({}, formInline, {
+      data: $.extend({}, formInline, {
         ascs: sort.ascs,
         descs: sort.descs,
         pageSize: list.pagesize,
