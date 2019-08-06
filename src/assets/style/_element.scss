@@ -24,10 +24,12 @@
   .editor {
     background: #3ecec9 !important;
     border-color: #3ecec9 !important;
+    color: #fff !important;
 
     &:hover {
-      background: #3ed5c9 !important;
-      border-color: #3ed5c9 !important;
+      background: #4ed5c9 !important;
+      border-color: #4ed5c9 !important;
+      color: #fff !important;
     }
   }
 
@@ -35,17 +37,19 @@
     color: #3ecec9 !important;
 
     &:hover {
-      color: #3ed5c9 !important;
+      color: #4ed5c9 !important;
     }
   }
 
   .purple {
     background: #9a83da !important;
     border-color: #9a83da !important;
+    color: #fff !important;
 
     &:hover {
       background: #9a8dda !important;
       border-color: #9a8dda !important;
+      color: #fff !important;
     }
   }
 

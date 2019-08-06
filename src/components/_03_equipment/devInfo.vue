@@ -8,6 +8,7 @@
           <el-button size="small" type="warning" @click="importADASvisible = true">ADAS导入</el-button>
           <el-button size="small" type="primary">生成语音报表</el-button>
           <el-button size="small" type="primary">生成蓝牙报表</el-button>
+          <el-button size="small" type="primary" @click="$refs.vCheckbox.openChoice()">展示列表</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
@@ -21,45 +22,109 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column fixed="left" prop="organCode" label="机构" sortable="custom" width="135">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="table-expand">
+                <el-form-item label="机构：">
+                  <span>{{props.row.organName}}</span>
+                </el-form-item>
+                <el-form-item label="设备品牌：">
+                  <span>{{props.row.deviceBrandName}}</span>
+                </el-form-item>
+                <el-form-item label="设备名称：">
+                  <span>{{props.row.deviceName}}</span>
+                </el-form-item>
+                <el-form-item label="产品型号：">
+                  <span>{{props.row.proName}}</span>
+                </el-form-item>
+                <el-form-item label="设备SN号：">
+                  <span>{{props.row.deviceSn}}</span>
+                </el-form-item>
+                <el-form-item label="设备ICCID：">
+                  <span>{{props.row.deviceIccId}}</span>
+                </el-form-item>
+                <el-form-item label="设备IMEI：">
+                  <span>{{props.row.deviceImei}}</span>
+                </el-form-item>
+                <el-form-item label="上网卡IMSI：">
+                  <span>{{props.row.deviceImsi}}</span>
+                </el-form-item>
+                <el-form-item label="设硬件版本：">
+                  <span>{{props.row.deviceVersion}}</span>
+                </el-form-item>
+                <el-form-item label="软件版本：">
+                  <span>{{props.row.softVersion}}</span>
+                </el-form-item>
+                <el-form-item label="车主姓名：">
+                  <span>{{props.row.autocarName}}</span>
+                </el-form-item>
+                <el-form-item label="车主电话：">
+                  <span>{{props.row.autocarTel}}</span>
+                </el-form-item>
+                <el-form-item label="车牌号码：">
+                  <span>{{props.row.autocarTag}}</span>
+                </el-form-item>
+                <el-form-item label="车辆型号：">
+                  <span>{{props.row.modelName}}</span>
+                </el-form-item>
+                <el-form-item label="失效状态：">
+                  <span>{{props.row.isDisable === 1 ? '失效' : '可用'}}</span>
+                </el-form-item>
+                <el-form-item label="ADAS开关：">
+                  <span>{{props.row.adasOnoff === 0 ? '关' : '开'}}</span>
+                </el-form-item>
+                <el-form-item label="ADAS更新时间：">
+                  <span>{{props.row.adasUpdateTime | formatDate}}</span>
+                </el-form-item>
+                <el-form-item label="激活时间：">
+                  <span>{{props.row.timeAdded | formatDate}}</span>
+                </el-form-item>
+                <el-form-item label="更新时间：">
+                  <span>{{props.row.timeLast | formatDate}}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+          <el-table-column prop="organCode" label="机构" sortable="custom" min-width="150">
             <template slot-scope="scope">{{scope.row.organName}}</template>
           </el-table-column>
-          <el-table-column prop="deviceBrandId" label="设备品牌" sortable="custom" width="100">
+          <el-table-column v-if="checkedData.includes('deviceBrandId')" prop="deviceBrandId" label="设备品牌" sortable="custom" min-width="100">
             <template slot-scope="scope">{{scope.row.deviceBrandName}}</template>
           </el-table-column>
-          <el-table-column prop="deviceName" label="设备名称" sortable="custom" width="100"></el-table-column>
-          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" width="153"></el-table-column>
-          <el-table-column prop="deviceIccId" label="设备ICCID" sortable="custom" width="182"></el-table-column>
-          <el-table-column prop="deviceImei" label="设备IMEI" sortable="custom" width="150"></el-table-column>
-          <el-table-column prop="deviceImsi" label="上网卡IMSI" sortable="custom" width="150"></el-table-column>
-          <el-table-column prop="deviceVersion" label="硬件版本" sortable="custom" width="150"></el-table-column>
-          <el-table-column prop="softVersion" label="软件版本" sortable="custom" width="150"></el-table-column>
-          <el-table-column prop="autocarName" label="车主姓名" sortable="custom" width="90"></el-table-column>
-          <el-table-column prop="autocarTel" label="车主电话" sortable="custom" width="110"></el-table-column>
-          <el-table-column prop="autocarTag" label="车牌号码" sortable="custom" width="90"></el-table-column>
-          <el-table-column prop="modelName" label="车辆型号" sortable="custom" width="90"></el-table-column>
-          <el-table-column prop="isDisable" label="失效状态" sortable="custom" width="90">
+          <el-table-column v-if="checkedData.includes('deviceName')" prop="deviceName" label="设备名称" sortable="custom" min-width="100"></el-table-column>
+          <el-table-column v-if="checkedData.includes('proName')" prop="proName" label="产品型号" sortable="custom" min-width="85"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceSn')" prop="deviceSn" label="设备SN号" sortable="custom" min-width="153"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceIccId')" prop="deviceIccId" label="设备ICCID" sortable="custom" min-width="182"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceImei')" prop="deviceImei" label="设备IMEI" sortable="custom" min-width="150"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceImsi')" prop="deviceImsi" label="上网卡IMSI" sortable="custom" min-width="150"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceVersion')" prop="deviceVersion" label="硬件版本" sortable="custom" min-width="150"></el-table-column>
+          <el-table-column v-if="checkedData.includes('softVersion')" prop="softVersion" label="软件版本" sortable="custom" min-width="150"></el-table-column>
+          <el-table-column v-if="checkedData.includes('autocarName')" prop="autocarName" label="车主姓名" sortable="custom" min-width="90"></el-table-column>
+          <el-table-column v-if="checkedData.includes('autocarTel')" prop="autocarTel" label="车主电话" sortable="custom" min-width="110"></el-table-column>
+          <el-table-column v-if="checkedData.includes('autocarTag')" prop="autocarTag" label="车牌号码" sortable="custom" min-width="90"></el-table-column>
+          <el-table-column v-if="checkedData.includes('modelName')" prop="modelName" label="车辆型号" sortable="custom" min-width="90"></el-table-column>
+          <el-table-column v-if="checkedData.includes('isDisable')" prop="isDisable" label="失效状态" sortable="custom" min-width="85">
             <template slot-scope="scope">
               <span class="text_danger" v-if="scope.row.isDisable == 1">失效</span>
               <span class="text_success" v-else>可用</span>
             </template>
           </el-table-column>
-          <el-table-column prop="adasOnoff" label="ADAS开关" sortable="custom" width="100">
+          <el-table-column v-if="checkedData.includes('adasOnoff')" prop="adasOnoff" label="ADAS开关" sortable="custom" min-width="95">
             <template slot-scope="scope">
               <span class="text_danger" v-if="scope.row.adasOnoff===0">关</span>
               <span class="text_success" v-else-if="scope.row.adasOnoff===1">开</span>
             </template>
           </el-table-column>
-          <el-table-column prop="adasUpdateTime" label="ADAS更新时间" sortable="custom" width="153">
+          <el-table-column v-if="checkedData.includes('adasUpdateTime')" prop="adasUpdateTime" label="ADAS更新时间" sortable="custom" min-width="153">
             <template slot-scope="scope">{{scope.row.adasUpdateTime | formatDate}}</template>
           </el-table-column>
-          <el-table-column prop="timeAdded" label="激活时间" sortable="custom" width="153">
+          <el-table-column v-if="checkedData.includes('timeAdded')" prop="timeAdded" label="激活时间" sortable="custom" min-width="153">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
-          <el-table-column prop="timeLast" label="更新时间" sortable="custom" width="153">
+          <el-table-column v-if="checkedData.includes('timeLast')" prop="timeLast" label="更新时间" sortable="custom" min-width="153">
             <template slot-scope="scope">{{scope.row.timeLast | formatDate}}</template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" min-width="440">
+          <el-table-column fixed="right" label="操作" width="440">
             <template slot-scope="scope">
               <el-button type="text" @click="$router.push({name:'devRecord'})">设备记录</el-button>
               <el-button type="text" @click="$router.push({name:'directive'})">下发指令</el-button>
@@ -108,7 +173,10 @@
               </el-select>
             </el-form-item>
             <el-form-item label="绑定状态">
-              <el-select filterable clearable placeholder="请选择"></el-select>
+              <el-select v-model="formInline.bindStatus" filterable clearable placeholder="请选择">
+                <el-option label="未绑定" :value="1"></el-option>
+                <el-option label="已绑定" :value="2"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="ADAS开关">
               <el-select filterable clearable placeholder="请选择" v-model="formInline.adasOnoff">
@@ -120,16 +188,16 @@
               <el-input v-model="formInline.softVersion" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="激活时间">
-              <el-date-picker v-model="formInline.timeAddedbegin" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="激活时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.timeAddedend" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="激活时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.timeAddedbegin" type="datetime" value-format="timestamp" placeholder="激活时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.timeAddedend" type="datetime" value-format="timestamp" placeholder="激活时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="更新时间">
-              <el-date-picker v-model="formInline.startTimeLast" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="更新时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.endTimeLast" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="更新时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startTimeLast" type="datetime" value-format="timestamp" placeholder="更新时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endTimeLast" type="datetime" value-format="timestamp" placeholder="更新时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="ADAS时间">
-              <el-date-picker v-model="formInline.startAdasUpdateTime" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="ADAS时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.endAdasUpdateTime" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="ADAS时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startAdasUpdateTime" type="datetime" value-format="timestamp" placeholder="ADAS时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endAdasUpdateTime" type="datetime" value-format="timestamp" placeholder="ADAS时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="searchData">查询</el-button>
@@ -197,6 +265,8 @@
         <el-button size="small" type="primary" @click="bandCarVisible = false">关闭</el-button>
       </div>
     </el-dialog>
+    <!-- ** -->
+    <v-checkbox ref="vCheckbox" :checkboxData="checkboxData" :defaultData="defaultData" sql="__devInfoCheck__" @checkSave="checkSave"></v-checkbox>
   </div>
 </template>
 <script>
@@ -210,11 +280,68 @@ export default {
       uploadForm: {
         status: 1
       },
-      brands: [],
+      brands: [], // 设备品牌是挂载在机构下的，选择机构需重新加载品牌
       formInline: {
         organCode: Api.UNITS.getQuery('organCode'),
         deviceBrandId: Api.UNITS.getQuery('brandId'),
       },
+      checkboxData: [{
+        label: '设备品牌',
+        value: 'deviceBrandId'
+      }, {
+        label: '设备名称',
+        value: 'deviceName'
+      }, {
+        label: '产品型号',
+        value: 'proName'
+      }, {
+        label: '设备SN号',
+        value: 'deviceSn'
+      }, {
+        label: '设备ICCID',
+        value: 'deviceIccId'
+      }, {
+        label: '设备IMEI',
+        value: 'deviceImei'
+      }, {
+        label: '上网卡IMSI',
+        value: 'deviceImsi'
+      }, {
+        label: '设硬件版本',
+        value: 'deviceVersion'
+      }, {
+        label: '软件版本',
+        value: 'softVersion'
+      }, {
+        label: '车主姓名',
+        value: 'autocarName'
+      }, {
+        label: '车主电话',
+        value: 'autocarTel'
+      }, {
+        label: '车牌号码',
+        value: 'autocarTag'
+      }, {
+        label: '车辆型号',
+        value: 'modelName'
+      }, {
+        label: '失效状态',
+        value: 'isDisable'
+      }, {
+        label: 'ADAS开关',
+        value: 'adasOnoff'
+      }, {
+        label: 'ADAS更新时间',
+        value: 'adasUpdateTime'
+      }, {
+        label: '激活时间',
+        value: 'timeAdded'
+      }, {
+        label: '更新时间',
+        value: 'timeLast'
+      }],
+      defaultData: ['proName', 'deviceSn', 'deviceIccId', 'softVersion', 'isDisable', 'adasOnoff', 'timeLast'],
+      checkedData: [],
       // 生命轨迹
       lifeTrack: {
         data: [{
@@ -241,6 +368,7 @@ export default {
     }
   },
   mounted() {
+    this.checkGet()
     this.getData()
     this.getBrands()
   },
@@ -359,9 +487,47 @@ export default {
     // 查看绑定该机车的客户
     showBandCar() {
       this.bandCarVisible = true
+    },
+    // checkbox组件保存后执行 **
+    checkSave(data) {
+      localStorage.setItem('__devInfoCheck__', JSON.stringify(data))
+      this.checkGet()
+    },
+    // **
+    checkGet() {
+      let checkedData = JSON.parse(localStorage.getItem('__devInfoCheck__'))
+      if (checkedData) {
+        this.checkedData = checkedData
+      } else {
+        this.checkedData = this.defaultData
+      }
     }
   }
 }
 
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.devInfo-container {
+  .table-expand {
+    font-size: 0;
+
+    * {
+      line-height: 32px;
+    }
+
+    label {
+      width: 130px;
+      color: #99a9bf;
+      text-align: right;
+    }
+
+    .el-form-item {
+      margin-right: 0;
+      margin-bottom: 0;
+      width: 100%;
+
+    }
+  }
+}
+
+</style>
