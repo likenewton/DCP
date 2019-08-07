@@ -3,7 +3,7 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="warning">导出</el-button>
+          <el-button size="small" type="warning" @click="exportExcel">导出</el-button>
           <el-button size="small" type="warning">ADAS导出</el-button>
           <el-button size="small" type="warning" @click="importADASvisible = true">ADAS导入</el-button>
           <el-button size="small" type="primary">生成语音报表</el-button>
@@ -126,11 +126,11 @@
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
-              <el-dropdown split-button type="primary" size="mini" @click="$router.push({name:'devRecord'})" @command="handleCommand">
+              <el-dropdown split-button type="primary" size="mini" @click="$router.push({name:'devRecord',query: {deviceSn:scope.row.deviceSn}})" @command="handleCommand">
                 设备记录
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item :command="{command: 'directive', data: scope.row}">下发指令</el-dropdown-item>
-                  <el-dropdown-item :command="{command: 'bandcar', data: scope.row}">绑定的客户</el-dropdown-item>
+                  <el-dropdown-item :command="{command: 'bandCustomer', data: scope.row}">绑定的客户</el-dropdown-item>
                   <el-dropdown-item :command="{command: 'lifetrack', data: scope.row}">生命轨迹</el-dropdown-item>
                   <el-dropdown-item :command="{command: 'disabled', data: scope.row}">
                     <span v-if="scope.row.isDisable === 1">启用</span>
@@ -257,10 +257,10 @@
       </div>
     </el-dialog>
     <!-- 查看绑定的客户 -->
-    <el-dialog title="绑定该机车的客户" :visible.sync="bandCarVisible" width="1200px" :close-on-click-modal="false">
+    <el-dialog title="绑定该机车的客户" :visible.sync="bandCustomer.bandCustomerVisible" width="1200px" :close-on-click-modal="false">
       <div slot>
-        <el-table :data="bandCar.data" @sort-change="handleSortChange" :max-height="winHeight/2.2" border resizable size="mini">
-          <el-table-column prop="a" label="客户名称" sortable="custom"></el-table-column>
+        <el-table :data="bandCustomer.data" :max-height="winHeight/2.2" border resizable size="mini" v-loading="bandCustomer.loadData">
+          <el-table-column prop="" label="客户名称" sortable="custom"></el-table-column>
           <el-table-column prop="" label="客户电话" sortable="custom"></el-table-column>
           <el-table-column prop="" label="设备SN号" sortable="custom"></el-table-column>
           <el-table-column prop="" label="绑定时间" sortable="custom"></el-table-column>
@@ -272,7 +272,7 @@
         </el-table>
       </div>
       <div slot="footer">
-        <el-button size="small" type="primary" @click="bandCarVisible = false">关闭</el-button>
+        <el-button size="small" type="primary" @click="bandCustomer.bandCustomerVisible = false">关闭</el-button>
       </div>
     </el-dialog>
     <!-- ** -->
@@ -286,7 +286,6 @@ export default {
     return {
       importADASvisible: false,
       trackInfoVisible: false,
-      bandCarVisible: false,
       uploadForm: {
         status: 1
       },
@@ -361,14 +360,16 @@ export default {
         currentPage: 1,
         total: 0,
       },
-      bandCar: {
-        data: [{
-          a: 'b'
-        }],
+      // 绑定的客户
+      bandCustomer: {
+        data: [],
         pagesize: Api.STATIC.pageSizes[2],
         currentPage: 1,
         total: 0,
+        loadData: true,
+        bandCustomerVisible: false,
       },
+      sort_bandCustomer: {},
       rules: {
         status: [{
           required: true,
@@ -387,6 +388,24 @@ export default {
       Api.UNITS.getListData({
         vue: this,
         url: _axios.ajaxAd.getDeviceList
+      })
+    },
+    getBindCustomer(params = {}) {
+      this.bandCustomer.loadData = true
+      _axios.send({
+        method: 'post',
+        url: _axios.ajaxAd.getBindCustomer,
+        data: $.extend({}, params, {
+          ascs: this.sort_bandCustomer.ascs,
+          descs: this.sort_bandCustomer.descs,
+          pageSize: this.bandCustomer.pagesize,
+          pageNo: this.bandCustomer.currentPage
+        }),
+        done: (res) => {
+          this.bandCustomer.loadData = false
+          this.bandCustomer.data = res.data ? (res.data.data ? res.data.data : []) : []
+          this.bandCustomer.total = res.data ? res.data.rowCount : 0
+        }
       })
     },
     getBrands(organCode) {
@@ -458,17 +477,31 @@ export default {
     handleCommand(para) {
       if (para.command === 'directive') { // 下发指令
         this.$router.push({ name: 'directive' })
-      } else if (para.command === 'bandcar') { // 查看绑定的客户
-        this.bandCarVisible = true
+      } else if (para.command === 'bandCustomer') { // 查看绑定的客户
+        this.bandCustomer.bandCustomerVisible = true
+        this.getBindCustomer({ deviceId: para.data.deviceId })
       } else if (para.command === 'lifetrack') { // 查看生命轨迹
         this.trackInfoVisible = true
       } else if (para.command === 'disabled') { // 启用与失效
         this.showCfmBox({
           message: '确定使设备失效吗？',
           cb: () => {
-            this.showMsgBox({
-              type: 'success',
-              message: '操作成功'
+            _axios.send({
+              method: 'get',
+              url: _axios.ajaxAd.toUpdIsDisable,
+              params: {
+                deviceId: para.data.deviceId,
+                isDisable: para.data.isDisable
+              },
+              done: ((res) => {
+                this.searchData()
+                setTimeout(() => {
+                  this.showMsgBox({
+                    type: 'success',
+                    message: '操作成功'
+                  })
+                }, 150)
+              })
             })
           }
         })
@@ -509,7 +542,11 @@ export default {
       } else {
         this.checkedData = this.defaultData
       }
-    }
+    },
+    // 导出设备信息
+    exportExcel() {
+      Api.UNITS.exportExcel(_axios.ajaxAd.exportDeviceData, this.formInline)
+    },
   }
 }
 

@@ -241,6 +241,25 @@
   },
   {
     "rescCode": "",
+    "resName": "运营管理",
+    "resUrl": "operate",
+    "level": 2,
+    "seqNum": 8,
+    "iconUrl": "",
+    "childResources": [
+    {
+      "rescCode": "",
+      "resName": "用户反馈",
+      "resUrl": "feedback",
+      "level": 3,
+      "seqNum": 1,
+      "iconUrl": ""
+    }],
+    "checkedFlag": 0,
+    "childNum": null
+  },
+  {
+    "rescCode": "",
     "resName": "缓存同步",
     "resUrl": "cache",
     "level": 2,

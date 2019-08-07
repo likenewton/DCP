@@ -17,6 +17,10 @@ module.exports = {
     icon: 'iconfont-tongji',
     name: 'statistics'
   }, {
+    title: '运营管理',
+    icon: 'iconfont-yunyingguanli_fuwufenzuguanli',
+    name: 'operate'
+  }, {
     title: '缓存同步',
     icon: 'iconfont-lucenehuancun',
     name: 'cache'
@@ -103,6 +107,9 @@ module.exports = {
   }, {
     title: '历史版本',
     name: 'hisVersions'
+  }, {
+    title: '用户反馈处理',
+    name: 'addfeedback'
   }],
   token: 'iov-token',
   // 分页器公共配置项

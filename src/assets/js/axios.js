@@ -25,13 +25,17 @@ class AXIOS {
       // list
       getDeviceBrand: '/mpk_app/api/deviceBrand/pageDeviceBrand',
       getDeviceList: '/mpk_app/api/device/devicelistByOrg',
+      getBindCustomer: '/mpk_app/api/device/bindCustomer', // 查看绑定的客户
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       // form
       updateDeviceBrand: '/mpk_app/api/deviceBrand/updateDeviceBrand', // 品牌修改
-      addDeviceBrand: '/mpk_app/api/deviceBrand/addDeviceBrand', //品牌新增
+      addDeviceBrand: '/mpk_app/api/deviceBrand/addDeviceBrand',  //品牌新增
       // diabled
       brandChangeState: '/mpk_app/api/deviceBrand/changeState',
+      toUpdIsDisable: '/mpk_app/api/device/toUpdIsDisable',  // 设备查询 有效、失效
+      // export
+      exportDeviceData: '/mpk_app/api/device/exportDeviceData', // 导出设备信息
     }
   }
 

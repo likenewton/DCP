@@ -1,6 +1,6 @@
 <template>
   <!-- 图片预览 -->
-  <el-dialog class="picview-container" title="图片预览" :visible.sync="picviewVisible" width="500px">
+  <el-dialog class="picview-container" title="图片预览" :visible.sync="picviewVisible" :width="width">
     <div slot>
       <div class="img-wrapper">
         <el-image :src="src" fit="cover"></el-image>
@@ -20,6 +20,10 @@ export default {
     src: {
       type: 'string',
       default: ''
+    },
+    width: {
+      type: 'string',
+      default: '500px'
     }
   },
   created() {

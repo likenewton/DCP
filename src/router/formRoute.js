@@ -13,6 +13,7 @@ const Addipwlist = r => require.ensure([], () => r(require('@/components/forms/a
 const Addremind = r => require.ensure([], () => r(require('@/components/forms/addremind.vue')), 'chunk3') // 添加提醒策略
 const Addversions = r => require.ensure([], () => r(require('@/components/forms/addversions.vue')), 'chunk3') // 添加版本
 const Addupinfo = r => require.ensure([], () => r(require('@/components/forms/addupinfo.vue')), 'chunk3') // 新增升级信息
+const Addfeedback = r => require.ensure([], () => r(require('@/components/forms/addfeedback.vue')), 'chunk3') // 处理用户反馈
 
 let formRoute = {
     // 表单文件
@@ -59,6 +60,10 @@ let formRoute = {
       path: 'addupinfo',
       name: 'addupinfo',
       component: Addupinfo
+    }, {
+      path: 'addfeedback',
+      name: 'addfeedback',
+      component: Addfeedback
     }]
   }
 

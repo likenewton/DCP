@@ -73,7 +73,7 @@ module.exports = {
     let para = paras
     let list = para.vue[para.list || 'list']
     let sort = para.vue[para.sort || 'sort']
-    let formInline = para.vue[para.formInline || 'formInline'] || []
+    let formInline = para.vue[para.formInline || 'formInline'] || {}
     para.vue[para.loadData || 'loadData'] = true
     _axios.send({
       method: para.method || 'post',
