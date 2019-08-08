@@ -1,6 +1,6 @@
 //项目域名地址
-const url = 'http://tcas.yunovo.cn:8880';
-// const url = 'http://10.0.0.159:8880';
+// const url = 'http://tcas.yunovo.cn:8880';
+const url = 'http://10.0.0.159:8880';
 
 let ROOT;
 //由于封装的axios请求中，会将ROOT打包进去，为了方便之后不再更改，判断了当前环境，而生成的不同的ROOT

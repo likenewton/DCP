@@ -105,8 +105,8 @@
           <el-table-column v-if="checkedData.includes('modelName')" prop="modelName" label="车辆型号" sortable="custom" min-width="90"></el-table-column>
           <el-table-column v-if="checkedData.includes('isDisable')" prop="isDisable" label="失效状态" sortable="custom" min-width="85">
             <template slot-scope="scope">
-              <span class="text_danger" v-if="scope.row.isDisable == 1">失效</span>
-              <span class="text_success" v-else>可用</span>
+              <span class="text_danger" v-if="scope.row.isDisable === 1">失效</span>
+              <span class="text_success" v-else-if="scope.row.isDisable === 0">可用</span>
             </template>
           </el-table-column>
           <el-table-column v-if="checkedData.includes('adasOnoff')" prop="adasOnoff" label="ADAS开关" sortable="custom" min-width="95">
@@ -133,8 +133,8 @@
                   <el-dropdown-item :command="{command: 'bandCustomer', data: scope.row}">绑定的客户</el-dropdown-item>
                   <el-dropdown-item :command="{command: 'lifetrack', data: scope.row}">生命轨迹</el-dropdown-item>
                   <el-dropdown-item :command="{command: 'disabled', data: scope.row}">
-                    <span v-if="scope.row.isDisable === 1">启用</span>
-                    <span v-else>失效</span>
+                    <span v-if="scope.row.isDisable === 1">有效</span>
+                    <span v-else-if="scope.row.isDisable === 0">失效</span>
                   </el-dropdown-item>
                   <el-dropdown-item :command="{command: 'adas', data: scope.row}">
                     <span v-if="scope.row.adasOnoff===0">开启ADAS</span>
@@ -218,7 +218,7 @@
       </div>
     </el-dialog>
     <!-- ADAS导入 -->
-    <el-dialog title="ADAS导入" @close="close" :visible.sync="importADASvisible" width="700px" :close-on-click-modal="false">
+    <el-dialog title="ADAS导入" @close="ADASclose" :visible.sync="importADASvisible" width="700px" :close-on-click-modal="false">
       <div slot>
         <el-form ref="uploadForm" :model="uploadForm" :rules="rules" :inline="false" size="small" label-width="110px">
           <el-form-item label="请选择文件：">
@@ -241,32 +241,38 @@
       </div>
     </el-dialog>
     <!-- 查看设备生命轨迹信息 -->
-    <el-dialog title="查看设备生命轨迹信息" :visible.sync="trackInfoVisible" width="1200px" :close-on-click-modal="false">
+    <el-dialog title="查看设备生命轨迹信息" :visible.sync="lifeTrack.lifeTrackVisible" width="1200px" :close-on-click-modal="false">
       <div slot>
-        <el-table :data="lifeTrack.data" @sort-change="handleSortChange" :max-height="winHeight/2.2" border resizable size="mini">
-          <el-table-column prop="a" label="事件类型" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="事件时间" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="事件描述" sortable="custom" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="" label="原值" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="现值" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="记录员" sortable="custom"></el-table-column>
+        <el-table :data="lifeTrack.data" :max-height="winHeight/2.2" border resizable size="mini" v-loading="lifeTrack.loadData">
+          <el-table-column prop="eventType" label="事件类型" sortable="custom">
+            <template slot-scope="scope">{{scope.row.eventTypeName}}</template>
+          </el-table-column>
+          <el-table-column prop="eventTime" label="事件时间" sortable="custom">
+            <template slot-scope="scope">{{scope.row.eventTime | formatDate}}</template>
+          </el-table-column>
+          <el-table-column prop="eventDesc" label="事件描述" sortable="custom" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="oldValue" label="原值" sortable="custom"></el-table-column>
+          <el-table-column prop="newValue" label="现值" sortable="custom"></el-table-column>
+          <el-table-column prop="recorder" label="记录员" sortable="custom"></el-table-column>
         </el-table>
       </div>
       <div slot="footer">
-        <el-button size="small" type="primary" @click="trackInfoVisible = false">关闭</el-button>
+        <el-button size="small" type="primary" @click="lifeTrack.lifeTrackVisible = false">关闭</el-button>
       </div>
     </el-dialog>
     <!-- 查看绑定的客户 -->
     <el-dialog title="绑定该机车的客户" :visible.sync="bandCustomer.bandCustomerVisible" width="1200px" :close-on-click-modal="false">
       <div slot>
         <el-table :data="bandCustomer.data" :max-height="winHeight/2.2" border resizable size="mini" v-loading="bandCustomer.loadData">
-          <el-table-column prop="" label="客户名称" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="客户电话" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="设备SN号" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="绑定时间" sortable="custom"></el-table-column>
+          <el-table-column prop="customerName" label="客户名称" sortable="custom"></el-table-column>
+          <el-table-column prop="customerTelephone" label="客户电话" sortable="custom"></el-table-column>
+          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom"></el-table-column>
+          <el-table-column prop="timeAdded" label="绑定时间" sortable="custom">
+            <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
+          </el-table-column>
           <el-table-column label="是否解绑" sortable="custom">
             <template slot-scope="scope">
-              <el-button type="text" @click="unbind">解绑</el-button>
+              <el-button type="text" @click="unbind(scope)">解绑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -276,7 +282,7 @@
       </div>
     </el-dialog>
     <!-- ** -->
-    <v-checkbox ref="vCheckbox" :checkboxData="checkboxData" :defaultData="defaultData" sql="__devInfoCheck__" @checkSave="checkSave"></v-checkbox>
+    <v-checkbox ref="vCheckbox" :checkboxData="checkboxData" :defaultData="defaultData" @checkSave="checkSave"></v-checkbox>
   </div>
 </template>
 <script>
@@ -285,15 +291,15 @@ export default {
   data() {
     return {
       importADASvisible: false,
-      trackInfoVisible: false,
+      brands: [], // 设备品牌是挂载在机构下的，选择机构需重新加载品牌
       uploadForm: {
         status: 1
       },
-      brands: [], // 设备品牌是挂载在机构下的，选择机构需重新加载品牌
       formInline: {
         organCode: Api.UNITS.getQuery('organCode'),
         deviceBrandId: Api.UNITS.getQuery('brandId'),
       },
+      // === 列表显示控制静态数据 ===
       checkboxData: [{
         label: '机构',
         value: 'organCode'
@@ -351,16 +357,7 @@ export default {
       }],
       defaultData: ['organCode', 'proName', 'deviceIccId', 'softVersion', 'isDisable', 'adasOnoff', 'timeLast'],
       checkedData: [],
-      // 生命轨迹
-      lifeTrack: {
-        data: [{
-          a: 'a'
-        }],
-        pagesize: Api.STATIC.pageSizes[2],
-        currentPage: 1,
-        total: 0,
-      },
-      // 绑定的客户
+      // === 绑定的客户 ===
       bandCustomer: {
         data: [],
         pagesize: Api.STATIC.pageSizes[2],
@@ -370,6 +367,17 @@ export default {
         bandCustomerVisible: false,
       },
       sort_bandCustomer: {},
+      // === 生命轨迹 ===
+      lifeTrack: {
+        data: [],
+        pagesize: Api.STATIC.pageSizes[2],
+        currentPage: 1,
+        total: 0,
+        loadData: true,
+        lifeTrackVisible: false,
+      },
+      sort_lifeTrack: {},
+      // === 表单验证规则 ===
       rules: {
         status: [{
           required: true,
@@ -384,31 +392,14 @@ export default {
     this.getBrands()
   },
   methods: {
-    getData() {
+    // === 设备查询 start ===
+    getData() { // 获取主列表数据
       Api.UNITS.getListData({
         vue: this,
         url: _axios.ajaxAd.getDeviceList
       })
     },
-    getBindCustomer(params = {}) {
-      this.bandCustomer.loadData = true
-      _axios.send({
-        method: 'post',
-        url: _axios.ajaxAd.getBindCustomer,
-        data: $.extend({}, params, {
-          ascs: this.sort_bandCustomer.ascs,
-          descs: this.sort_bandCustomer.descs,
-          pageSize: this.bandCustomer.pagesize,
-          pageNo: this.bandCustomer.currentPage
-        }),
-        done: (res) => {
-          this.bandCustomer.loadData = false
-          this.bandCustomer.data = res.data ? (res.data.data ? res.data.data : []) : []
-          this.bandCustomer.total = res.data ? res.data.rowCount : 0
-        }
-      })
-    },
-    getBrands(organCode) {
+    getBrands(organCode) { // 获取品牌下拉列表
       // 品牌是挂载到机构下的，所以在选中机构的时候选中的品牌要清空
       let formInline = this.formInline
       if (organCode) delete formInline.deviceBrandId
@@ -421,8 +412,7 @@ export default {
         })
       })
     },
-    // 简单查询
-    simpleSearchData() {
+    simpleSearchData() { // 简单查询
       let deviceSn = this.formInline.deviceSn
       this.formInline = {
         deviceSn,
@@ -431,8 +421,7 @@ export default {
       }
       this.searchData()
     },
-    // 高级查询-重置
-    resetData() {
+    resetData() { // 高级查询-重置
       this.list.currentPage = 1
       this.formInline = {
         organCode: Api.UNITS.getQuery('organCode'),
@@ -444,15 +433,131 @@ export default {
       this.getData()
       this.getBrands()
     },
-    close() {
-      // 关闭弹框的时候清掉选择上传的文件
-      this.$refs.upload.clearFileList()
-      this.uploadForm = {
-        status: 1
+    handleCommand(para) { // 操作-下拉菜单功能
+      if (para.command === 'directive') { // 下发指令
+        this.$router.push({ 
+          name: 'directive',
+          query: {
+            deviceSn: para.data.deviceSn
+          }
+        })
+      } else if (para.command === 'bandCustomer') { // 查看绑定的客户
+        this.bandCustomer.bandCustomerVisible = true
+        this.getBindCustomer({ deviceId: para.data.deviceId })
+      } else if (para.command === 'lifetrack') { // 查看生命轨迹
+        this.lifeTrack.lifeTrackVisible = true
+        this.getTrackList({ deviceId: para.data.deviceId })
+      } else if (para.command === 'disabled') { // 启用与失效
+        this.showCfmBox({
+          message: `确定${para.data.isDisable === 0 ? '使设备失效' : '恢复设备有效'}吗？`,
+          cb: () => {
+            _axios.send({
+              method: 'get',
+              url: _axios.ajaxAd.toUpdIsDisable,
+              params: {
+                deviceId: para.data.deviceId,
+                isDisable: para.data.isDisable === 1 ? 0 : 1
+              },
+              done: ((res) => {
+                this.getData()
+                setTimeout(() => {
+                  this.showMsgBox({
+                    type: 'success',
+                    message: '操作成功'
+                  })
+                }, 150)
+              })
+            })
+          }
+        })
+      } else if (para.command === 'adas') { // adas开关
+        this.showCfmBox({
+          message: `确定${para.data.adasOnoff === 0 ? '开启ADAS' : '关闭ADAS'}吗？`,
+          cb: () => {
+            _axios.send({
+              method: 'get',
+              url: _axios.ajaxAd.toUpdAdasStatus,
+              params: {
+                deviceId: para.data.deviceId,
+                status: para.data.adasOnoff === 1 ? 0 : 1
+              },
+              done: ((res) => {
+                this.getData()
+                setTimeout(() => {
+                  this.showMsgBox({
+                    type: 'success',
+                    message: '操作成功'
+                  })
+                }, 150)
+              })
+            })
+          }
+        })
       }
     },
-    // 提交表单
-    submitForm(formName) {
+    exportExcel() { // 导出设备信息
+      if (!this.formInline.timeAddedbegin) {
+        this.showMsgBox({
+          message: '高级查询-激活时间（起）不能为空'
+        })
+        return
+      }
+      if (!this.formInline.timeAddedend) {
+        this.showMsgBox({
+          message: '高级查询-激活时间（止）不能为空'
+        })
+        return
+      }
+      Api.UNITS.exportExcel(_axios.ajaxAd.exportDeviceData, this.formInline)
+    },
+    // === 设备查询 end ===
+    // === 操作 start ===
+    getBindCustomer(params = {}) { // 获取绑定客户
+      Api.UNITS.getListData({
+        vue: this,
+        url: _axios.ajaxAd.getBindCustomer,
+        data: params,
+        list: 'bandCustomer',
+        sort: 'sort_bandCustomer'
+      })
+    },
+    unbind(scope) { // 绑定用户解除绑定
+      this.showCfmBox({
+        message: '取消绑定将清除所有数据,您确定要执行吗？',
+        cb: () => {
+          _axios.send({
+            method: 'get',
+            url: _axios.ajaxAd.unBindByDeviceId,
+            params: {
+              deviceId: scope.row.deviceId,
+              customerId: scope.row.customerId
+            },
+            done: ((res) => {
+              this.getData()
+              this.bandCustomer.bandCustomerVisible = false
+              setTimeout(() => {
+                this.showMsgBox({
+                  type: 'success',
+                  message: '操作成功'
+                })
+              }, 150)
+            })
+          })
+        }
+      })
+    },
+    getTrackList(params = {}) { // 获取生命轨迹
+      Api.UNITS.getListData({
+        vue: this,
+        url: _axios.ajaxAd.getTrackList,
+        data: params,
+        list: 'lifeTrack',
+        sort: 'sort_lifeTrack'
+      })
+    },
+    // === 操作 end ===
+    // === ADAS导入 start ===
+    submitForm(formName) { // ADAS导入提交
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 验证通过
@@ -469,84 +574,28 @@ export default {
         }
       })
     },
-    resetForm(formName) {
+    resetForm(formName) { // ADAS导入重置
       this.$refs[formName] && this.$refs[formName].resetFields()
       this.$refs.upload.clearFileList()
     },
-    // 操作
-    handleCommand(para) {
-      if (para.command === 'directive') { // 下发指令
-        this.$router.push({ name: 'directive' })
-      } else if (para.command === 'bandCustomer') { // 查看绑定的客户
-        this.bandCustomer.bandCustomerVisible = true
-        this.getBindCustomer({ deviceId: para.data.deviceId })
-      } else if (para.command === 'lifetrack') { // 查看生命轨迹
-        this.trackInfoVisible = true
-      } else if (para.command === 'disabled') { // 启用与失效
-        this.showCfmBox({
-          message: '确定使设备失效吗？',
-          cb: () => {
-            _axios.send({
-              method: 'get',
-              url: _axios.ajaxAd.toUpdIsDisable,
-              params: {
-                deviceId: para.data.deviceId,
-                isDisable: para.data.isDisable
-              },
-              done: ((res) => {
-                this.searchData()
-                setTimeout(() => {
-                  this.showMsgBox({
-                    type: 'success',
-                    message: '操作成功'
-                  })
-                }, 150)
-              })
-            })
-          }
-        })
-      } else if (para.command === 'adas') {
-        this.showCfmBox({
-          message: '确定开启ADAS吗？',
-          cb: () => {
-            this.showMsgBox({
-              type: 'success',
-              message: '操作成功'
-            })
-          }
-        })
+    ADASclose() { // ADAS上传弹窗关闭
+      this.$refs.upload.clearFileList()
+      this.uploadForm = {
+        status: 1
       }
     },
-    // 解除绑定
-    unbind() {
-      this.showCfmBox({
-        message: '取消绑定将清除所有数据,您确定要执行吗？',
-        cb: () => {
-          this.showMsgBox({
-            type: 'success',
-            message: '操作成功'
-          })
-        }
-      })
-    },
-    // checkbox组件保存后执行 **
-    checkSave(data) {
-      localStorage.setItem('__devInfoCheck__', JSON.stringify(data))
+    // === ADAS导入 end ===
+    // === 列表选择性展示 start ===
+    checkSave(data) { // v-checkbox组件保存后回调
+      localStorage.setItem(`__${this.routeName}Check__`, JSON.stringify(data))
       this.checkGet()
     },
-    // **
     checkGet() {
-      let checkedData = JSON.parse(localStorage.getItem('__devInfoCheck__'))
-      if (checkedData) {
-        this.checkedData = checkedData
-      } else {
-        this.checkedData = this.defaultData
-      }
-    },
-    // 导出设备信息
-    exportExcel() {
-      Api.UNITS.exportExcel(_axios.ajaxAd.exportDeviceData, this.formInline)
-    },
+      let checkedData = JSON.parse(localStorage.getItem(`__${this.routeName}Check__`))
+      if (checkedData) this.checkedData = checkedData
+      else this.checkedData = this.defaultData
+    }
+    // === 列表选择性展示 end ===
   }
 }
 

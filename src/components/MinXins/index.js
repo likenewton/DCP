@@ -56,7 +56,6 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
-      this.formInline = {}
       this.isUpdate && this.getData()
     },
     getColorList: Api.UNITS.getColorList,
@@ -75,7 +74,7 @@ export default {
       return this.$route.name
     },
     pageAuthBtn() {
-      let authArr = this.authButtons[`FCP_${this.routeName}`]
+      let authArr = this.authButtons[`DCP_${this.routeName}`]
       if (!authArr) return {}
       return authArr
     }

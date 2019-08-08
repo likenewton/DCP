@@ -9,9 +9,10 @@
         <el-main class="small-scroll">
           <div class="main-inner">
             <v-breadcrumb></v-breadcrumb>
-            <keep-alive>
-              <router-view></router-view>
+            <keep-alive v-show="$route.meta.keepAlive">
+              <router-view v-if="$route.meta.keepAlive"></router-view>
             </keep-alive>
+            <router-view v-if="!$route.meta.keepAlive"></router-view>
             <el-footer height="50px">
               <v-footer></v-footer>
             </el-footer>
@@ -27,7 +28,7 @@ export default {
     return {}
   },
   mounted() {
-    console.log(this.$route)
+    console.log(this.$route.meta.keepAlive)
   }
 }
 

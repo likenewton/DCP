@@ -36,6 +36,7 @@
         </el-tab-pane>
         <el-tab-pane v-loading="loadData">
           <span slot="label">行车轨迹</span>
+          <div class="Bmap-container" :style="{height: maxMapHeight + 'px'}"></div>
         </el-tab-pane>
         <el-tab-pane v-loading="loadData">
           <span slot="label">OBD信息</span>
@@ -93,6 +94,7 @@ export default {
       maxTableHeight_0: Api.UNITS.maxTableHeight(358),
       maxTableHeight_2: Api.UNITS.maxTableHeight(358),
       maxTableHeight_7: Api.UNITS.maxTableHeight(408),
+      maxMapHeight: Api.UNITS.maxTableHeight(302),
       // 表单
       formInline_2: {},
       formInline_7: {},
@@ -160,7 +162,7 @@ export default {
     }
   },
   mounted() {
-    this.loadData = false
+    this.getData()
     this.$nextTick(() => {
       this.imgH = Math.ceil($('.resource_wrapper').width() * 0.65)
       $('.resource_wrapper .block').height(this.imgH)
@@ -171,7 +173,21 @@ export default {
     changeTab() {
 
     },
-    getData() {},
+    getData() {
+      this.loadData = false
+      return
+      _axios.send({
+        method: 'get',
+        url: _axios.ajaxAd.getDeviceRecord,
+        params: {
+          deviceSn: Api.UNITS.getQuery('deviceSn')
+        },
+        done: ((res) => {
+          this.loadData = true
+          console.log(res)
+        })
+      })
+    },
     showPicView(e) {
       this.$refs.picview.showPicView(e.target.src)
     }
@@ -205,6 +221,11 @@ export default {
       background: transparent;
 
     }
+  }
+
+  .Bmap-container {
+    width: 100%;
+    background: pink;
   }
 }
 

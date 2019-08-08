@@ -37,10 +37,6 @@ export default {
       type: "string",
       default: '800px'
     },
-    sql: {
-      type: 'string',
-      default: ''
-    },
     // checkbox 全数据 { label, value }
     checkboxData: {
       type: Array,
@@ -53,7 +49,7 @@ export default {
     }
   },
   mounted() {
-    let checkedData = JSON.parse(localStorage.getItem(this.sql))
+    let checkedData = JSON.parse(localStorage.getItem(`__${this.routeName}Check__`))
     if (checkedData) {
       this.checkedSaveData = checkedData
     } else {

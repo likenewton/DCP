@@ -74,18 +74,20 @@ module.exports = {
     let list = para.vue[para.list || 'list']
     let sort = para.vue[para.sort || 'sort']
     let formInline = para.vue[para.formInline || 'formInline'] || {}
-    para.vue[para.loadData || 'loadData'] = true
+    if (list.loadData === undefined) para.vue[para.loadData || 'loadData'] = true
+    else list.loadData = true
     _axios.send({
       method: para.method || 'post',
       url: para.url,
-      data: $.extend({}, formInline, {
+      data: $.extend(paras.data || {}, formInline, { // 正常列表查询都是使用formInline, 也可以通过paras.data传递查询参数
         ascs: sort.ascs,
         descs: sort.descs,
         pageSize: list.pagesize,
         pageNo: list.currentPage
       }),
       done: (res) => {
-        para.vue[para.loadData || 'loadData'] = false
+        if (list.loadData === undefined) para.vue[para.loadData || 'loadData'] = false
+        else list.loadData = false
         para.vue.searchVipVisible = false // 高级查询功能
         list.data = res.data ? (res.data.data ? res.data.data : []) : []
         list.total = res.data ? res.data.rowCount : 0

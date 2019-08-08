@@ -28,14 +28,20 @@ class AXIOS {
       getBindCustomer: '/mpk_app/api/device/bindCustomer', // 查看绑定的客户
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
+      getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录
+      getTrackList: '/mpk_app/api/deviceLifeCycle/queryDeviceLifeList', // 设备查询-生命轨迹
       // form
       updateDeviceBrand: '/mpk_app/api/deviceBrand/updateDeviceBrand', // 品牌修改
       addDeviceBrand: '/mpk_app/api/deviceBrand/addDeviceBrand',  //品牌新增
+      directivePush: '/mpk_app/api/messagePush/push', // 设备查询-指令推送
       // diabled
       brandChangeState: '/mpk_app/api/deviceBrand/changeState',
       toUpdIsDisable: '/mpk_app/api/device/toUpdIsDisable',  // 设备查询 有效、失效
+      toUpdAdasStatus: '/mpk_app/api/device/toUpdAdasStatus', // 设备查询 adas 开关
       // export
       exportDeviceData: '/mpk_app/api/device/exportDeviceData', // 导出设备信息
+      // 功能
+      unBindByDeviceId: '/mpk_app/api/device/unBindByDeviceId', // 设备查询-解除绑定
     }
   }
 
