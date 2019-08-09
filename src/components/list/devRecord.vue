@@ -1,7 +1,7 @@
 <template>
   <div class="devrecord-container">
     <el-card class="clearfix" shadow="never">
-      <v-record-info></v-record-info>
+      <v-record-info :infos="deviceInfo"></v-record-info>
       <el-tabs @tab-click="changeTab" v-model="tabIndex">
         <el-tab-pane v-loading="loadData">
           <span slot="label">历史照片</span>
@@ -95,14 +95,13 @@ export default {
       maxTableHeight_2: Api.UNITS.maxTableHeight(358),
       maxTableHeight_7: Api.UNITS.maxTableHeight(408),
       maxMapHeight: Api.UNITS.maxTableHeight(302),
+      deviceInfo: {},
       // 表单
       formInline_2: {},
       formInline_7: {},
       // 列表
       list_0: {
         data: [{
-          src: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07ee.png'
-        }, {
           src: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
         }, {
           src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
@@ -174,17 +173,16 @@ export default {
 
     },
     getData() {
-      this.loadData = false
-      return
+      this.loadData = true
       _axios.send({
-        method: 'get',
+        method: 'post',
         url: _axios.ajaxAd.getDeviceRecord,
-        params: {
-          deviceSn: Api.UNITS.getQuery('deviceSn')
+        data: {
+          deviceId: Api.UNITS.getQuery('deviceId')
         },
         done: ((res) => {
-          this.loadData = true
-          console.log(res)
+          this.loadData = false
+          this.deviceInfo = res.data
         })
       })
     },

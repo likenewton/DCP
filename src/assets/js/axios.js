@@ -22,14 +22,18 @@ class AXIOS {
       // drapdown
       getOrgs: '/mpk_app/api/deviceBrand/queryCooperateOrganList',
       getBrands: '/mpk_app/api/deviceBrand/getDeviceBrandList',
+      getArea: '/mpk_app/api/systemArea/querySystemAreaByParentNo', // 获取地区
+      queryVersionByOrganCode: '/mpk_app/api/version/queryVersionByOrganCode', // 根据organCode获取硬件版本与软件版本
       // list
       getDeviceBrand: '/mpk_app/api/deviceBrand/pageDeviceBrand',
       getDeviceList: '/mpk_app/api/device/devicelistByOrg',
       getBindCustomer: '/mpk_app/api/device/bindCustomer', // 查看绑定的客户
+      getDevicebatch: '/mpk_app/api/deviceBatch/listDevicebatch', // 批次管理查询
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录
       getTrackList: '/mpk_app/api/deviceLifeCycle/queryDeviceLifeList', // 设备查询-生命轨迹
+      deviceBatchDetail: '/mpk_app/api/deviceBatch/deviceBatchDetail', // 查看批次详情
       // form
       updateDeviceBrand: '/mpk_app/api/deviceBrand/updateDeviceBrand', // 品牌修改
       addDeviceBrand: '/mpk_app/api/deviceBrand/addDeviceBrand',  //品牌新增

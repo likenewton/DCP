@@ -1,15 +1,15 @@
 function shadow(paras) {
   if (paras.scrollTop === 0) {
     if (paras.scrollHeight > paras.offsetHeight) {
-      return 'inset 0px -12px 5px -12px rgba(0, 0, 0, 0.3)'
+      return 'inset 0px -12px 5px -12px rgba(0, 0, 0, 0.15)'
     } else {
       return ''
     }
   } else {
     if (paras.scrollHeight > paras.offsetHeight + paras.scrollTop) {
-      return 'inset 0px 12px 5px -12px rgba(0, 0, 0, 0.3), inset 0px -12px 5px -12px rgba(0, 0, 0, 0.3)'
+      return 'inset 0px 12px 5px -12px rgba(0, 0, 0, 0.2), inset 0px -12px 5px -12px rgba(0, 0, 0, 0.15)'
     } else {
-      return 'inset 0px 12px 5px -12px rgba(0, 0, 0, 0.3)'
+      return 'inset 0px 12px 5px -12px rgba(0, 0, 0, 0.15)'
     }
   }
 }

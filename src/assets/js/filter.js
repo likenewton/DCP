@@ -50,6 +50,17 @@ Vue.filter('formatSecond', function(second) {
   return htmlStr
 })
 
+// 将下拉列表中的value转化成客户看的label
+Vue.filter('valueToLabel', function(value, data = [], tag = 'label') {
+  let label = '加载中...'
+  data.forEach((v) => {
+    if (v.value === value) {
+      label = v[tag]
+    }
+  })
+  return label
+})
+
 // 时间格式化
 Vue.filter('formatDate', function(date, fmt) {
   if (!date) return ''

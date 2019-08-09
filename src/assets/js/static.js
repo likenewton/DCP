@@ -43,7 +43,8 @@ module.exports = {
   }, {
     title: {
       create: '新增批次信息',
-      update: '修改批次信息'
+      update: '修改批次信息',
+      check: '查看批次详情信息'
     },
     name: 'addbatch'
   }, {

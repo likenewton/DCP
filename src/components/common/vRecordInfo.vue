@@ -2,19 +2,19 @@
   <div class="record_info_container">
     <span class="item">
       <span>机构：</span>
-      <span>云智易联</span>
+      <span>{{infos.organCode | valueToLabel(orgs)}}</span>
     </span>
     <span class="item">
       <span>设备SN号：</span>
-      <span>1060111802001035</span>
+      <span>{{infos.deviceSn}}</span>
     </span>
     <span class="item">
       <span>车主姓名：</span>
-      <span>Newton</span>
+      <span>{{infos.autocarName}}</span>
     </span>
     <span class="item">
       <span>车牌号码：</span>
-      <span>湘D165452</span>
+      <span>{{infos.autocarTag}}</span>
     </span>
   </div>
 </template>

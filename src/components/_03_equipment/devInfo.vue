@@ -94,7 +94,7 @@
           <el-table-column v-if="checkedData.includes('deviceName')" prop="deviceName" label="设备名称" sortable="custom" min-width="100"></el-table-column>
           <el-table-column v-if="checkedData.includes('proName')" prop="proName" label="产品型号" sortable="custom" min-width="85"></el-table-column>
           <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" min-width="153"></el-table-column>
-          <el-table-column v-if="checkedData.includes('deviceIccId')" prop="deviceIccId" label="设备ICCID" sortable="custom" min-width="182"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceIccId')" prop="deviceIccId" label="设备ICCID" sortable="custom" width="182"></el-table-column>
           <el-table-column v-if="checkedData.includes('deviceImei')" prop="deviceImei" label="设备IMEI" sortable="custom" min-width="150"></el-table-column>
           <el-table-column v-if="checkedData.includes('deviceImsi')" prop="deviceImsi" label="上网卡IMSI" sortable="custom" min-width="150"></el-table-column>
           <el-table-column v-if="checkedData.includes('deviceVersion')" prop="deviceVersion" label="硬件版本" sortable="custom" min-width="150"></el-table-column>
@@ -126,7 +126,7 @@
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
-              <el-dropdown split-button type="primary" size="mini" @click="$router.push({name:'devRecord',query: {deviceSn:scope.row.deviceSn}})" @command="handleCommand">
+              <el-dropdown split-button type="primary" size="mini" @click="$router.push({name:'devRecord',query: {deviceId:scope.row.deviceId}})" @command="handleCommand">
                 设备记录
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item :command="{command: 'directive', data: scope.row}">下发指令</el-dropdown-item>
@@ -179,7 +179,7 @@
             </el-form-item>
             <el-form-item label="设备品牌">
               <el-select filterable clearable placeholder="请选择" v-model="formInline.deviceBrandId">
-                <el-option v-for="(item, index) in brands" :key="index" :label="item.brandName" :value="item.id"></el-option>
+                <el-option v-for="(item, index) in brands" :key="index" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="绑定状态">

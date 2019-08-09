@@ -120,7 +120,14 @@ export default {
           return false;
         }
       })
-    }
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+      this.formInline = {
+        needFeedBack: 1
+      }
+      this.isUpdate && this.getData()
+    },
   },
   computed: {
     directiveTip() {
