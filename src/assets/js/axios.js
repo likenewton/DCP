@@ -44,6 +44,7 @@ class AXIOS {
       getTrackList: '/mpk_app/api/deviceLifeCycle/queryDeviceLifeList', // 设备查询-生命轨迹
       deviceBatchDetail: '/mpk_app/api/deviceBatch/deviceBatchDetail', // 查看批次详情
       getDeviceExcepLog: '/mpk_app/api/deviceExcepLog/toExcepDeviceList', // 批次管理-异常记录
+      getBindDevice: '/mpk_app/api/customer/bindDevice', // 查询客户绑定的设备
       // form
       updateDeviceBrand: '/mpk_app/api/deviceBrand/updateDeviceBrand', // 品牌修改
       addDeviceBrand: '/mpk_app/api/deviceBrand/addDeviceBrand',  //品牌新增
@@ -58,6 +59,7 @@ class AXIOS {
       // 功能
       unBindByDeviceId: '/mpk_app/api/device/unBindByDeviceId', // 设备查询-解除绑定
       generateSpeechForms: '/mpk_app/api/speechFormsDetail/generateSpeechForms', // 语音报表重新生成
+      generateReportFile: '/mpk_app/api/bluetoothReport/generateReportFile', // 蓝牙报表重新生成
       addSpeechForms: '/mpk_app/api/speechForms/addSpeechForms', // 生成语音报表
       addBlueToothForms: '/mpk_app/api/bluetoothReport/addBluetoothReport', // 生成蓝牙报表
       getVideobg: '/mpk_app/api/device/getVideobg', // 远程平台-抓拍

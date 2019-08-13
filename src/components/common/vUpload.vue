@@ -2,7 +2,10 @@
   <div class="v-upload-container">
     <el-upload ref="upload" action="" :on-change="uploadHandleChange" :on-exceed="fileExceed" :before-remove="beforeRemove" :with-credentials="true" :limit="1" :file-list="fileList" :auto-upload="false">
       <el-button type="primary">点击上传</el-button>
-      <div slot="tip" class="el-upload__tip" v-if="format_upload__tip">{{format_upload__tip}}</div>
+      <div slot="tip" class="el-upload__tip" v-if="format_upload__tip">
+        <span>{{format_upload__tip}}</span>
+        <span v-if="hasPreview" class="text_primary pointer" @click="showPriview"> (格式预览)</span>
+      </div>
     </el-upload>
   </div>
 </template>
@@ -18,6 +21,10 @@ export default {
     format: {
       type: Array,
       default: []
+    },
+    hasPreview: {
+      type: Boolean,
+      default: false
     }
   },
   created() {
@@ -61,6 +68,9 @@ export default {
     },
     clearFileList() {
       this.fileList = []
+    },
+    showPriview() {
+      this.$emit('showPriview')
     }
   },
   computed: {
@@ -72,7 +82,7 @@ export default {
       this.format.forEach((v) => {
         str += v + ' '
       })
-      return str + '格式文件'
+      return str += '格式文件'
     }
   }
 }

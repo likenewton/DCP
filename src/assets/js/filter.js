@@ -52,7 +52,7 @@ Vue.filter('formatSecond', function(second) {
 
 // 将下拉列表中的value转化成客户看的label
 Vue.filter('valueToLabel', function(value, data = [], tag = 'label') {
-  let label = '加载中...'
+  let label = ''
   data.forEach((v) => {
     if (v.value === value) {
       label = v[tag]

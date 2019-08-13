@@ -23,6 +23,7 @@
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="firstname" label="客户实名" sortable="custom"></el-table-column>
           <el-table-column prop="telephone" label="手机号码" sortable="custom"></el-table-column>
+          <el-table-column prop="ip" label="IP地址" sortable="custom"></el-table-column>
           <el-table-column prop="status" label="状态" sortable="custom">
             <template slot-scope="scope">
               <span class="bold text_success" v-if="scope.row.status === 1">启用</span>
@@ -32,14 +33,9 @@
           <el-table-column prop="dateAdded" label="创建时间" sortable="custom">
             <template slot-scope="scope">{{scope.row.dateAdded | formatDate}}</template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="140">
+          <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
-              <el-button type="text">设备</el-button>
-              <el-button type="text">详情</el-button>
-<!--               <el-button type="text" class="text_editor">修改</el-button>
-              <el-button v-if="scope.row.status === 0" type="text" class="text_success">启用</el-button>
-              <el-button v-else-if="scope.row.status === 1" type="text" class="text_danger">停用</el-button>
-              <el-button type="text" class="text_danger">删除</el-button> -->
+              <el-button type="text" @click="checkDevInfos(scope)">设备信息</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -47,13 +43,41 @@
         </el-pagination>
       </el-row>
     </el-card>
+    <!-- 查看设备信息 -->
+    <el-dialog title="查看设备信息" :visible.sync="devInfo.visibel" width="1400px" :close-on-click-modal="true">
+      <div slot>
+        <el-table :data="devInfo.data" :max-height="winHeight/1.8" border resizable size="mini" v-loading="devInfo.loadData">
+          <el-table-column prop="organCode" label="机构" min-width="140">
+            <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
+          </el-table-column>
+          <el-table-column prop="deviceSn" label="设备SN号" width="150"></el-table-column>
+          <el-table-column prop="deviceMac" label="MAC地址" width="138"></el-table-column>
+          <el-table-column prop="deviceIccId" label="设备ICCID" width="182"></el-table-column>
+          <el-table-column prop="deviceVersion" label="设备版本" width="100"></el-table-column>
+          <el-table-column prop="softVersion" label="软件版本" width="130"></el-table-column>
+          <el-table-column prop="autocarName" label="车主姓名" width="72"></el-table-column>
+          <el-table-column prop="autocarTel" label="车主电话" width="108"></el-table-column>
+          <el-table-column prop="autocarTag" label="汽车牌照" width="86"></el-table-column>
+          <el-table-column prop="autocarModel" label="汽车型号" width="70"></el-table-column>
+          <el-table-column prop="timeAdded" label="激活时间" width="153">
+            <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import Api from 'assets/js/api.js'
 export default {
   data() {
-    return {}
+    return {
+      devInfo: {
+        data: [],
+        loadData: false,
+        visibel: false,
+      }
+    }
   },
   mounted() {
     this.getData()
@@ -63,6 +87,19 @@ export default {
       Api.UNITS.getListData({
         vue: this,
         url: _axios.ajaxAd.getListCustomer
+      })
+    },
+    checkDevInfos(scope) {
+      this.devInfo.loadData = true
+      this.devInfo.visibel = true
+      _axios.send({
+        method: 'get',
+        url: _axios.ajaxAd.getBindDevice,
+        params: { customerId: scope.row.customerId },
+        done: ((res) => {
+          this.devInfo.loadData = false
+          this.devInfo.data = res.data || []
+        })
       })
     }
   },

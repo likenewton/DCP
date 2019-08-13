@@ -4,8 +4,8 @@
       <el-row>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-date-picker v-model="formInline.startTimeAddedStart" type="date" :picker-options="startDatePicker_1" value-format="timestamp" placeholder="激活开始时间（起）"></el-date-picker> -
-            <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="timestamp" placeholder="激活开始时间（止）"></el-date-picker>
+            <el-date-picker v-model="formInline.startTimeAddedStart" type="date" :picker-options="startDatePicker_1" value-format="timestamp" @change="simpleSearchData" placeholder="激活开始时间（起）"></el-date-picker> -
+            <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="timestamp" @change="simpleSearchData" placeholder="激活开始时间（止）"></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="simpleSearchData">查询</el-button>
@@ -26,12 +26,14 @@
           </el-table-column>
           <el-table-column prop="fileName" label="文件" sortable="custom">
             <template slot-scope="scope">
-              <el-link type="primary" :href="scope.row.host + scope.row.fileName">{{scope.row.fileName}}</el-link>
+              <el-link v-if="scope.row.fileName" type="primary" :href="scope.row.host + scope.row.fileName">{{scope.row.fileName}}</el-link>
+              <span v-else>文件未生成</span>
             </template>
           </el-table-column>
           <el-table-column fixed="right" prop="" label="操作" width="110">
             <template slot-scope="scope">
-              <el-button type="text" @click="rebuild(scope)">重新生成</el-button>
+              <el-button v-if="scope.row.fileName" type="text" @click="rebuild(scope)">重新生成</el-button>
+              <el-button v-else type="text" @click="rebuild(scope)">生成文件</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -43,7 +45,7 @@
     <el-dialog title="高级查询" :visible.sync="searchVipVisible" width="650px" :close-on-click-modal="false">
       <div slot>
         <div class="searchForm_vip" style="width:100%;overflow: auto">
-          <el-form :inline="false" :model="formInline" size="small" label-width="110px">
+          <el-form :inline="false" :model="formInline" size="small" label-width="110px" v-loading="loadData">
             <el-form-item label="激活开始时间">
               <el-date-picker v-model="formInline.startTimeAddedStart" type="date" :picker-options="startDatePicker_1" value-format="timestamp" placeholder="激活开始时间（起）"></el-date-picker> -
               <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="timestamp" placeholder="激活开始时间（止）"></el-date-picker>
@@ -79,8 +81,8 @@ export default {
   },
   methods: {
     simpleSearchData() { // 简单查询
-      let timeAddedbegin = this.formInline.startTimeAddedStart
-      let timeAddedend = this.formInline.startTimeAddedEnd
+      let startTimeAddedStart = this.formInline.startTimeAddedStart
+      let startTimeAddedEnd = this.formInline.startTimeAddedEnd
       this.formInline = {
         startTimeAddedStart,
         startTimeAddedEnd
@@ -99,7 +101,7 @@ export default {
         cb: () => {
           this.loading = this.$loading({
             lock: true,
-            text: '语音报表生成中...',
+            text: '语音报表文件生成中...',
             spinner: Api.STATIC.loadIcon,
             background: Api.STATIC.loadBg
           })

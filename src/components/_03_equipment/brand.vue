@@ -54,7 +54,7 @@
       <div slot>
         <el-form ref="uploadForm" :inline="false" size="small" label-width="110px">
           <el-form-item label="请选择文件：">
-            <v-upload ref="upload" :format="['.txt']"></v-upload>
+            <v-upload ref="upload" :format="['.txt']" :hasPreview="true" @showPriview="showPriview"></v-upload>
           </el-form-item>
         </el-form>
       </div>
@@ -69,6 +69,7 @@ import Api from 'assets/js/api.js'
 export default {
   data() {
     return {
+      formData: null, // 用于文件上传
       importDevVisible: false,
     }
   },
@@ -114,6 +115,26 @@ export default {
         })
       } else {
         console.log(this.$refs.upload.fileList)
+        this.formData = new FormData()
+        this.formData.append('file', this.$refs.upload.fileList[0].raw)
+        _axios.send({
+          method: 'post',
+          url: _axios.ajaxAd.a,
+          data: this.formData,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          done: ((res) => {
+            let data = res.data
+            this.showMsgBox({
+              type: 'success',
+              duration: 0,
+              message: `操作成功！
+                      成功 ${data.success} 个,
+                      失败 ${data.fail} 入`
+            })
+          })
+        })
       }
     },
     close() {
@@ -122,15 +143,41 @@ export default {
     },
     toDevInfo(scope) {
       this.$router.push({
-        name:'devInfo', 
-        query:{
-          organCode:scope.row.organCode,
+        name: 'devInfo',
+        query: {
+          organCode: scope.row.organCode,
           brandId: scope.row.id
         }
       })
+    },
+    // 展示.txt模板文件
+    showPriview() {
+      let pom = document.createElement("a")
+      pom.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent('1060111802001035\r\n1060111802001036\r\n1060111802001037')
+      )
+      pom.setAttribute("download", 'deviceSn.txt')
+      if (document.createEvent) {
+        let event = document.createEvent("MouseEvents")
+        event.initEvent("click", true, true)
+        pom.dispatchEvent(event)
+      } else {
+        pom.click()
+      }
     }
+
   }
 }
 
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.brand-container {
+  .el-dialog {}
+}
+
+.sn-item {
+  line-height: 28px;
+}
+
+</style>
