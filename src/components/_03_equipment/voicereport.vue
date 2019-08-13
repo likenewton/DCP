@@ -1,27 +1,37 @@
 <template>
   <div class="voicereport-container">
-    <el-card class="clearfix" shadow="never">
+    <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-date-picker v-model="formInline.start" type="datetime" placeholder="激活开始时间（起）"></el-date-picker> -
-            <el-date-picker v-model="formInline.end" type="datetime" placeholder="激活开始时间（止）"></el-date-picker>
+            <el-date-picker v-model="formInline.startTimeAddedStart" type="date" :picker-options="startDatePicker_1" value-format="timestamp" placeholder="激活开始时间（起）"></el-date-picker> -
+            <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="timestamp" placeholder="激活开始时间（止）"></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="">查询</el-button>
+            <el-button type="primary" @click="simpleSearchData">查询</el-button>
             <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="a" label="激活开始时间" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="激活结束时间" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="生成时间" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="文件" sortable="custom"></el-table-column>
-          <el-table-column fixed="right" prop="" label="操作">
+          <el-table-column prop="startTimeAdded" label="激活开始时间" sortable="custom" width="120">
+            <template slot-scope="scope">{{scope.row.startTimeAdded | formatDate('yyyy-mm-dd')}}</template>
+          </el-table-column>
+          <el-table-column prop="endTimeAdded" label="激活结束时间" sortable="custom" width="120">
+            <template slot-scope="scope">{{scope.row.endTimeAdded | formatDate('yyyy-mm-dd')}}</template>
+          </el-table-column>
+          <el-table-column prop="generateTime" label="生成时间" sortable="custom" width="180">
+            <template slot-scope="scope">{{scope.row.generateTime | formatDate}}</template>
+          </el-table-column>
+          <el-table-column prop="fileName" label="文件" sortable="custom">
             <template slot-scope="scope">
-              <el-button type="text" @click="rebuild">重新生成</el-button>
+              <el-link type="primary" :href="scope.row.host + scope.row.fileName">{{scope.row.fileName}}</el-link>
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" prop="" label="操作" width="110">
+            <template slot-scope="scope">
+              <el-button type="text" @click="rebuild(scope)">重新生成</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -35,16 +45,16 @@
         <div class="searchForm_vip" style="width:100%;overflow: auto">
           <el-form :inline="false" :model="formInline" size="small" label-width="110px">
             <el-form-item label="激活开始时间">
-              <el-date-picker v-model="formInline.start" type="datetime" placeholder="激活开始时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.end" type="datetime" placeholder="激活开始时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startTimeAddedStart" type="date" :picker-options="startDatePicker_1" value-format="timestamp" placeholder="激活开始时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="timestamp" placeholder="激活开始时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="激活结束时间">
-              <el-date-picker v-model="formInline.start" type="datetime" placeholder="激活结束时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.end" type="datetime" placeholder="激活结束时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.endTimeAddedStart" type="date" :picker-options="startDatePicker_2" value-format="timestamp" placeholder="激活结束时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endTimeAddedEnd" type="date" :picker-options="endDatePicker_2" value-format="timestamp" placeholder="激活结束时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="生成时间">
-              <el-date-picker v-model="formInline.start" type="datetime" placeholder="生成时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.end" type="datetime" placeholder="生成时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startGenerateTime" type="date" :picker-options="startDatePicker_3" value-format="timestamp" placeholder="生成时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endGenerateTime" type="date" :picker-options="endDatePicker_3" value-format="timestamp" placeholder="生成时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="searchData">查询</el-button>
@@ -61,31 +71,79 @@ import Api from 'assets/js/api.js'
 export default {
   data() {
     return {
-      list: {
-        data: [{
-          a: 1
-        }],
-        pagesize: Api.STATIC.pageSizes[2],
-        currentPage: 1,
-        total: 0,
-      },
+      loading: null
     }
   },
   mounted() {
-
+    this.getData()
   },
   methods: {
-    getData() {},
-    rebuild() {
+    simpleSearchData() { // 简单查询
+      let timeAddedbegin = this.formInline.startTimeAddedStart
+      let timeAddedend = this.formInline.startTimeAddedEnd
+      this.formInline = {
+        startTimeAddedStart,
+        startTimeAddedEnd
+      }
+      this.searchData()
+    },
+    getData() {
+      Api.UNITS.getListData({
+        vue: this,
+        url: _axios.ajaxAd.getSpeechLog
+      })
+    },
+    rebuild(scope) {
       this.showCfmBox({
         message: '确定生成语音报表文件吗？',
         cb: () => {
-          this.showMsgBox({
-            type: 'success',
-            message: '操作成功！'
+          this.loading = this.$loading({
+            lock: true,
+            text: '语音报表生成中...',
+            spinner: Api.STATIC.loadIcon,
+            background: Api.STATIC.loadBg
+          })
+          _axios.send({
+            method: 'get',
+            url: _axios.ajaxAd.generateSpeechForms,
+            params: { id: scope.row.id },
+            done: () => {
+              this.loading.close()
+              this.getData()
+              this.showMsgBox({
+                type: 'success',
+                message: '操作成功！'
+              })
+            },
+            fail: () => {
+              this.loading.close()
+            }
           })
         }
       })
+    }
+  },
+  computed: {
+    // === 激活时间约束 ===
+    startDatePicker_1() {
+      return Api.UNITS.startDatePicker(this, this.formInline.startTimeAddedEnd)
+    },
+    endDatePicker_1() {
+      return Api.UNITS.endDatePicker(this, this.formInline.startTimeAddedStart)
+    },
+    // === 更新时间约束 ===
+    startDatePicker_2() {
+      return Api.UNITS.startDatePicker(this, this.formInline.endTimeAddedEnd)
+    },
+    endDatePicker_2() {
+      return Api.UNITS.endDatePicker(this, this.formInline.endTimeAddedStart)
+    },
+    // === ADAS时间约束 ===
+    startDatePicker_3() {
+      return Api.UNITS.startDatePicker(this, this.formInline.endGenerateTime)
+    },
+    endDatePicker_3() {
+      return Api.UNITS.endDatePicker(this, this.formInline.startGenerateTime)
     }
   }
 }

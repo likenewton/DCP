@@ -8,6 +8,7 @@ const BatImpDetail = r => require.ensure([], () => r(require('@/components/list/
 const Carmodel = r => require.ensure([], () => r(require('@/components/list/carmodel.vue')), 'chunk4')
 const Relyinfo = r => require.ensure([], () => r(require('@/components/list/relyinfo.vue')), 'chunk4')
 const HisVersions = r => require.ensure([], () => r(require('@/components/list/hisVersions.vue')), 'chunk4') // 历史版本
+const DevExcepLog = r => require.ensure([], () => r(require('@/components/list/devExcepLog.vue')), 'chunk4') // 设备号异常记录
 
 let listRoute = {
     // 展示列表
@@ -34,6 +35,10 @@ let listRoute = {
       path: 'hisVersions',
       name: 'hisVersions',
       component: HisVersions
+    }, {
+      path: 'devExcepLog',
+      name: 'devExcepLog',
+      component: DevExcepLog
     }]
   }
 

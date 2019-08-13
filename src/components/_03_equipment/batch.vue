@@ -37,8 +37,8 @@
           <el-table-column fixed="right" label="操作" width="240">
             <template slot-scope="scope">
               <el-button type="text" @click="showBatchDetail(scope)">详情</el-button>
-              <el-button type="text" @click="$router.push({name:'batImpDetail'})">导入明细</el-button>
-              <el-button type="text" @click="showDevAbRecord">异常记录</el-button>
+              <el-button type="text" @click="$router.push({name:'batImpDetail',query:{batchId:scope.row.batchId}})">导入明细</el-button>
+              <el-button type="text" @click="$router.push({name:'devExcepLog', query:{batchId: scope.row.batchId}})">异常记录</el-button>
               <el-button type="text" class="text_warning" @click="importSnVisible = true">导入</el-button>
             </template>
           </el-table-column>
@@ -66,8 +66,8 @@
               </el-select>
             </el-form-item>
             <el-form-item label="创建时间">
-              <el-date-picker v-model="formInline.createStartTime" type="datetime" placeholder="创建时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.createEndTime" type="datetime" placeholder="创建时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.createStartTime" :picker-options="startDatePicker" type="date" value-format="timestamp" placeholder="创建时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.createEndTime" :picker-options="endDatePicker" type="date" value-format="timestamp" placeholder="创建时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="searchData">查询</el-button>
@@ -88,21 +88,6 @@
       </div>
       <div slot="footer">
         <el-button size="small" type="primary" @click="submitForm">导入</el-button>
-      </div>
-    </el-dialog>
-    <!-- 设备号异常记录 -->
-    <el-dialog title="设备号异常记录" :visible.sync="devAbRecordVisible" width="1200px" :close-on-click-modal="false">
-      <div slot>
-        <el-table :data="devAbRecord.data" @sort-change="handleSortChange" :max-height="winHeight/2.2" border resizable size="mini">
-          <el-table-column prop="a" label="批次号" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="设备号" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="异常描述" show-overflow-tooltip sortable="custom"></el-table-column>
-          <el-table-column prop="" label="创建时间" sortable="custom"></el-table-column>
-        </el-table>
-        <div class="clearfix">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="devAbRecord.currentPage" :page-sizes="pageSizes" :page-size="devAbRecord.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="devAbRecord.total" class="clearfix pagination-table">
-          </el-pagination>
-        </div>
       </div>
     </el-dialog>
     <!-- 查看批次详细信息 -->
@@ -153,9 +138,6 @@
         <el-form-item label="创建时间：">
           <span>{{batchDetailData.timeAdded | formatDate}}</span>
         </el-form-item>
-        <el-form-item label="修改时间：">
-          <span>{{batchDetailData.timeModify | formatDate}}</span>
-        </el-form-item>
       </el-form>
     </el-drawer>
   </div>
@@ -166,7 +148,6 @@ export default {
   data() {
     return {
       importSnVisible: false,
-      devAbRecordVisible: false,
       isShowBatchDetail: false,
       detailLoadData: false,
       batchDetailData: {},
@@ -223,9 +204,16 @@ export default {
     close() {
       // 关闭弹框的时候清掉选择上传的文件
       this.$refs.upload.clearFileList()
+    }
+  },
+  computed: {
+    // 起始时间约数
+    startDatePicker() {
+      return Api.UNITS.startDatePicker(this, this.formInline.createEndTime)
     },
-    showDevAbRecord() {
-      this.devAbRecordVisible = true
+    // 结束时间约数
+    endDatePicker() {
+      return Api.UNITS.endDatePicker(this, this.formInline.createStartTime)
     }
   }
 }

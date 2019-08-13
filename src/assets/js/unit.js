@@ -229,6 +229,63 @@ module.exports = {
         message: '操作已取消'
       })
     })
-  }
+  },
+  formatDate(date, fmt) {
+    date = new Date(date);
+    let timeString = fmt || 'yyyy-mm-dd hh:ff:ss';
+    let getFullYear = String(date.getFullYear());
+
+    function padLeftZero(str) {
+      var padLeft = '00';
+      return (padLeft + str).substr(str.length);
+    }
+
+    // 如果存在至少一个y
+    if (/(y+)/.test(timeString)) {
+      // RegExp.$1 为匹配第一个大括号的内容
+      timeString = timeString.replace(RegExp.$1, getFullYear.substr(4 - RegExp.$1.length));
+    }
+    let o = {
+      'm+': date.getMonth() + 1,
+      'd+': date.getDate(),
+      'h+': date.getHours(),
+      'f+': date.getMinutes(),
+      's+': date.getSeconds(),
+    };
+    for (var k in o) {
+      if (new RegExp(`(${k})`).test(timeString)) {
+        let str = String(o[k]);
+        timeString = timeString.replace(RegExp.$1, str.length == 1 ? padLeftZero(str) : str);
+      }
+    }
+    return timeString;
+  },
+  // 时间范围约束（一般用于有起止时间的选择器）
+  startDatePicker(vue, end) {
+    return {
+      disabledDate(time) {
+        if (end) {
+          return new Date(end).getTime() <= time.getTime() || time.getTime() > Date.now()
+        } else {
+          return time.getTime() > Date.now()
+        }
+      }
+    }
+  },
+  endDatePicker(vue, start) {
+    return {
+      disabledDate(time) {
+        if (start) {
+          return new Date(start).getTime() - 3600000 * 8 > time.getTime() || time.getTime() > Date.now()
+        } else {
+          return time.getTime() > Date.now()
+        }
+      }
+    }
+  },
+  // 验证电话号码
+  validatorPhoneNumber(value) {
+    return /^1[3|4|5|6|8|9][0-9]\d{8}$/.test(value)
+  },
 
 }

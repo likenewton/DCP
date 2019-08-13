@@ -1,23 +1,25 @@
 <template>
   <div class="batch-container">
-    <el-card class="clearfix" shadow="never">
+    <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-input @keyup.enter.native="" placeholder="设备SN号"></el-input>
+            <el-input v-model="formInline.deviceSn" @keyup.enter.native="simpleSearchData" placeholder="设备SN号"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="">查询</el-button>
+            <el-button type="primary" @click="simpleSearchData">查询</el-button>
             <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="" label="设备SN号" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="扩展类型" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="扩展值" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="激活时间" sortable="custom"></el-table-column>
+          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" width="160"></el-table-column>
+          <el-table-column prop="extName" label="扩展类型" sortable="custom" width="140"></el-table-column>
+          <el-table-column prop="extValue" label="扩展值" sortable="custom"></el-table-column>
+          <el-table-column prop="timeAdded" label="激活时间" sortable="custom" width="180">
+            <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
+          </el-table-column>
         </el-table>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list.currentPage" :page-sizes="pageSizes" :page-size="list.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list.total" class="clearfix pagination-table">
         </el-pagination>
@@ -27,19 +29,25 @@
     <el-dialog title="高级查询" :visible.sync="searchVipVisible" width="620px" :close-on-click-modal="false">
       <div slot>
         <div class="searchForm_vip" style="width:100%;overflow: auto">
-          <el-form :inline="false" :model="formInline" size="small" label-width="90px">
+          <el-form :inline="false" :model="formInline" size="small" label-width="90px" v-loading="loadData">
             <el-form-item label="设备SN号">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.deviceSn" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="扩展值">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.extValue" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="扩展类型">
-              <el-select filterable clearable placeholder="请选择"></el-select>
+              <el-select v-model="formInline.extName" filterable clearable placeholder="请选择">
+                <el-option label="通电开关" value="acc"></el-option>
+                <el-option label="导航" value="navmap"></el-option>
+                <el-option label="语音" value="voice"></el-option>
+                <el-option label="蓝牙" value="bluetooth"></el-option>
+                <el-option label="音乐" value="music"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="激活时间">
-              <el-date-picker v-model="formInline.start" type="datetime" placeholder="激活时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.end" type="datetime" placeholder="激活时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.timeAddedBegin" :picker-options="startDatePicker" type="date" value-format="timestamp" placeholder="激活时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.timeAddedEnd" :picker-options="endDatePicker" type="date" value-format="timestamp" placeholder="激活时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="searchData">查询</el-button>
@@ -52,15 +60,36 @@
   </div>
 </template>
 <script>
+import Api from 'assets/js/api.js'
 export default {
   data() {
     return {}
   },
   mounted() {
-
+    this.getData()
   },
   methods: {
-    getData() {}
+    simpleSearchData() { // 简单查询
+      let deviceSn = this.formInline.deviceSn
+      this.formInline = { deviceSn }
+      this.searchData()
+    },
+    getData() {
+      Api.UNITS.getListData({
+        vue: this,
+        url: _axios.ajaxAd.getPageDeviceExt
+      })
+    }
+  },
+  computed: {
+    // 起始时间约数
+    startDatePicker() {
+      return Api.UNITS.startDatePicker(this, this.formInline.timeAddedEnd)
+    },
+    // 结束时间约数
+    endDatePicker() {
+      return Api.UNITS.endDatePicker(this, this.formInline.timeAddedBegin)
+    }
   }
 }
 

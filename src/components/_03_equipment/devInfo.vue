@@ -6,8 +6,8 @@
           <el-button size="small" type="warning" @click="exportExcel">导出</el-button>
           <el-button size="small" type="warning">ADAS导出</el-button>
           <el-button size="small" type="warning" @click="importADASvisible = true">ADAS导入</el-button>
-          <el-button size="small" type="primary">生成语音报表</el-button>
-          <el-button size="small" type="primary">生成蓝牙报表</el-button>
+          <el-button size="small" type="primary" @click="createExcel('语音')">生成语音报表</el-button>
+          <el-button size="small" type="primary" @click="createExcel('蓝牙')">生成蓝牙报表</el-button>
           <el-button size="small" type="primary" @click="$refs.vCheckbox.openChoice()">展示列表</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
@@ -198,16 +198,16 @@
               <el-input v-model="formInline.softVersion" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="激活时间">
-              <el-date-picker v-model="formInline.timeAddedbegin" type="datetime" value-format="timestamp" placeholder="激活时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.timeAddedend" type="datetime" value-format="timestamp" placeholder="激活时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.timeAddedbegin" :picker-options="startDatePicker_1" type="date" value-format="timestamp" placeholder="激活时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.timeAddedend" :picker-options="endDatePicker_1" type="date" value-format="timestamp" placeholder="激活时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="更新时间">
-              <el-date-picker v-model="formInline.startTimeLast" type="datetime" value-format="timestamp" placeholder="更新时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.endTimeLast" type="datetime" value-format="timestamp" placeholder="更新时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startTimeLast" :picker-options="startDatePicker_2" type="date" value-format="timestamp" placeholder="更新时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endTimeLast" :picker-options="endDatePicker_2" type="date" value-format="timestamp" placeholder="更新时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="ADAS时间">
-              <el-date-picker v-model="formInline.startAdasUpdateTime" type="datetime" value-format="timestamp" placeholder="ADAS时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.endAdasUpdateTime" type="datetime" value-format="timestamp" placeholder="ADAS时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startAdasUpdateTime" :picker-options="startDatePicker_3" type="date" value-format="timestamp" placeholder="ADAS时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endAdasUpdateTime" :picker-options="endDatePicker_3" type="date" value-format="timestamp" placeholder="ADAS时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="searchData">查询</el-button>
@@ -435,7 +435,7 @@ export default {
     },
     handleCommand(para) { // 操作-下拉菜单功能
       if (para.command === 'directive') { // 下发指令
-        this.$router.push({ 
+        this.$router.push({
           name: 'directive',
           query: {
             deviceSn: para.data.deviceSn
@@ -594,8 +594,75 @@ export default {
       let checkedData = JSON.parse(localStorage.getItem(`__${this.routeName}Check__`))
       if (checkedData) this.checkedData = checkedData
       else this.checkedData = this.defaultData
-    }
+    },
     // === 列表选择性展示 end ===
+    createExcel(type) { // 生成报表-语音、蓝牙
+      if (!this.formInline.timeAddedbegin || !this.formInline.timeAddedend) {
+        this.showMsgBox({
+          title: '温馨提示',
+          message: '激活起、止时间不能为空！'
+        })
+      } else if (this.formInline.timeAddedend > new Date().getTime()) {
+        this.showMsgBox({
+          title: '温馨提示',
+          message: '当前时间不能早于激活(止)时间！'
+        })
+      } else {
+        this.showCfmBox({
+          message: `确定生成${type}报表吗？`,
+          cb: () => {
+            this.loading = this.$loading({
+              lock: true,
+              text: `${type}报表生成中...`,
+              spinner: Api.STATIC.loadIcon,
+              background: Api.STATIC.loadBg
+            })
+            _axios.send({
+              method: 'get',
+              url: type === '语音' ? _axios.ajaxAd.addSpeechForms : _axios.ajaxAd.addBlueToothForms,
+              params: {
+                timeAddedbegin: Api.UNITS.formatDate(this.formInline.timeAddedbegin, 'yyyy-mm-dd'),
+                timeAddedend: Api.UNITS.formatDate(this.formInline.timeAddedend, 'yyyy-mm-dd')
+              },
+              done: () => {
+                this.loading.close()
+                this.showMsgBox({
+                  type: 'success',
+                  message: '操作成功！'
+                })
+              },
+              fail: () => {
+                this.loading.close()
+              }
+            })
+          }
+        })
+      }
+    }
+
+  },
+  computed: {
+    // === 激活时间约束 ===
+    startDatePicker_1() {
+      return Api.UNITS.startDatePicker(this, this.formInline.timeAddedend)
+    },
+    endDatePicker_1() {
+      return Api.UNITS.endDatePicker(this, this.formInline.timeAddedbegin)
+    },
+    // === 更新时间约束 ===
+    startDatePicker_2() {
+      return Api.UNITS.startDatePicker(this, this.formInline.endTimeLast)
+    },
+    endDatePicker_2() {
+      return Api.UNITS.endDatePicker(this, this.formInline.startTimeLast)
+    },
+    // === ADAS时间约束 ===
+    startDatePicker_3() {
+      return Api.UNITS.startDatePicker(this, this.formInline.endAdasUpdateTime)
+    },
+    endDatePicker_3() {
+      return Api.UNITS.endDatePicker(this, this.formInline.startAdasUpdateTime)
+    }
   }
 }
 
