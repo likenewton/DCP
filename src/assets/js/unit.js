@@ -287,5 +287,21 @@ module.exports = {
   validatorPhoneNumber(value) {
     return /^1[3|4|5|6|8|9][0-9]\d{8}$/.test(value)
   },
+  // 展示.txt模板文件
+  showTxT(fileName, text) {
+    let pom = document.createElement("a")
+    pom.setAttribute(
+      "href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+    )
+    pom.setAttribute("download", fileName)
+    if (document.createEvent) {
+      let event = document.createEvent("MouseEvents")
+      event.initEvent("click", true, true)
+      pom.dispatchEvent(event)
+    } else {
+      pom.click()
+    }
+  }
 
 }

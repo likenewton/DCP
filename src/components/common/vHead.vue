@@ -19,6 +19,7 @@
 </template>
 <script>
 import { mapMutations, mapState } from 'vuex'
+import Api from 'assets/js/api.js'
 
 export default {
   name: 'vHead',
@@ -57,6 +58,7 @@ export default {
         // 这里进行修改密码的操作
 
       } else if (command === 'quit') {
+        localStorage.removeItem(Api.STATIC.token)
         // 这里做一些退出的操作然后跳转注销页面
         location.href = this.userInfo.logoutUrl
       }

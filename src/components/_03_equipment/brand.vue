@@ -41,7 +41,7 @@
               <el-button type="text" class="text_editor" @click="$router.push({name:'addbrand',query:{type:'update', id:scope.row.id}})">编辑</el-button>
               <el-button type="text" :class="[scope.row.state===1?'text_danger':'text_success']" @click="disabled(scope)">{{scope.row.state ===1?'失效':'生效'}}</el-button>
               <el-button type="text" class="text_primary" @click="toDevInfo(scope)">设备详情</el-button>
-              <el-button type="text" class="text_warning" @click="importDevVisible = true">导入设备</el-button>
+              <el-button type="text" class="text_warning" @click="showImportDevSn(scope)">导入设备</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -62,6 +62,8 @@
         <el-button size="small" type="primary" @click="submitForm">导入</el-button>
       </div>
     </el-dialog>
+    <!-- 导入设备SN执行结果 -->
+    <v-result ref="result" :resultData="resultData" label="设备SN号" tProp="sn"></v-result>
   </div>
 </template>
 <script>
@@ -69,6 +71,8 @@ import Api from 'assets/js/api.js'
 export default {
   data() {
     return {
+      curScope: {},
+      resultData: [],
       formData: null, // 用于文件上传
       importDevVisible: false,
     }
@@ -114,25 +118,27 @@ export default {
           message: '请选择要上传的文件！'
         })
       } else {
-        console.log(this.$refs.upload.fileList)
         this.formData = new FormData()
         this.formData.append('file', this.$refs.upload.fileList[0].raw)
+        this.formData.append('brandId', this.curScope.id)
+        this.formData.append('organCode', this.curScope.organCode)
         _axios.send({
           method: 'post',
-          url: _axios.ajaxAd.a,
+          url: _axios.ajaxAd.importDeviceSn,
           data: this.formData,
           headers: {
             'Content-Type': 'multipart/form-data'
           },
           done: ((res) => {
-            let data = res.data
-            this.showMsgBox({
-              type: 'success',
-              duration: 0,
-              message: `操作成功！
-                      成功 ${data.success} 个,
-                      失败 ${data.fail} 入`
-            })
+            this.resultData = res.data || []
+            this.importDevVisible = false
+            this.$refs.result.show()
+            setTimeout(() => {
+              this.showMsgBox({
+                type: 'success',
+                message: '操作成功！'
+              })
+            }, 150)
           })
         })
       }
@@ -150,21 +156,13 @@ export default {
         }
       })
     },
+    showImportDevSn(scope) {
+      this.importDevVisible = true
+      this.curScope = scope.row
+    },
     // 展示.txt模板文件
     showPriview() {
-      let pom = document.createElement("a")
-      pom.setAttribute(
-        "href",
-        "data:text/plain;charset=utf-8," + encodeURIComponent('1060111802001035\r\n1060111802001036\r\n1060111802001037')
-      )
-      pom.setAttribute("download", 'deviceSn.txt')
-      if (document.createEvent) {
-        let event = document.createEvent("MouseEvents")
-        event.initEvent("click", true, true)
-        pom.dispatchEvent(event)
-      } else {
-        pom.click()
-      }
+      Api.UNITS.showTxT('deviceSn.txt', '1060111802001035#1060111802001036#1060111802001037')
     }
 
   }
@@ -174,10 +172,6 @@ export default {
 <style lang="scss">
 .brand-container {
   .el-dialog {}
-}
-
-.sn-item {
-  line-height: 28px;
 }
 
 </style>

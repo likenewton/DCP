@@ -17,10 +17,6 @@ module.exports = {
     icon: 'iconfont-tongji',
     name: 'statistics'
   }, {
-    title: '运营管理',
-    icon: 'iconfont-yunyingguanli_fuwufenzuguanli',
-    name: 'operate'
-  }, {
     title: '缓存同步',
     icon: 'iconfont-lucenehuancun',
     name: 'cache'

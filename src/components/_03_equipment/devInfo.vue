@@ -222,7 +222,7 @@
       <div slot>
         <el-form ref="uploadForm" :model="uploadForm" :rules="rules" :inline="false" size="small" label-width="110px">
           <el-form-item label="请选择文件：">
-            <v-upload ref="upload" :format="['.txt']"></v-upload>
+            <v-upload ref="upload" :format="['.txt']" :hasPreview="true" @showPriview="showPriview"></v-upload>
           </el-form-item>
           <el-form-item prop="status" label="ADAS开关：">
             <el-radio-group v-model="uploadForm.status">
@@ -498,17 +498,20 @@ export default {
     exportExcel() { // 导出设备信息
       if (!this.formInline.timeAddedbegin) {
         this.showMsgBox({
-          message: '高级查询-激活时间（起）不能为空'
+          message: '高级查询->激活时间（起）不能为空'
         })
         return
       }
       if (!this.formInline.timeAddedend) {
         this.showMsgBox({
-          message: '高级查询-激活时间（止）不能为空'
+          message: '高级查询->激活时间（止）不能为空'
         })
         return
       }
       Api.UNITS.exportExcel(_axios.ajaxAd.exportDeviceData, this.formInline)
+    },
+    showPriview() { // 展示.txt模板文件
+      Api.UNITS.showTxT('ADAS.txt', '1060111802001035#1060111802001036#1060111802001037')
     },
     // === 设备查询 end ===
     // === 操作 start ===

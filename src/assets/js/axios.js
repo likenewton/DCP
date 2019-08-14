@@ -63,6 +63,8 @@ class AXIOS {
       addSpeechForms: '/mpk_app/api/speechForms/addSpeechForms', // 生成语音报表
       addBlueToothForms: '/mpk_app/api/bluetoothReport/addBluetoothReport', // 生成蓝牙报表
       getVideobg: '/mpk_app/api/device/getVideobg', // 远程平台-抓拍
+      // 上传文件
+      importDeviceSn: '/mpk_app/api/deviceBrand/importDeviceSn', // 设备品牌-导入设备
     }
   }
 

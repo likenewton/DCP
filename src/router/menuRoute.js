@@ -31,8 +31,6 @@ const Iccid = r => require.ensure([], () => r(require('@/components/_07_statisti
 const Active = r => require.ensure([], () => r(require('@/components/_07_statistics/active.vue')), 'chunk2')
 const Summary = r => require.ensure([], () => r(require('@/components/_07_statistics/summary.vue')), 'chunk2') // 汇总统计
 const C_car = r => require.ensure([], () => r(require('@/components/_07_statistics/c_car.vue')), 'chunk2') // 车机上报统计
-// 运营管理
-const Feedback = r => require.ensure([], () => r(require('@/components/_08_operate/feedback.vue')), 'chunk2')
 // 缓存同步
 const Sync = r => require.ensure([], () => r(require('@/components/_09_cache/sync.vue')), 'chunk2')
 // 流量卡管理
@@ -177,15 +175,6 @@ let menuRoute = {
       path: 'deliver',
       name: 'deliver',
       component: Deliver
-    }]
-  }, {
-    path: 'operate',
-    name: 'operate',
-    component: Blank,
-    children: [{
-      path: 'feedback',
-      name: 'feedback',
-      component: Feedback
     }]
   }, {
     path: 'cache',
