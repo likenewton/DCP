@@ -67,11 +67,6 @@ export default {
       })
       return thirdTitle
     }
-  },
-  watch: {
-    '$route': function(newVal, oldVal) {
-      
-    }
   }
 }
 

@@ -1,6 +1,7 @@
 module.exports = {
-  // 获取权限菜单列表
-  getAuthMenu(asideData = [], resources = []) {
+
+  // === 项目核心 start ===
+  getAuthMenu(asideData = [], resources = []) { // 获取权限菜单列表
     // 排序
     resources.sort((v1, v2) => {
       return v1.seqNum - v2.seqNum
@@ -26,8 +27,8 @@ module.exports = {
     })
     return newResource
   },
-  // 获取菜单动态路由
-  getMenuRoute(menuRoute = [], resources = []) {
+
+  getMenuRoute(menuRoute = [], resources = []) { // 获取菜单动态路由
     menuRoute.children.forEach((v1, i1) => {
       let level_1 = false
       resources.forEach((r1, j1) => {
@@ -53,8 +54,8 @@ module.exports = {
     })
     return menuRoute
   },
-  // 设置升降序字段
-  setSortSearch(val, _this, sort = 'sort') {
+
+  setSortSearch(val, _this, sort = 'sort') { // 设置升降序字段
     if (!val.prop) return _this[sort] = {}
     if (val.order === 'descending') { // 降序
       _this[sort] = {
@@ -68,8 +69,8 @@ module.exports = {
       _this[sort] = {}
     }
   },
-  // 获取列表数据（通用） this, url, list, formInline, sort
-  getListData(paras) {
+
+  getListData(paras) { // 获取列表数据
     let para = paras
     let list = para.vue[para.list || 'list']
     let sort = para.vue[para.sort || 'sort']
@@ -95,8 +96,8 @@ module.exports = {
       }
     })
   },
-  // 获取页面面包屑数组
-  getBreadArr(name, authMenu) {
+
+  getBreadArr(name, authMenu) { // 获取面包屑导航
     let breadArr = []
     if (name === 'home') return [, , 'home']
     authMenu.forEach((v1) => {
@@ -127,8 +128,121 @@ module.exports = {
     }
     return breadArr
   },
-  // 获取主题颜色
-  getColorList(para, count) {
+
+  maxTableHeight(leftHeight = 316) { // 设备main页面高度，使页面始终保持在页面最下方
+    let winWidth = $(window).width()
+    // let zoom = winWidth > 1200 ? winWidth / window.screen.width : 1
+    let zoom = 1
+    let calcHeight = ($(window).height() - leftHeight * zoom) / zoom
+    return calcHeight
+  },
+  // === 项目核心 end ===
+
+  // === 格式、约束 start ===
+  formatDate(date, fmt) { // 格式时间
+    date = new Date(date);
+    let timeString = fmt || 'yyyy-mm-dd hh:ff:ss';
+    let getFullYear = String(date.getFullYear());
+
+    function padLeftZero(str) {
+      var padLeft = '00';
+      return (padLeft + str).substr(str.length);
+    }
+
+    // 如果存在至少一个y
+    if (/(y+)/.test(timeString)) {
+      // RegExp.$1 为匹配第一个大括号的内容
+      timeString = timeString.replace(RegExp.$1, getFullYear.substr(4 - RegExp.$1.length));
+    }
+    let o = {
+      'm+': date.getMonth() + 1,
+      'd+': date.getDate(),
+      'h+': date.getHours(),
+      'f+': date.getMinutes(),
+      's+': date.getSeconds(),
+    };
+    for (var k in o) {
+      if (new RegExp(`(${k})`).test(timeString)) {
+        let str = String(o[k]);
+        timeString = timeString.replace(RegExp.$1, str.length == 1 ? padLeftZero(str) : str);
+      }
+    }
+    return timeString;
+  },
+
+  startDatePicker(vue, end) { // 时间选择器约束-开始时间
+    return {
+      disabledDate(time) {
+        if (end) {
+          return new Date(end).getTime() <= time.getTime() || time.getTime() > Date.now()
+        } else {
+          return time.getTime() > Date.now()
+        }
+      }
+    }
+  },
+
+  endDatePicker(vue, start) { // 时间选择器约束-结束时间
+    return {
+      disabledDate(time) {
+        if (start) {
+          return new Date(start).getTime() - 3600000 * 8 > time.getTime() || time.getTime() > Date.now()
+        } else {
+          return time.getTime() > Date.now()
+        }
+      }
+    }
+  },
+
+  validatorPhoneNumber(value) { // 验证电话号码
+    return /^1[3|4|5|6|8|9][0-9]\d{8}$/.test(value)
+  },
+  // === 格式化 end ===
+
+  // === 提示、显示 start ===
+  showMsgBox(para = {}) { // 提示
+    Vue.prototype.$notify({
+      type: para.type || 'error',
+      title: para.title || (para.type === 'error' || !para.type ? '错误' : '温馨提示'),
+      message: para.message || '提交的表单数据不符合规范！',
+      duration: isNaN(para.duration) ? 4500 : para.duration
+    })
+  },
+
+  showCfmBox(para = {}) { // 确认框
+    Vue.prototype.$confirm(`${para.message || '确定执行该操作吗？'}`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: para.type || 'warning'
+    }).then(() => {
+      para.cb && para.cb()
+    }).catch(() => {
+      this.showMsgBox({
+        type: 'info',
+        message: '操作已取消'
+      })
+    })
+  },
+
+  showTxT(fileName, text) { // 浏览器打开.txt文件
+    let pom = document.createElement("a")
+    pom.setAttribute(
+      "href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+    )
+    pom.setAttribute("download", fileName)
+    if (document.createEvent) {
+      let event = document.createEvent("MouseEvents")
+      event.initEvent("click", true, true)
+      pom.dispatchEvent(event)
+    } else {
+      pom.click()
+    }
+  },
+  // === 提示、显示 end ===
+
+  // === 工具 start ===
+  getColorList(para, count) { // 获取主题颜色
     let colorList = ['#3cb1ff', '#ffc367', '#ff7477', '#27da99', '#3ecec9', '#9a83da']
     let colorData = {
       primary: '#3cb1ff',
@@ -174,7 +288,8 @@ module.exports = {
       }
     }
   },
-  getQuery(attr) {
+
+  getQuery(attr) { // 获取查询字符串
     let href = location.href
     let queryStr = href.substr(href.indexOf('?') + 1)
     let queryArr = queryStr.split('&')
@@ -186,16 +301,36 @@ module.exports = {
     if (attr) return queryObj[attr]
     else return queryObj
   },
-  maxTableHeight(leftHeight = 316) {
-    let winWidth = $(window).width()
-    // let zoom = winWidth > 1200 ? winWidth / window.screen.width : 1
-    let zoom = 1
-    let calcHeight = ($(window).height() - leftHeight * zoom) / zoom
-    return calcHeight
+
+  setCookie(cname, cvalue, exhours) { // 设置cookie
+    let expires = 'expires='
+    if (exhours) {
+      let d = new Date()
+      d.setTime(d.getTime() + (exhours * 60 * 60 * 1000))
+      expires += d.toUTCString()
+      document.cookie = `${cname}=${cvalue};${expires};path=/`
+    } else {
+      document.cookie = `${cname}=${cvalue};path=/`
+    }
   },
-  // 导出excel
-  exportExcel(url, params = {}) {
-    let link = `${url}?iov-token=${localStorage.getItem('iov-token')}`
+
+  getCookie(attr) { // 获取cookie
+    let cookieStr = document.cookie
+    let cookieArr = cookieStr.split(';')
+    let cookieObj = {}
+    cookieArr.forEach((v) => {
+      let tplArr = v.split('=')
+      while (tplArr[0].charAt(0) === ' ') {
+        tplArr[0] = tplArr[0].substring(1)
+      }
+      cookieObj[tplArr[0]] = tplArr[1]
+    })
+    if (attr) return cookieObj[attr]
+    else return cookieObj
+  },
+
+  exportExcel(url, params = {}) { // 导出excel
+    let link = `${url}?iov-token=${this.getCookie('iov-token')}`
     for (let key in params) {
       if (params[key]) {
         link += `&${key}=${params[key]}`
@@ -203,105 +338,12 @@ module.exports = {
     }
     window.open(link, '_self')
   },
-  compatibel_Ie_input() {
+  // === 工具 end ===
+
+  // === 其它 start ===
+  compatibel_Ie_input() { // 处理input在IE浏览器readonly属性失效
     $('.el-select .el-input__inner').attr("unselectable", "on")
   },
-  // 默认提示提交的表单不符合规范
-  showMsgBox(para = {}) {
-    Vue.prototype.$notify({
-      type: para.type || 'error',
-      title: para.title || (para.type === 'error' || !para.type ? '错误' : '温馨提示'),
-      message: para.message || '提交的表单数据不符合规范！',
-      duration: isNaN(para.duration) ? 4500 : para.duration
-    })
-  },
-  // 默认的comfirm提示框，为了省事~
-  showCfmBox(para = {}) {
-    Vue.prototype.$confirm(`${para.message || '确定执行该操作吗？'}`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: para.type || 'warning'
-    }).then(() => {
-      para.cb && para.cb()
-    }).catch(() => {
-      this.showMsgBox({
-        type: 'info',
-        message: '操作已取消'
-      })
-    })
-  },
-  formatDate(date, fmt) {
-    date = new Date(date);
-    let timeString = fmt || 'yyyy-mm-dd hh:ff:ss';
-    let getFullYear = String(date.getFullYear());
-
-    function padLeftZero(str) {
-      var padLeft = '00';
-      return (padLeft + str).substr(str.length);
-    }
-
-    // 如果存在至少一个y
-    if (/(y+)/.test(timeString)) {
-      // RegExp.$1 为匹配第一个大括号的内容
-      timeString = timeString.replace(RegExp.$1, getFullYear.substr(4 - RegExp.$1.length));
-    }
-    let o = {
-      'm+': date.getMonth() + 1,
-      'd+': date.getDate(),
-      'h+': date.getHours(),
-      'f+': date.getMinutes(),
-      's+': date.getSeconds(),
-    };
-    for (var k in o) {
-      if (new RegExp(`(${k})`).test(timeString)) {
-        let str = String(o[k]);
-        timeString = timeString.replace(RegExp.$1, str.length == 1 ? padLeftZero(str) : str);
-      }
-    }
-    return timeString;
-  },
-  // 时间范围约束（一般用于有起止时间的选择器）
-  startDatePicker(vue, end) {
-    return {
-      disabledDate(time) {
-        if (end) {
-          return new Date(end).getTime() <= time.getTime() || time.getTime() > Date.now()
-        } else {
-          return time.getTime() > Date.now()
-        }
-      }
-    }
-  },
-  endDatePicker(vue, start) {
-    return {
-      disabledDate(time) {
-        if (start) {
-          return new Date(start).getTime() - 3600000 * 8 > time.getTime() || time.getTime() > Date.now()
-        } else {
-          return time.getTime() > Date.now()
-        }
-      }
-    }
-  },
-  // 验证电话号码
-  validatorPhoneNumber(value) {
-    return /^1[3|4|5|6|8|9][0-9]\d{8}$/.test(value)
-  },
-  // 展示.txt模板文件
-  showTxT(fileName, text) {
-    let pom = document.createElement("a")
-    pom.setAttribute(
-      "href",
-      "data:text/plain;charset=utf-8," + encodeURIComponent(text)
-    )
-    pom.setAttribute("download", fileName)
-    if (document.createEvent) {
-      let event = document.createEvent("MouseEvents")
-      event.initEvent("click", true, true)
-      pom.dispatchEvent(event)
-    } else {
-      pom.click()
-    }
-  }
+  // === 其它 end ===
 
 }

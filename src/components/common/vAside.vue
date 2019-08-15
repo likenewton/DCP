@@ -69,7 +69,7 @@ export default {
     }
   },
   watch: {
-    '$route': function(newVal, oldVal) {
+    '$route': function(to, from) {
       this.testFn()
       Vue.nextTick(() => {
         Api.UNITS.compatibel_Ie_input() // 具有readOnly属性的input在IE下仍然会聚焦，且按backspace按钮会执行回退操作

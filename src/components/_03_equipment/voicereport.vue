@@ -4,8 +4,8 @@
       <el-row>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-date-picker v-model="formInline.startTimeAddedStart" type="date" :picker-options="startDatePicker_1" value-format="timestamp" @change="simpleSearchData" placeholder="激活开始时间（起）"></el-date-picker> -
-            <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="timestamp" @change="simpleSearchData" placeholder="激活开始时间（止）"></el-date-picker>
+            <el-date-picker v-model="formInline.startTimeAddedStart" type="date" :picker-options="startDatePicker_1" value-format="yyyy-MM-dd" @change="simpleSearchData" placeholder="激活开始时间（起）"></el-date-picker> -
+            <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="yyyy-MM-dd" @change="simpleSearchData" placeholder="激活开始时间（止）"></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="simpleSearchData">查询</el-button>
@@ -47,16 +47,16 @@
         <div class="searchForm_vip" style="width:100%;overflow: auto">
           <el-form :inline="false" :model="formInline" size="small" label-width="110px" v-loading="loadData">
             <el-form-item label="激活开始时间">
-              <el-date-picker v-model="formInline.startTimeAddedStart" type="date" :picker-options="startDatePicker_1" value-format="timestamp" placeholder="激活开始时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="timestamp" placeholder="激活开始时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startTimeAddedStart" type="date" :picker-options="startDatePicker_1" value-format="yyyy-MM-dd" placeholder="激活开始时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="yyyy-MM-dd" placeholder="激活开始时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="激活结束时间">
-              <el-date-picker v-model="formInline.endTimeAddedStart" type="date" :picker-options="startDatePicker_2" value-format="timestamp" placeholder="激活结束时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.endTimeAddedEnd" type="date" :picker-options="endDatePicker_2" value-format="timestamp" placeholder="激活结束时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.endTimeAddedStart" type="date" :picker-options="startDatePicker_2" value-format="yyyy-MM-dd" placeholder="激活结束时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endTimeAddedEnd" type="date" :picker-options="endDatePicker_2" value-format="yyyy-MM-dd" placeholder="激活结束时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="生成时间">
-              <el-date-picker v-model="formInline.startGenerateTime" type="date" :picker-options="startDatePicker_3" value-format="timestamp" placeholder="生成时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.endGenerateTime" type="date" :picker-options="endDatePicker_3" value-format="timestamp" placeholder="生成时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startGenerateTime" type="date" :picker-options="startDatePicker_3" value-format="yyyy-MM-dd" placeholder="生成时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endGenerateTime" type="date" :picker-options="endDatePicker_3" value-format="yyyy-MM-dd" placeholder="生成时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="searchData">查询</el-button>

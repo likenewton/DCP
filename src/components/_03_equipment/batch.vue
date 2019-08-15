@@ -39,7 +39,7 @@
               <el-button type="text" @click="showBatchDetail(scope)">详情</el-button>
               <el-button type="text" @click="$router.push({name:'batImpDetail',query:{batchId:scope.row.batchId}})">导入明细</el-button>
               <el-button type="text" @click="$router.push({name:'devExcepLog', query:{batchId: scope.row.batchId}})">异常记录</el-button>
-              <el-button type="text" class="text_warning" @click="importSnVisible = true">导入</el-button>
+              <el-button type="text" class="text_warning" @click="showImportDevBatchSn(scope)">导入</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -66,8 +66,8 @@
               </el-select>
             </el-form-item>
             <el-form-item label="创建时间">
-              <el-date-picker v-model="formInline.createStartTime" :picker-options="startDatePicker" type="date" value-format="timestamp" placeholder="创建时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.createEndTime" :picker-options="endDatePicker" type="date" value-format="timestamp" placeholder="创建时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.createStartTime" :picker-options="startDatePicker" type="date" value-format="yyyy-MM-dd" placeholder="创建时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.createEndTime" :picker-options="endDatePicker" type="date" value-format="yyyy-MM-dd" placeholder="创建时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="searchData">查询</el-button>
@@ -82,7 +82,7 @@
       <div slot>
         <el-form ref="uploadForm" :inline="false" size="small" label-width="110px">
           <el-form-item label="请选择文件：">
-            <v-upload ref="upload" :format="['.txt']"></v-upload>
+            <v-upload ref="upload" :format="['.txt']" :hasPreview="true" @showPriview="showPriview"></v-upload>
           </el-form-item>
         </el-form>
       </div>
@@ -140,6 +140,8 @@
         </el-form-item>
       </el-form>
     </el-drawer>
+    <!-- 上传文件结果 -->
+    <v-result ref="result" :resultData="resultData" label="设备SN号" tProp="sn"></v-result>
   </div>
 </template>
 <script>
@@ -151,6 +153,8 @@ export default {
       isShowBatchDetail: false,
       detailLoadData: false,
       batchDetailData: {},
+      resultData: [],
+      curScope: {},
       devAbRecord: {
         data: [{
           a: 1
@@ -198,13 +202,43 @@ export default {
           message: '请选择要上传的文件！'
         })
       } else {
-        console.log(this.$refs.upload.fileList)
+        this.formData = new FormData()
+        this.formData.append('file', this.$refs.upload.fileList[0].raw)
+        this.formData.append('batchId', this.curScope.batchId)
+        this.formData.append('batchSn', this.curScope.batchSn)
+        this.formData.append('organCode', this.curScope.organCode)
+        _axios.send({
+          method: 'post',
+          url: _axios.ajaxAd.importDeviceBatchSn,
+          data: this.formData,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          done: ((res) => {
+            this.resultData = res.data || []
+            this.importSnVisible = false
+            this.$refs.result.show()
+            setTimeout(() => {
+              this.showMsgBox({
+                type: 'success',
+                message: '操作成功！'
+              })
+            }, 150)
+          })
+        })
       }
     },
     close() {
       // 关闭弹框的时候清掉选择上传的文件
       this.$refs.upload.clearFileList()
-    }
+    },
+    showPriview() { // 展示.txt模板文件
+      Api.UNITS.showTxT('deviceSn.txt', '1060111802001035#1060111802001036#1060111802001037')
+    },
+    showImportDevBatchSn(scope) {
+      this.importSnVisible = true
+      this.curScope = scope.row
+    },
   },
   computed: {
     // 起始时间约数

@@ -3,8 +3,8 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="warning" @click="exportExcel">导出</el-button>
-          <el-button size="small" type="warning">ADAS导出</el-button>
+          <el-button size="small" type="warning" @click="exportExcel('exportDeviceData')">导出</el-button>
+          <el-button size="small" type="warning" @click="exportExcel('exportADASInfo')">ADAS导出</el-button>
           <el-button size="small" type="warning" @click="importADASvisible = true">ADAS导入</el-button>
           <el-button size="small" type="primary" @click="createExcel('语音')">生成语音报表</el-button>
           <el-button size="small" type="primary" @click="createExcel('蓝牙')">生成蓝牙报表</el-button>
@@ -198,16 +198,16 @@
               <el-input v-model="formInline.softVersion" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="激活时间">
-              <el-date-picker v-model="formInline.timeAddedbegin" :picker-options="startDatePicker_1" type="date" value-format="timestamp" placeholder="激活时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.timeAddedend" :picker-options="endDatePicker_1" type="date" value-format="timestamp" placeholder="激活时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.timeAddedbegin" :picker-options="startDatePicker_1" type="date" value-format="yyyy-MM-dd" placeholder="激活时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.timeAddedend" :picker-options="endDatePicker_1" type="date" value-format="yyyy-MM-dd" placeholder="激活时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="更新时间">
-              <el-date-picker v-model="formInline.startTimeLast" :picker-options="startDatePicker_2" type="date" value-format="timestamp" placeholder="更新时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.endTimeLast" :picker-options="endDatePicker_2" type="date" value-format="timestamp" placeholder="更新时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startTimeLast" :picker-options="startDatePicker_2" type="date" value-format="yyyy-MM-dd" placeholder="更新时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endTimeLast" :picker-options="endDatePicker_2" type="date" value-format="yyyy-MM-dd" placeholder="更新时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item label="ADAS时间">
-              <el-date-picker v-model="formInline.startAdasUpdateTime" :picker-options="startDatePicker_3" type="date" value-format="timestamp" placeholder="ADAS时间（起）"></el-date-picker> -
-              <el-date-picker v-model="formInline.endAdasUpdateTime" :picker-options="endDatePicker_3" type="date" value-format="timestamp" placeholder="ADAS时间（止）"></el-date-picker>
+              <el-date-picker v-model="formInline.startAdasUpdateTime" :picker-options="startDatePicker_3" type="date" value-format="yyyy-MM-dd" placeholder="ADAS时间（起）"></el-date-picker> -
+              <el-date-picker v-model="formInline.endAdasUpdateTime" :picker-options="endDatePicker_3" type="date" value-format="yyyy-MM-dd" placeholder="ADAS时间（止）"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="searchData">查询</el-button>
@@ -224,14 +224,11 @@
           <el-form-item label="请选择文件：">
             <v-upload ref="upload" :format="['.txt']" :hasPreview="true" @showPriview="showPriview"></v-upload>
           </el-form-item>
-          <el-form-item prop="status" label="ADAS开关：">
-            <el-radio-group v-model="uploadForm.status">
+          <el-form-item prop="flag" label="ADAS开关：">
+            <el-radio-group v-model="uploadForm.flag">
               <el-radio :label="1">开</el-radio>
               <el-radio :label="0">关</el-radio>
             </el-radio-group>
-          </el-form-item>
-          <el-form-item label="导入日志：">
-            <el-input type="textarea" placeholder="请输入导入日志" rows="4"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('uploadForm')">保存</el-button>
@@ -281,19 +278,28 @@
         <el-button size="small" type="primary" @click="bandCustomer.bandCustomerVisible = false">关闭</el-button>
       </div>
     </el-dialog>
-    <!-- ** -->
+    <!-- 列表展示 -->
     <v-checkbox ref="vCheckbox" :checkboxData="checkboxData" :defaultData="defaultData" @checkSave="checkSave"></v-checkbox>
+    <!-- 上传文件结果 -->
+    <v-result ref="result" :resultData="resultData" label="设备SN号" tProp="sn"></v-result>
   </div>
 </template>
 <script>
 import Api from 'assets/js/api.js'
 export default {
+  name: 'devInfo',
   data() {
     return {
+      exportType: {
+        exportDeviceData: _axios.ajaxAd.exportDeviceData,
+        exportADASInfo: _axios.ajaxAd.exportADASInfo
+      },
+      keepAlive: true,
       importADASvisible: false,
       brands: [], // 设备品牌是挂载在机构下的，选择机构需重新加载品牌
+      resultData: [], // 文件上传的结果
       uploadForm: {
-        status: 1
+        flag: 1
       },
       formInline: {
         organCode: Api.UNITS.getQuery('organCode'),
@@ -379,7 +385,7 @@ export default {
       sort_lifeTrack: {},
       // === 表单验证规则 ===
       rules: {
-        status: [{
+        flag: [{
           required: true,
           message: '请选择ADAS开关'
         }]
@@ -390,6 +396,17 @@ export default {
     this.checkGet()
     this.getData()
     this.getBrands()
+  },
+  activated() {
+    if (!this.keepAlive) {
+      this.formInline = {
+        organCode: Api.UNITS.getQuery('organCode'),
+        deviceBrandId: Api.UNITS.getQuery('brandId'),
+      }
+      this.checkGet()
+      this.getData()
+      this.getBrands()
+    }
   },
   methods: {
     // === 设备查询 start ===
@@ -495,7 +512,7 @@ export default {
         })
       }
     },
-    exportExcel() { // 导出设备信息
+    exportExcel(type) { // 导出设备信息
       if (!this.formInline.timeAddedbegin) {
         this.showMsgBox({
           message: '高级查询->激活时间（起）不能为空'
@@ -508,7 +525,7 @@ export default {
         })
         return
       }
-      Api.UNITS.exportExcel(_axios.ajaxAd.exportDeviceData, this.formInline)
+      Api.UNITS.exportExcel(this.exportType[type], this.formInline)
     },
     showPriview() { // 展示.txt模板文件
       Api.UNITS.showTxT('ADAS.txt', '1060111802001035#1060111802001036#1060111802001037')
@@ -569,7 +586,28 @@ export default {
               message: '请选择要上传的文件！'
             })
           } else {
-            console.log(this.$refs.upload.fileList)
+            this.formData = new FormData()
+            this.formData.append('file', this.$refs.upload.fileList[0].raw)
+            this.formData.append('flag', this.uploadForm.flag)
+            _axios.send({
+              method: 'post',
+              url: _axios.ajaxAd.importAdas,
+              data: this.formData,
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              },
+              done: ((res) => {
+                this.resultData = res.data || []
+                this.importADASvisible = false
+                this.$refs.result.show()
+                setTimeout(() => {
+                  this.showMsgBox({
+                    type: 'success',
+                    message: '操作成功！'
+                  })
+                }, 150)
+              })
+            })
           }
         } else {
           Api.UNITS.showMsgBox()
@@ -584,7 +622,7 @@ export default {
     ADASclose() { // ADAS上传弹窗关闭
       this.$refs.upload.clearFileList()
       this.uploadForm = {
-        status: 1
+        flag: 1
       }
     },
     // === ADAS导入 end ===
@@ -624,8 +662,8 @@ export default {
               method: 'get',
               url: type === '语音' ? _axios.ajaxAd.addSpeechForms : _axios.ajaxAd.addBlueToothForms,
               params: {
-                timeAddedbegin: Api.UNITS.formatDate(this.formInline.timeAddedbegin, 'yyyy-mm-dd'),
-                timeAddedend: Api.UNITS.formatDate(this.formInline.timeAddedend, 'yyyy-mm-dd')
+                timeAddedbegin: this.formInline.timeAddedbegin,
+                timeAddedend: this.formInline.timeAddedend
               },
               done: () => {
                 this.loading.close()
@@ -665,6 +703,17 @@ export default {
     },
     endDatePicker_3() {
       return Api.UNITS.endDatePicker(this, this.formInline.startAdasUpdateTime)
+    }
+  },
+  watch: {
+    '$route': function(to, from) {
+      if (from.name === 'devRecord' && to.name === 'devInfo') {
+        // 如果是从devRecord跳转过来的不做任何处理
+        this.keepAlive = true
+      } else {
+        // 如果是从其他页面跳转过来的
+        this.keepAlive = false
+      }
     }
   }
 }

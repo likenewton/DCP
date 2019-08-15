@@ -42,19 +42,19 @@ export default {
       },
       directiveType: [{
         label: 'adbshell',
-        value: 'adbshell',
+        value: '0001',
         tip: 'text=“dumpsys dropbox” ；#执行adb shell命令'
       }, {
         label: 'logswitch',
-        value: 'logswitch',
+        value: '0002',
         tip: 'text=“pkgname1:2;pkgname3:0” ；#pkgname包名:2代表把该apk的log开关打开，0是关闭'
       }, {
         label: 'logupload',
-        value: 'logupload',
+        value: '0003',
         tip: 'text=“/sdcard/nxos_log/” ；#上传/sdcard/nxos_log/的目录的文件'
       }, {
         label: 'assistant',
-        value: 'assistant',
+        value: '0005',
         tip: '页面参数格式：{"switch":"0"} ；#远程调试开关，0：关，1开， 后台拼接为text={"remotePort":"xxx","remoteIP":"xxx","remoteUser":"xxx","remoteProxyPort":"xxx","remotePassword":"xxx","switch":"0"}传给终端'
       }],
       rules: {

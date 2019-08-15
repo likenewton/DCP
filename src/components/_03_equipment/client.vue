@@ -10,8 +10,8 @@
             <el-input v-model="formInline.telephone" @keyup.enter.native="searchData" placeholder="手机号码"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-date-picker v-model="formInline.createStartTime" :picker-options="startDatePicker" type="date" value-format="timestamp" @change="searchData" placeholder="创建时间（起）"></el-date-picker> -
-            <el-date-picker v-model="formInline.createEndTime" :picker-options="startDatePicker" type="date" value-format="timestamp" @change="searchData" placeholder="创建时间（止）"></el-date-picker>
+            <el-date-picker v-model="formInline.createStartTime" :picker-options="startDatePicker" type="date" value-format="yyyy-MM-dd" @change="searchData" placeholder="创建时间（起）"></el-date-picker> -
+            <el-date-picker v-model="formInline.createEndTime" :picker-options="startDatePicker" type="date" value-format="yyyy-MM-dd" @change="searchData" placeholder="创建时间（止）"></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchData">查询</el-button>

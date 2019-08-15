@@ -1,4 +1,5 @@
 import { token } from './static.js'
+import { getCookie } from './unit.js'
 
 class AXIOS {
   constructor(para) {
@@ -38,6 +39,10 @@ class AXIOS {
       getPageDeviceExt: '/mpk_app/api/deviceExt/pageDeviceExt', // 设备扩展信息
       getListCustomer: '/mpk_app/api/customer/listCustomer', // 客户管理
       getBlueToothReport: '/mpk_app/api/bluetoothReport/pageBluetoothReport', // 蓝牙报表
+      getPhotoHistory: '/mpk_app/api/photo/photoHistory', // 设备记录-历史照片
+      getPageDrivingBehavior: '/mpk_app/api/drivingBehavior/pageDrivingBehavior', // 设备记录-驾驶行为
+      getLocationHistory: '/mpk_app/api/location/locationHistory', // 设备记录-历史位置
+      getVideoHistory: '/mpk_app/api/video/videoHistory', // 设备记录-历史视频
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录
@@ -56,6 +61,7 @@ class AXIOS {
       toUpdAdasStatus: '/mpk_app/api/device/toUpdAdasStatus', // 设备查询 adas 开关
       // export
       exportDeviceData: '/mpk_app/api/device/exportDeviceData', // 导出设备信息
+      exportADASInfo: '/mpk_app/api/device/exportADASInfo', // 设备查询adas导出
       // 功能
       unBindByDeviceId: '/mpk_app/api/device/unBindByDeviceId', // 设备查询-解除绑定
       generateSpeechForms: '/mpk_app/api/speechFormsDetail/generateSpeechForms', // 语音报表重新生成
@@ -65,13 +71,16 @@ class AXIOS {
       getVideobg: '/mpk_app/api/device/getVideobg', // 远程平台-抓拍
       // 上传文件
       importDeviceSn: '/mpk_app/api/deviceBrand/importDeviceSn', // 设备品牌-导入设备
+      importAdas: '/mpk_app/api/device/importAdas', // 设备查询-ADAS导入
+      importSpecialDeviceSn: '/mpk_app/api/deviceBatchSpecial/importSpecialDeviceSn', // 特殊设备处理-导入
+      importDeviceBatchSn: '/mpk_app/api/deviceBatch/importDeviceSn', // 批次管理-导入
     }
   }
 
   send(para) {
     let data = Object.assign({}, this.constData, para)
     data.headers = para.headers || {}
-    data.headers[token] = localStorage.getItem(token) || ''
+    data.headers[token] = getCookie(token) || ''
 
     axios({
       method: data.method,

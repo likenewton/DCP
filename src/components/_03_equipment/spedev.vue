@@ -12,8 +12,8 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-date-picker v-model="formInline.createStartTime" :picker-options="startDatePicker" type="date" value-format="timestamp" placeholder="创建时间（起）" @change="searchData"></el-date-picker> -
-            <el-date-picker v-model="formInline.createEndTime" :picker-options="endDatePicker" type="date" value-format="timestamp" placeholder="创建时间（止）" @change="searchData"></el-date-picker>
+            <el-date-picker v-model="formInline.createStartTime" :picker-options="startDatePicker" type="date" value-format="yyyy-MM-dd" placeholder="创建时间（起）" @change="searchData"></el-date-picker> -
+            <el-date-picker v-model="formInline.createEndTime" :picker-options="endDatePicker" type="date" value-format="yyyy-MM-dd" placeholder="创建时间（止）" @change="searchData"></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchData">查询</el-button>
@@ -38,7 +38,7 @@
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="130">
             <template slot-scope="scope">
-              <el-button type="text" class="text_warning" @click="importSNVisible = true">导入</el-button>
+              <el-button type="text" class="text_warning" @click="showImportSpeDevSn(scope)">导入</el-button>
               <el-button type="text" class="text_danger" @click="$router.push({name:'devExcepLog', query:{batchId: scope.row.batchId}})">异常记录</el-button>
             </template>
           </el-table-column>
@@ -48,11 +48,11 @@
       </el-row>
     </el-card>
     <!-- 导入特殊设备SN号 -->
-    <el-dialog title="导入特殊设备SN号" @close="close" :visible.sync="importSNVisible" width="700px" :close-on-click-modal="false">
+    <el-dialog title="导入特殊设备SN号" @close="close" :visible.sync="importSnVisible" width="700px" :close-on-click-modal="false">
       <div slot>
         <el-form ref="uploadForm" :inline="false" size="small" label-width="110px">
           <el-form-item label="请选择文件：">
-            <v-upload ref="upload" :format="['.txt']"></v-upload>
+            <v-upload ref="upload" :format="['.txt']" :hasPreview="true" @showPriview="showPriview"></v-upload>
           </el-form-item>
         </el-form>
       </div>
@@ -60,6 +60,8 @@
         <el-button size="small" type="primary" @click="submitForm">导入</el-button>
       </div>
     </el-dialog>
+    <!-- 上传文件结果 -->
+    <v-result ref="result" :resultData="resultData" label="设备SN号" tProp="sn"></v-result>
   </div>
 </template>
 <script>
@@ -67,7 +69,9 @@ import Api from 'assets/js/api.js'
 export default {
   data() {
     return {
-      importSNVisible: false
+      importSnVisible: false,
+      resultData: [],
+      curScope: {},
     }
   },
   mounted() {
@@ -87,12 +91,42 @@ export default {
           message: '请选择要上传的文件！'
         })
       } else {
-        console.log(this.$refs.upload.fileList)
+        this.formData = new FormData()
+        this.formData.append('file', this.$refs.upload.fileList[0].raw)
+        this.formData.append('batchId', this.curScope.batchId)
+        this.formData.append('batchSn', this.curScope.batchSn)
+        this.formData.append('organCode', this.curScope.organCode)
+        _axios.send({
+          method: 'post',
+          url: _axios.ajaxAd.importSpecialDeviceSn,
+          data: this.formData,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          done: ((res) => {
+            this.resultData = res.data || []
+            this.importSnVisible = false
+            this.$refs.result.show()
+            setTimeout(() => {
+              this.showMsgBox({
+                type: 'success',
+                message: '操作成功！'
+              })
+            }, 150)
+          })
+        })
       }
+    },
+    showImportSpeDevSn(scope) {
+      this.importSnVisible = true
+      this.curScope = scope.row
     },
     close() {
       // 关闭弹框的时候清掉选择上传的文件
       this.$refs.upload.clearFileList()
+    },
+    showPriview() { // 展示.txt模板文件
+      Api.UNITS.showTxT('deviceSn.txt', '1060111802001035#1060111802001036#1060111802001037')
     },
     // === 文件导入 end ===
   },

@@ -9,7 +9,7 @@
         <el-main class="small-scroll">
           <div class="main-inner">
             <v-breadcrumb></v-breadcrumb>
-            <keep-alive v-show="$route.meta.keepAlive">
+            <keep-alive>
               <router-view v-if="$route.meta.keepAlive"></router-view>
             </keep-alive>
             <router-view v-if="!$route.meta.keepAlive"></router-view>

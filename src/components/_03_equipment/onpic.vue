@@ -4,8 +4,8 @@
       <el-row>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-date-picker v-model="formInline.startTimeAdded" :picker-options="startDatePicker" type="date" value-format="timestamp" @change="searchData" placeholder="拍摄时间（起）"></el-date-picker> -
-            <el-date-picker v-model="formInline.endTimeAdded" :picker-options="endDatePicker" type="date" value-format="timestamp" @change="searchData" placeholder="拍摄时间（止）"></el-date-picker>
+            <el-date-picker v-model="formInline.startTimeAdded" :picker-options="startDatePicker" type="date" value-format="yyyy-MM-dd" @change="searchData" placeholder="拍摄时间（起）"></el-date-picker> -
+            <el-date-picker v-model="formInline.endTimeAdded" :picker-options="endDatePicker" type="date" value-format="yyyy-MM-dd" @change="searchData" placeholder="拍摄时间（止）"></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchData">查询</el-button>
