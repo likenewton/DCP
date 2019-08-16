@@ -3,7 +3,7 @@
   <el-dialog class="video-container" title="视频预览" @close="close" :visible.sync="visible" :width="width">
     <div slot>
       <div class="img-wrapper">
-        <video v-if="flag" width="100%" :poster="poster" controls>
+        <video v-if="visible" width="100%" :poster="poster" controls>
           <source :src="src" type="video/mp4">
         </video>
       </div>
@@ -37,9 +37,6 @@ export default {
   methods: {
     async show(src, poster) {
       this.visible = true
-      this.flag = false
-      this.$nextTick()
-      this.flag = true
       this.src = src
       this.poster = poster
     },

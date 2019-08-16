@@ -73,9 +73,47 @@
         </el-tab-pane>
         <el-tab-pane v-loading="loadData">
           <span slot="label">历史碰撞</span>
+          <el-row class="resource_container shadow-wrappr" :gutter="20" v-shadow>
+            <el-col v-if="list_5.data.length > 0" :span="4" v-for="(item, index) in list_5.data" :key="index" style="margin-bottom: 12px">
+              <el-card class="resource_wrapper" :body-style="{ padding: '6px' }" shadow="hover">
+                <div class="block">
+                  <el-image class="pointer" :src="item.photoUrl" fit="cover" @click.native="$refs.picview.showPicView(item.photoUrl)"></el-image>
+                </div>
+                <div style="padding: 5px">
+                  <span class="text">{{item.timeAdded | formatDate('yyyy-mm-dd')}}</span>
+                </div>
+              </el-card>
+            </el-col>
+            <el-col class="data_null" v-if="list_5.data.length === 0">
+              <span>暂无数据</span>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list_0.currentPage" :page-sizes="pageSizes" :page-size="list_0.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list_0.total" class="clearfix pagination-table">
+            </el-pagination>
+          </el-row>
         </el-tab-pane>
         <el-tab-pane v-loading="loadData">
           <span slot="label">违章抓拍</span>
+          <el-row class="resource_container shadow-wrappr" :gutter="20" v-shadow>
+            <el-col v-if="list_6.data.length > 0" :span="4" v-for="(item, index) in list_6.data" :key="index" style="margin-bottom: 12px">
+              <el-card class="resource_wrapper" :body-style="{ padding: '6px' }" shadow="hover">
+                <div class="block">
+                  <el-image class="pointer" :src="item.photoUrl" fit="cover" @click.native="$refs.picview.showPicView(item.photoUrl)"></el-image>
+                </div>
+                <div style="padding: 5px">
+                  <span class="text">{{item.timeAdded | formatDate('yyyy-mm-dd')}}</span>
+                </div>
+              </el-card>
+            </el-col>
+            <el-col class="data_null" v-if="list_6.data.length === 0">
+              <span>暂无数据</span>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list_0.currentPage" :page-sizes="pageSizes" :page-size="list_0.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list_0.total" class="clearfix pagination-table">
+            </el-pagination>
+          </el-row>
         </el-tab-pane>
         <el-tab-pane v-loading="loadData">
           <span slot="label">驾驶行为</span>
@@ -134,17 +172,27 @@ export default {
       maxTableHeight_0: Api.UNITS.maxTableHeight(358),
       maxTableHeight_1: Api.UNITS.maxTableHeight(358),
       maxTableHeight_2: Api.UNITS.maxTableHeight(358),
+      maxTableHeight_5: Api.UNITS.maxTableHeight(358),
+      maxTableHeight_6: Api.UNITS.maxTableHeight(358),
       maxTableHeight_7: Api.UNITS.maxTableHeight(408),
       maxMapHeight: Api.UNITS.maxTableHeight(302),
       // 表单
       formInline_0: {},
       formInline_1: {},
       formInline_2: {},
+      formInline_3: {},
+      formInline_4: {},
+      formInline_5: {},
+      formInline_6: {},
       formInline_7: {},
       // 排序
       sort_0: {},
       sort_1: {},
       sort_2: {},
+      sort_3: {},
+      sort_4: {},
+      sort_5: {},
+      sort_6: {},
       sort_7: {},
       // 列表
       list_0: {
@@ -153,19 +201,37 @@ export default {
         currentPage: 1,
         total: 0,
       },
-      // src https://www.runoob.com/try/demo_source/mov_bbb.mp4
-      //poster https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg
       list_1: {
-        data: [{
-          videoUrl: 'https://www.runoob.com/try/demo_source/mov_bbb.mp4',
-        }, {
-          videoUrl: 'https://www.runoob.com/try/demo_source/movie.mp4',
-        }],
+        data: [],
         pagesize: Api.STATIC.pageSizes[2],
         currentPage: 1,
         total: 0,
       },
       list_2: {
+        data: [],
+        pagesize: Api.STATIC.pageSizes[2],
+        currentPage: 1,
+        total: 0,
+      },
+      list_3: {
+        data: [],
+        pagesize: Api.STATIC.pageSizes[2],
+        currentPage: 1,
+        total: 0,
+      },
+      list_4: {
+        data: [],
+        pagesize: Api.STATIC.pageSizes[2],
+        currentPage: 1,
+        total: 0,
+      },
+      list_5: {
+        data: [],
+        pagesize: Api.STATIC.pageSizes[2],
+        currentPage: 1,
+        total: 0,
+      },
+      list_6: {
         data: [],
         pagesize: Api.STATIC.pageSizes[2],
         currentPage: 1,
@@ -249,8 +315,6 @@ export default {
       })
     },
     getData_1() {
-      this.reRenderImg()
-      return
       Api.UNITS.getListData({
         vue: this,
         url: _axios.ajaxAd.getVideoHistory,
@@ -270,6 +334,31 @@ export default {
         data: { deviceId: Api.UNITS.getQuery('deviceId') },
         list: 'list_2',
         sort: 'sort_2'
+      })
+    },
+    getData_5() {
+      Api.UNITS.getListData({
+        vue: this,
+        url: _axios.ajaxAd.getPhotoHistory,
+        data: { deviceId: Api.UNITS.getQuery('deviceId') },
+        formInline: 'formInline_5',
+        list: 'list_5',
+        sort: 'sort_5',
+        cb: () => {
+          this.reRenderImg()
+        }
+      })
+    },
+    getData_6() {
+      Api.UNITS.getListData({
+        vue: this,
+        url: _axios.ajaxAd.getPhotoHistory,
+        data: { deviceId: Api.UNITS.getQuery('deviceId') },
+        list: 'list_6',
+        sort: 'sort_6',
+        cb: () => {
+          this.reRenderImg()
+        }
       })
     },
     getData_7() {
