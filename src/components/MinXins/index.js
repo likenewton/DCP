@@ -62,6 +62,7 @@ export default {
     getColorList: Api.UNITS.getColorList,
     showMsgBox: Api.UNITS.showMsgBox,
     showCfmBox: Api.UNITS.showCfmBox,
+    fixed: Api.UNITS.fixed,
   },
   computed: {
     ...mapState({

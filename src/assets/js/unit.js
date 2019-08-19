@@ -170,6 +170,15 @@ module.exports = {
     return timeString;
   },
 
+  fixed(value, fixed, unit) {
+    if (value || value == 0) {
+      if (unit) return Number(value).toFixed(fixed) + unit
+      else return Number(value).toFixed(fixed)
+    } else {
+      return ''
+    }
+  },
+
   startDatePicker(vue, end) { // 时间选择器约束-开始时间
     return {
       disabledDate(time) {

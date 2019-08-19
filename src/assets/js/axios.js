@@ -43,6 +43,11 @@ class AXIOS {
       getPageDrivingBehavior: '/mpk_app/api/drivingBehavior/pageDrivingBehavior', // 设备记录-驾驶行为
       getLocationHistory: '/mpk_app/api/location/locationHistory', // 设备记录-历史位置
       getVideoHistory: '/mpk_app/api/video/videoHistory', // 设备记录-历史视频
+      getIllegalCapture: '/mpk_app/api/violation/illegalCapture', // 设备记录-违章抓拍
+      gsensorHistory: '/mpk_app/api/gsensor/gsensorHistory', // 设备记录-历史碰撞
+      getObdErrList: '/mpk_app/api/obd/getObdErrList', // 设备记录-OBD列表查询
+      getListCarBrands: '/mpk_app/api/carBrands/listCarBrands',  // 汽车品牌管理
+      getListCarModels: '/mpk_app/api/carBrands/listCarModels', // 汽车型号查询
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录
@@ -50,11 +55,18 @@ class AXIOS {
       deviceBatchDetail: '/mpk_app/api/deviceBatch/deviceBatchDetail', // 查看批次详情
       getDeviceExcepLog: '/mpk_app/api/deviceExcepLog/toExcepDeviceList', // 批次管理-异常记录
       getBindDevice: '/mpk_app/api/customer/bindDevice', // 查询客户绑定的设备
+      getObdInfo: '/mpk_app/api/obd/getObdInfo', // 设备查询-OBD参数查询
       // form
       updateDeviceBrand: '/mpk_app/api/deviceBrand/updateDeviceBrand', // 品牌修改
       addDeviceBrand: '/mpk_app/api/deviceBrand/addDeviceBrand',  //品牌新增
       directivePush: '/mpk_app/api/messagePush/push', // 设备查询-指令推送
       addDeviceBatch: '/mpk_app/api/deviceBatch/addDeviceBatch', // 添加批次
+      toAddCarBrands: '/mpk_app/api/carBrands/toAddCarBrands', // 添加汽车品牌
+      toUpdateCarBrands: '/mpk_app/api/carBrands/toUpdateCarBrands', // 修改汽车品牌
+      toEditCarBrands: '/mpk_app/api/carBrands/toEditCarBrands', // 修改汽车品牌-查询
+      toAddCarModels: '/mpk_app/api/carBrands/toAddCarModels', // 添加汽车型号
+      toEditCarModels: '/mpk_app/api/carBrands/toEditCarModels', // 修改汽车型号-查询
+      toUpdateCarModels: '/mpk_app/api/carBrands/toUpdateCarModels', // 修改汽车型号
       // diabled
       brandChangeState: '/mpk_app/api/deviceBrand/changeState',
       toUpdIsDisable: '/mpk_app/api/device/toUpdIsDisable',  // 设备查询 有效、失效
@@ -69,6 +81,8 @@ class AXIOS {
       addSpeechForms: '/mpk_app/api/speechForms/addSpeechForms', // 生成语音报表
       addBlueToothForms: '/mpk_app/api/bluetoothReport/addBluetoothReport', // 生成蓝牙报表
       getVideobg: '/mpk_app/api/device/getVideobg', // 远程平台-抓拍
+      getDeviceTrack: '/mpk_app/api/device/deviceTrack', // 设备记录-行车轨迹
+      deleteCarBrands: '/mpk_app/api/carBrands/deleteCarBrands', // 删除汽车品牌
       // 上传文件
       importDeviceSn: '/mpk_app/api/deviceBrand/importDeviceSn', // 设备品牌-导入设备
       importAdas: '/mpk_app/api/device/importAdas', // 设备查询-ADAS导入

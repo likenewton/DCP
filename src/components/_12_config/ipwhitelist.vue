@@ -8,17 +8,17 @@
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-input @keyup.enter.native="" placeholder="IP"></el-input>
+            <el-input @keyup.enter.native="searchData" placeholder="IP"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="">查询</el-button>
+            <el-button type="primary" @click="searchData">查询</el-button>
             <el-button type="warning" @click="resetData">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="a" label="IP" sortable="custom"></el-table-column>
+          <el-table-column prop="" label="IP" sortable="custom"></el-table-column>
           <el-table-column prop="" label="子网掩码" sortable="custom"></el-table-column>
           <el-table-column prop="" label="状态" sortable="custom"></el-table-column>
           <el-table-column prop="" label="描述" sortable="custom"></el-table-column>
@@ -75,19 +75,11 @@
 import Api from 'assets/js/api.js'
 export default {
   data() {
-    return {
-      list: {
-        data: [{
-          a: 1
-        }],
-        pagesize: Api.STATIC.pageSizes[2],
-        currentPage: 1,
-        total: 0,
-      },
-    }
+    return {}
   },
   mounted() {
-
+    this.list.data = []
+    this.getData()
   },
   methods: {
     getData() {},

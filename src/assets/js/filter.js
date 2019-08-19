@@ -61,6 +61,15 @@ Vue.filter('valueToLabel', function(value, data = [], tag = 'label') {
   return label
 })
 
+Vue.filter('fixed', function(value, fixed = 2, unit) {
+  if (value || value == 0) {
+    if (unit) return Number(value).toFixed(fixed) + unit
+    else return Number(value).toFixed(fixed)
+  } else {
+    return ''
+  }
+})
+
 // 时间格式化
 Vue.filter('formatDate', function(date, fmt) {
   if (!date) return ''

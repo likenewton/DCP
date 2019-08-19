@@ -169,9 +169,4 @@ export default {
 }
 
 </script>
-<style lang="scss">
-.brand-container {
-  .el-dialog {}
-}
-
-</style>
+<style lang="scss"></style>

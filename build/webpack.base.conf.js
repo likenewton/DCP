@@ -105,6 +105,7 @@ module.exports = {
     'vue-router': 'VueRouter',
     'axios': 'axios',
     'element-ui': 'ElementUI',
-    'echarts': 'echarts'
+    'echarts': 'echarts',
+    'BMap': 'BMap' 
   }
 }
