@@ -27,6 +27,9 @@ class AXIOS {
       queryVersionByOrganCode: '/mpk_app/api/version/queryVersionByOrganCode', // 根据organCode获取硬件版本与软件版本
       queryBatchSnList: '/mpk_app/api/deviceExcepLog/queryBatchSnList', // 设备异常记录->获取批次号列表
       pageDeviceMateriel: '/mpk_app/api/deviceMateriel/pageDeviceMateriel', // 批次管理->导入明细
+      getRedisJson: '/mpk_app/api/simCardTips/getRedisJson', // 缓存地址
+      getCustomerNameList: '/mpk_app/api/simCardTips/customerNameList', // 提醒策略-客户名称
+      getCustomerProjectNameList: '/mpk_app/api/simCardTips/customerProjectNameList', // 提醒策略-项目名称
       // list
       getDeviceBrand: '/mpk_app/api/deviceBrand/pageDeviceBrand',
       getDeviceList: '/mpk_app/api/device/devicelistByOrg',
@@ -48,6 +51,9 @@ class AXIOS {
       getObdErrList: '/mpk_app/api/obd/getObdErrList', // 设备记录-OBD列表查询
       getListCarBrands: '/mpk_app/api/carBrands/listCarBrands',  // 汽车品牌管理
       getListCarModels: '/mpk_app/api/carBrands/listCarModels', // 汽车型号查询
+      getIpwhiteInfo: '/mpk_app/api/ipwhitelist/ipwhiteInfo', // IP白名单管理
+      getPageTips: '/mpk_app/api/simCardTips/pageTips', // 提醒策略缓存地址
+      getPageDeviceImei: '/mpk_app/api/deviceImei/pageDeviceImei', // 设备管理
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录
@@ -67,10 +73,14 @@ class AXIOS {
       toAddCarModels: '/mpk_app/api/carBrands/toAddCarModels', // 添加汽车型号
       toEditCarModels: '/mpk_app/api/carBrands/toEditCarModels', // 修改汽车型号-查询
       toUpdateCarModels: '/mpk_app/api/carBrands/toUpdateCarModels', // 修改汽车型号
+      toAddWilteListInfo: '/mpk_app/api/ipwhitelist/toAddWilteListInfo', // IP白名单新增
+      toUpdateWilteList: '/mpk_app/api/ipwhitelist/toUpdateWilteList', // IP白名单修改查询
+      toUpdateWilteListInfo: '/mpk_app/api/ipwhitelist/toUpdateWilteListInfo', // IP白名单修改
       // diabled
       brandChangeState: '/mpk_app/api/deviceBrand/changeState',
       toUpdIsDisable: '/mpk_app/api/device/toUpdIsDisable',  // 设备查询 有效、失效
       toUpdAdasStatus: '/mpk_app/api/device/toUpdAdasStatus', // 设备查询 adas 开关
+      toUpdateIPWhiteListStatus: '/mpk_app/api/ipwhitelist/toUpdateIPWhiteListStatus', // IP白名单失效有效变更
       // export
       exportDeviceData: '/mpk_app/api/device/exportDeviceData', // 导出设备信息
       exportADASInfo: '/mpk_app/api/device/exportADASInfo', // 设备查询adas导出
@@ -83,11 +93,14 @@ class AXIOS {
       getVideobg: '/mpk_app/api/device/getVideobg', // 远程平台-抓拍
       getDeviceTrack: '/mpk_app/api/device/deviceTrack', // 设备记录-行车轨迹
       deleteCarBrands: '/mpk_app/api/carBrands/deleteCarBrands', // 删除汽车品牌
+      toDelIPWhiteList: '/mpk_app/api/ipwhitelist/toDelIPWhiteList', // 删除Ip白名单
+      refresh: '/mpk_app/api/ipwhitelist/refresh', // 同步缓存
       // 上传文件
       importDeviceSn: '/mpk_app/api/deviceBrand/importDeviceSn', // 设备品牌-导入设备
       importAdas: '/mpk_app/api/device/importAdas', // 设备查询-ADAS导入
       importSpecialDeviceSn: '/mpk_app/api/deviceBatchSpecial/importSpecialDeviceSn', // 特殊设备处理-导入
       importDeviceBatchSn: '/mpk_app/api/deviceBatch/importDeviceSn', // 批次管理-导入
+      importDeviceImei: '/mpk_app/api/deviceImei/importDeviceImei', // 设备IMEI上传
     }
   }
 

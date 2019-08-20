@@ -1,20 +1,20 @@
 <template>
-  <el-card class="addbrand" shadow="never" v-loading="loadData">
+  <el-card class="addipwlist-container" shadow="never" v-loading="loadData">
     <div slot="header" class="clearfix">
       <span>IP白名单信息</span>
     </div>
     <el-form class="editor-form" :inline="false" :model="formInline" :rules="rules" ref="ruleForm" label-width="100px" size="small">
-      <el-form-item prop="">
+      <el-form-item prop="ip">
         <span slot="label">IP：</span>
-        <el-input placeholder="请输入"></el-input>
+        <el-input v-model="formInline.ip" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item prop="">
+      <el-form-item prop="subnet_mask">
         <span slot="label">子网掩码：</span>
-        <el-input placeholder="请输入"></el-input>
+        <el-input v-model="formInline.subnet_mask" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item prop="">
+      <el-form-item prop="desc">
         <span slot="label">描述：</span>
-        <el-input type="textarea" rows="4" placeholder="请输入"></el-input>
+        <el-input v-model="formInline.desc" type="textarea" rows="4" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="$router.back()">返回</el-button>
@@ -31,7 +31,21 @@ export default {
   data() {
     return {
       isUpdate: false,
-      rules: {}
+      rules: {
+        ip: [{
+          required: true,
+          message: '请输入IP',
+          trigger: 'blur'
+        }, {
+          validator: this.ipValidator,
+          trigger: 'blur'
+        }],
+        subnet_mask: [{
+          required: true,
+          message: '请输入子网掩码',
+          trigger: 'blur'
+        }]
+      }
     }
   },
   mounted() {
@@ -46,6 +60,18 @@ export default {
     // 获取数据
     getData() {
       this.loadData = true
+      _axios.send({
+        method: 'get',
+        url: _axios.ajaxAd.toUpdateWilteList,
+        params: { id: Api.UNITS.getQuery('id') },
+        done: ((res) => {
+          this.loadData = false
+          this.formInline = res.data || {}
+        }),
+        fail: () => {
+          this.loadData = false
+        }
+      })
     },
     // 提交表单
     submitForm(formName) {
@@ -53,15 +79,59 @@ export default {
         if (valid) {
           // 验证通过
           if (this.isUpdate) {
-
+            _axios.send({
+              method: 'post',
+              url: _axios.ajaxAd.toUpdateWilteListInfo,
+              data: Object.assign({ id: Api.UNITS.getQuery('id') }, this.formInline),
+              done: ((res) => {
+                if (res.status === 400) {
+                  this.formInline[res.data] = ''
+                  this.$refs.ruleForm.validateField([res.data])
+                } else {
+                  this.$router.push({ name: 'ipwhitelist' })
+                  setTimeout(() => {
+                    this.showMsgBox({
+                      type: 'success',
+                      message: '修改成功！'
+                    })
+                  }, 150)
+                }
+              })
+            })
           } else {
-
+            _axios.send({
+              method: 'post',
+              url: _axios.ajaxAd.toAddWilteListInfo,
+              data: this.formInline,
+              done: ((res) => {
+                if (res.status === 400) {
+                  this.formInline[res.data] = ''
+                  this.$refs.ruleForm.validateField([res.data])
+                } else {
+                  this.$router.push({ name: 'ipwhitelist' })
+                  setTimeout(() => {
+                    this.showMsgBox({
+                      type: 'success',
+                      message: '新增成功！'
+                    })
+                  }, 150)
+                }
+              })
+            })
           }
         } else {
           Api.UNITS.showMsgBox()
           return false;
         }
       })
+    },
+    // 以下为验证
+    ipValidator(rule, value, callback) {
+      if (!value || Api.UNITS.validatorIP(value)) {
+        callback()
+      } else {
+        callback(new Error('IP格式不正确'))
+      }
     }
   }
 }

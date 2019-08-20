@@ -30,8 +30,8 @@ export default {
       default: {}
     }
   },
-  created() {
-
+  mounted() {
+    
   },
   methods: {
 

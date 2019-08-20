@@ -38,7 +38,6 @@ const Dev = r => require.ensure([], () => r(require('@/components/_11_card/dev.v
 const Log = r => require.ensure([], () => r(require('@/components/_11_card/log.vue')), 'chunk2')
 // 配置管理
 const Ipwhitelist = r => require.ensure([], () => r(require('@/components/_12_config/ipwhitelist.vue')), 'chunk2')
-const Remind = r => require.ensure([], () => r(require('@/components/_12_config/remind.vue')), 'chunk2')
 
 // 这里面试所有的配置，后续根据权限动态删除一些路由
 let menuRoute = {
@@ -206,10 +205,6 @@ let menuRoute = {
       path: 'ipwhitelist',
       name: 'ipwhitelist',
       component: Ipwhitelist
-    }, {
-      path: 'remind',
-      name: 'remind',
-      component: Remind
     }]
   }]
 }

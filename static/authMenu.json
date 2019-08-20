@@ -319,14 +319,6 @@
       "level": 3,
       "seqNum": 2,
       "iconUrl": ""
-    },
-    {
-      "rescCode": "",
-      "resName": "提醒策略配置",
-      "resUrl": "remind",
-      "level": 3,
-      "seqNum": 3,
-      "iconUrl": ""
     }],
     "checkedFlag": 0,
     "childNum": null

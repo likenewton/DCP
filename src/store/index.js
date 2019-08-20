@@ -12,6 +12,7 @@ const state = {
   authMenu: [], // 授权可以展示的菜单
   authButtons: {}, // 授权页面中的功能按钮权限
   orgs: [],
+  redis: [], // 缓存地址列表
 }
 
 export default new Vuex.Store({

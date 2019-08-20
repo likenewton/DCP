@@ -206,6 +206,10 @@ module.exports = {
   validatorPhoneNumber(value) { // 验证电话号码
     return /^1[3|4|5|6|8|9][0-9]\d{8}$/.test(value)
   },
+
+  validatorIP(value) { // 验证IP地址
+    return /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(value)
+  },
   // === 格式化 end ===
 
   // === 提示、显示 start ===

@@ -7,7 +7,7 @@
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-input @keyup.enter.native="searchData" placeholder="品牌名称"></el-input>
+            <el-input v-model="formInline.brandName" @keyup.enter.native="searchData" placeholder="品牌名称"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchData">查询</el-button>

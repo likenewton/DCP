@@ -12,17 +12,13 @@ export default {
     return {}
   },
   created() {
-    // this.getAuthButtons()
-    // this.getCardTypes()
     this.getOrgs()
-    // this.getNotifySelect()
-    // this.getMonths()
-    // this.getPayMethodSelect()
-    // this.getLiveMonth()
+    this.getRedis()
   },
   methods: {
     ...mapActions([
       'getAuthButtons',
+      'getRedis',
       'getOrgs',
     ])
   }

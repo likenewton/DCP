@@ -1,6 +1,6 @@
 <template>
   <div class="bluetooth-container">
-    <el-card class="clearfix" shadow="never">
+    <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
           <el-button size="small" type="success" @click="$router.push({name:'addipwlist'})">添加Ip白名单配置</el-button>
@@ -8,7 +8,7 @@
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-input @keyup.enter.native="searchData" placeholder="IP"></el-input>
+            <el-input v-model="formInline.queryIP" @keyup.enter.native="searchData" placeholder="IP"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchData">查询</el-button>
@@ -18,19 +18,33 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="" label="IP" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="子网掩码" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="状态" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="描述" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="创建人" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="创建时间" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="修改人" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="修改时间" sortable="custom"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="230">
+          <el-table-column prop="ip" label="IP" sortable="custom" min-width="130">
+            <template slot-scope="scope">{{scope.row.ip}}</template>
+          </el-table-column>
+          <el-table-column prop="subnet_mask" label="子网掩码" sortable="custom" min-width="130">
+            <template slot-scope="scope">{{scope.row.subnet_mask}}</template>
+          </el-table-column>
+          <el-table-column prop="status" label="状态" sortable="custom" width="80">
             <template slot-scope="scope">
-              <el-button type="text" class="text_editor" @click="$router.push({name:'addipwlist',query:{type:'update'}})">修改</el-button>
-              <el-button type="text" class="text_danger" @click="disabled">失效</el-button>
-              <el-button type="text" class="text_danger" @click="deleteSingle">删除</el-button>
+              <span v-if="scope.row.status === 1" class="text_success bold">生效</span>
+              <span v-else class="text_danger bold">失效</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="desc" label="描述" sortable="custom" min-width="160"></el-table-column>
+          <el-table-column prop="create_by" label="创建人" sortable="custom" width="100"></el-table-column>
+          <el-table-column prop="create_datetime" label="创建时间" sortable="custom" width="160">
+            <template slot-scope="scope">{{scope.row.create_datetime | formatDate}}</template>
+          </el-table-column>
+          <el-table-column prop="update_by" label="修改人" sortable="custom" width="100"></el-table-column>
+          <el-table-column prop="update_datetime" label="修改时间" sortable="custom" width="160">
+            <template slot-scope="scope">{{scope.row.update_datetime | formatDate}}</template>
+          </el-table-column>
+          <el-table-column fixed="right" label="操作" width="150">
+            <template slot-scope="scope">
+              <el-button type="text" class="text_editor" @click="$router.push({name:'addipwlist',query:{type:'update',id:scope.row.id}})">修改</el-button>
+              <el-button v-if="scope.row.status === 1" type="text" class="text_danger" @click="disabled(scope)">失效</el-button>
+              <el-button v-else-if="scope.row.status === 0" type="text" class="text_success" @click="disabled(scope)">生效</el-button>
+              <el-button type="text" class="text_danger" @click="deleteSingle(scope)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -38,37 +52,6 @@
         </el-pagination>
       </el-row>
     </el-card>
-    <!-- 高级查询 -->
-    <el-dialog title="高级查询" :visible.sync="searchVipVisible" width="750px" :close-on-click-modal="false">
-      <div slot>
-        <div class="searchForm_vip" style="width:100%;overflow: auto">
-          <el-form :inline="false" :model="formInline" size="small" label-width="110px">
-            <el-form-item label="应用包名">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="应用名称">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="版本名称">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="版本代码">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="指定经销商">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="是否核心应用">
-              <el-select filterable clearable placeholder="请选择"></el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="searchData">查询</el-button>
-              <el-button type="warning" @click="resetData">重置</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -82,25 +65,53 @@ export default {
     this.getData()
   },
   methods: {
-    getData() {},
-    disabled() {
+    getData() {
+      Api.UNITS.getListData({
+        vue: this,
+        url: _axios.ajaxAd.getIpwhiteInfo
+      })
+    },
+    disabled(scope) {
       this.showCfmBox({
-        message: '确定使记录失效吗？',
+        message: scope.row.status === 1 ? '确定变更状态为失效吗？' : '确定变更状态为有效吗？',
         cb: () => {
-          this.showMsgBox({
-            type: 'success',
-            message: '操作成功！'
+          _axios.send({
+            method: 'get',
+            url: _axios.ajaxAd.toUpdateIPWhiteListStatus,
+            params: {
+              id: scope.row.id,
+              status: scope.row.status === 1 ? 0 : 1
+            },
+            done: ((res) => {
+              this.getData()
+              setTimeout(() => {
+                this.showMsgBox({
+                  type: 'success',
+                  message: '操作成功！'
+                })
+              }, 150)
+            })
           })
         }
       })
     },
-    deleteSingle() {
+    deleteSingle(scope) {
       this.showCfmBox({
         message: '确定删除该记录吗？',
         cb: () => {
-          this.showMsgBox({
-            type: 'success',
-            message: '操作成功！'
+          _axios.send({
+            method: 'get',
+            url: _axios.ajaxAd.toDelIPWhiteList,
+            params: { id: scope.row.id },
+            done: ((res) => {
+              this.getData()
+              setTimeout(() => {
+                this.showMsgBox({
+                  type: 'success',
+                  message: '操作成功！'
+                })
+              }, 150)
+            })
           })
         }
       })

@@ -5,6 +5,7 @@ const SET_AUTHMENU = 'SET_AUTHMENU' // 设置菜单权限列表
 const SET_AUTHBUTTONS = 'SET_AUTHBUTTONS' // 设置授权页面中的功能按钮权限
 const SET_ISLOGIN = 'SET_ISLOGIN' // 是否登录
 const SET_ORGS = 'SET_ORGS' // 机构列表
+const SET_REDIS = 'SET_REDIS' // 缓存地址
 
 export default {
   [SET_ASIDECOLLAPSE](state, paras) {
@@ -27,5 +28,8 @@ export default {
   },
   [SET_ORGS](state, paras) {
     state.orgs = paras.orgs
+  },
+  [SET_REDIS](state, paras) {
+    state.redis = paras.redis
   }
 }

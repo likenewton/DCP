@@ -215,9 +215,11 @@ export default {
             'Content-Type': 'multipart/form-data'
           },
           done: ((res) => {
-            this.resultData = res.data || []
             this.importSnVisible = false
             this.$refs.result.show()
+            this.$nextTick(() => {
+              this.resultData = res.data || []
+            })
             setTimeout(() => {
               this.showMsgBox({
                 type: 'success',

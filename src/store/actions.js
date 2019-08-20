@@ -24,13 +24,23 @@ export default {
       })
     })
   },
-  // 获取机构名称/公司名称
+  // 获取机构类表
   getOrgs(context) {
     _axios.send({
       method: 'get',
       url: _axios.ajaxAd.getOrgs,
       done: ((res) => {
         context.commit('SET_ORGS', { orgs: res.data }) // 保存功能按钮权限
+      })
+    })
+  },
+  // 获取缓存地址
+  getRedis(context) {
+    _axios.send({
+      method: 'get',
+      url: _axios.ajaxAd.getRedisJson,
+      done: ((res) => {
+        context.commit('SET_REDIS', { redis: res.data.redisAddress }) // 保存功能按钮权限
       })
     })
   }

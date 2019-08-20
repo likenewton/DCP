@@ -48,9 +48,6 @@ export default {
       default: '800px'
     }
   },
-  created() {
-
-  },
   methods: {
     show() {
       this.visible = true
