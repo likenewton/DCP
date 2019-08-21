@@ -42,7 +42,10 @@ export default {
           _axios.send({
             method: 'get',
             url: _axios.ajaxAd.refresh,
-            params: { connectString: this.getParams(command) },
+            params: {
+              type: this.routeName,
+              connectString: this.getParams(command),
+            },
             done: () => {
               this.loading.close()
               this.showMsgBox({

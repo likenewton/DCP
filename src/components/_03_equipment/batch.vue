@@ -92,53 +92,55 @@
     </el-dialog>
     <!-- 查看批次详细信息 -->
     <el-drawer title="查看批次详细信息" :visible.sync="isShowBatchDetail" direction="rtl" size="500px" :wrapperClosable="true">
-      <el-form class="check-form" :inline="false" :model="batchDetailData" size="small" label-width="120px" v-loading="detailLoadData">
-        <el-form-item label="批次编号：">
-          <span>{{batchDetailData.batchSn}}</span>
-        </el-form-item>
-        <el-form-item label="批次名称：">
-          <span>{{batchDetailData.batchName}}</span>
-        </el-form-item>
-        <el-form-item label="批次备注：">
-          <span>{{batchDetailData.batchMemo}}</span>
-        </el-form-item>
-        <el-form-item label="发货人姓名：">
-          <span>{{batchDetailData.batchShipper}}</span>
-        </el-form-item>
-        <el-form-item label="出货时间：">
-          <span>{{batchDetailData.outTime | formatDate('yyyy-mm-dd')}}</span>
-        </el-form-item>
-        <el-form-item label="机构：">
-          <span>{{batchDetailData.orgnName}}</span>
-        </el-form-item>
-        <el-form-item label="销往省份：">
-          <span>{{batchDetailData.proviceName}}</span>
-        </el-form-item>
-        <el-form-item label="销往城市：">
-          <span>{{batchDetailData.cityName}}</span>
-        </el-form-item>
-        <el-form-item label="销往区县：">
-          <span>{{batchDetailData.districtName}}</span>
-        </el-form-item>
-        <el-form-item label="提货人姓名：">
-          <span>{{batchDetailData.pickerName}}</span>
-        </el-form-item>
-        <el-form-item label="提货人电话：">
-          <span>{{batchDetailData.pickerPhone}}</span>
-        </el-form-item>
-        <el-form-item label="提货人邮箱：">
-          <span>{{batchDetailData.pickerEmail}}</span>
-        </el-form-item>
-        <el-form-item label="硬件版本：">
-          <span>{{batchDetailData.hardVersionName}}</span>
-        </el-form-item>
-        <el-form-item label="软件版：">
-          <span>{{batchDetailData.softVersionName}}</span>
-        </el-form-item>
-        <el-form-item label="创建时间：">
-          <span>{{batchDetailData.timeAdded | formatDate}}</span>
-        </el-form-item>
-      </el-form>
+      <div class="para-wrapper" v-shadow:[isShowBatchDetail]>
+        <el-form class="check-form" :inline="false" :model="batchDetailData" size="small" label-width="120px" v-loading="detailLoadData">
+          <el-form-item label="批次编号：">
+            <span>{{batchDetailData.batchSn}}</span>
+          </el-form-item>
+          <el-form-item label="批次名称：">
+            <span>{{batchDetailData.batchName}}</span>
+          </el-form-item>
+          <el-form-item label="批次备注：">
+            <span>{{batchDetailData.batchMemo}}</span>
+          </el-form-item>
+          <el-form-item label="发货人姓名：">
+            <span>{{batchDetailData.batchShipper}}</span>
+          </el-form-item>
+          <el-form-item label="出货时间：">
+            <span>{{batchDetailData.outTime | formatDate('yyyy-mm-dd')}}</span>
+          </el-form-item>
+          <el-form-item label="机构：">
+            <span>{{batchDetailData.orgnName}}</span>
+          </el-form-item>
+          <el-form-item label="销往省份：">
+            <span>{{batchDetailData.proviceName}}</span>
+          </el-form-item>
+          <el-form-item label="销往城市：">
+            <span>{{batchDetailData.cityName}}</span>
+          </el-form-item>
+          <el-form-item label="销往区县：">
+            <span>{{batchDetailData.districtName}}</span>
+          </el-form-item>
+          <el-form-item label="提货人姓名：">
+            <span>{{batchDetailData.pickerName}}</span>
+          </el-form-item>
+          <el-form-item label="提货人电话：">
+            <span>{{batchDetailData.pickerPhone}}</span>
+          </el-form-item>
+          <el-form-item label="提货人邮箱：">
+            <span>{{batchDetailData.pickerEmail}}</span>
+          </el-form-item>
+          <el-form-item label="硬件版本：">
+            <span>{{batchDetailData.hardVersionName}}</span>
+          </el-form-item>
+          <el-form-item label="软件版：">
+            <span>{{batchDetailData.softVersionName}}</span>
+          </el-form-item>
+          <el-form-item label="创建时间：">
+            <span>{{batchDetailData.timeAdded | formatDate}}</span>
+          </el-form-item>
+        </el-form>
+      </div>
     </el-drawer>
     <!-- 上传文件结果 -->
     <v-result ref="result" :resultData="resultData" label="设备SN号" tProp="sn"></v-result>
@@ -166,6 +168,7 @@ export default {
     }
   },
   mounted() {
+    this.list.data = []
     this.getData()
   },
   methods: {
@@ -235,7 +238,7 @@ export default {
       this.$refs.upload.clearFileList()
     },
     showPriview() { // 展示.txt模板文件
-      Api.UNITS.showTxT('deviceSn.txt', '1060111802001035#1060111802001036#1060111802001037')
+      Api.UNITS.showTxT('deviceSn.txt', '1060111802001035\r\n1060111802001036\r\n1060111802001037')
     },
     showImportDevBatchSn(scope) {
       this.importSnVisible = true

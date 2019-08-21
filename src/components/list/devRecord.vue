@@ -307,7 +307,7 @@ import BMap from 'BMap'
 export default {
   data() {
     return {
-      tabIndex: '3',
+      tabIndex: '0',
       imgH: 0,
       map: null,
       isShowPara: false,
@@ -716,11 +716,6 @@ export default {
     }
   }
 
-}
-
-.para-wrapper {
-  overflow: auto;
-  height: calc(100% - 170px) !important;
 }
 
 </style>

@@ -393,6 +393,7 @@ export default {
     }
   },
   mounted() {
+    this.list.data = []
     this.checkGet()
     this.getData()
     this.getBrands()
@@ -528,7 +529,7 @@ export default {
       Api.UNITS.exportExcel(this.exportType[type], this.formInline)
     },
     showPriview() { // 展示.txt模板文件
-      Api.UNITS.showTxT('ADAS.txt', '1060111802001035#1060111802001036#1060111802001037')
+      Api.UNITS.showTxT('ADAS.txt', '1060111802001035\r\n1060111802001036\r\n1060111802001037')
     },
     // === 设备查询 end ===
     // === 操作 start ===

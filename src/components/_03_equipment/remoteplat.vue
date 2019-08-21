@@ -81,6 +81,7 @@ export default {
     return {}
   },
   mounted() {
+    this.list.data = []
     this.getData()
   },
   methods: {

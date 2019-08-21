@@ -250,3 +250,12 @@ div[_echarts_instance_] {
     margin-bottom: 5px;
   }
 }
+
+.el-drawer__body {
+  height: 100%;
+
+  .para-wrapper {
+    overflow: auto;
+    height: calc(100% - 50px) !important;
+  }
+}

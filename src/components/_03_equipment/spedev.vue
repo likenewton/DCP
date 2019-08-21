@@ -75,6 +75,7 @@ export default {
     }
   },
   mounted() {
+    this.list.data = []
     this.getData()
   },
   methods: {
@@ -126,7 +127,7 @@ export default {
       this.$refs.upload.clearFileList()
     },
     showPriview() { // 展示.txt模板文件
-      Api.UNITS.showTxT('deviceSn.txt', '1060111802001035#1060111802001036#1060111802001037')
+      Api.UNITS.showTxT('deviceSn.txt', '1060111802001035\r\n1060111802001036\r\n1060111802001037')
     },
     // === 文件导入 end ===
   },

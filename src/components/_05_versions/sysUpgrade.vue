@@ -1,6 +1,6 @@
 <template>
-  <div class="bluetooth-container">
-    <el-card class="clearfix" shadow="never">
+  <div class="devInfo-container">
+    <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
           <el-button size="small" type="success" @click="$router.push({name: 'addupinfo'})">添加升级包</el-button>
@@ -8,27 +8,38 @@
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-select filterable clearable placeholder="机构列表"></el-select>
+            <el-select v-model="formInline.organCode" @change="searchData" filterable clearable placeholder="机构列表">
+              <el-option v-for="(item, index) in orgs" :key="index" :label="item.label" :value="item.value"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="">查询</el-button>
+            <el-button type="primary" @click="searchData">查询</el-button>
             <el-button type="warning" @click="resetData">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="a" label="机构名称" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="硬件版本号" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="软件版本号 " sortable="custom"></el-table-column>
-          <el-table-column prop="" label="适合版本号" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="版本数量" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="升级方式" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="发布时间" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="升级包地址" sortable="custom"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="80">
+          <el-table-column prop="organCode" label="机构名称" sortable="custom" min-width="140">
+            <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
+          </el-table-column>
+          <el-table-column prop="hardCode" label="硬件版本号" sortable="custom" width="130"></el-table-column>
+          <el-table-column prop="softCode" label="软件版本号 " sortable="custom" width="130"></el-table-column>
+          <el-table-column prop="softFor" label="适合版本号" sortable="custom" min-width="150"></el-table-column>
+          <el-table-column prop="packCount" label="版本数量" sortable="custom" align-right="right" width="88"></el-table-column>
+          <el-table-column prop="isForced" label="升级方式" sortable="custom" width="95">
             <template slot-scope="scope">
-              <el-button type="text" @click="$router.push({name:'hisVersions'})">版本</el-button>
+              <span class="text_success bold" v-if="scope.row.isForced === 1">强制升级</span>
+              <span class="text_danger bold" v-if="scope.row.isForced === 0">非强制升级</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="timePublish" label="发布时间" sortable="custom" width="90">
+            <template slot-scope="scope">{{scope.row.timePublish | formatDate('yyy-mm-dd')}}</template>
+          </el-table-column>
+          <el-table-column prop="packUrl" label="升级包地址" sortable="custom" min-width="180"></el-table-column>
+          <el-table-column fixed="right" label="操作" width="60">
+            <template slot-scope="scope">
+              <el-button type="text" @click="$router.push({name:'hisVersions',query:{organCode:scope.row.organCode}})">版本</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -36,81 +47,25 @@
         </el-pagination>
       </el-row>
     </el-card>
-    <!-- 高级查询 -->
-    <el-dialog title="高级查询" :visible.sync="searchVipVisible" width="750px" :close-on-click-modal="false">
-      <div slot>
-        <div class="searchForm_vip" style="width:100%;overflow: auto">
-          <el-form :inline="false" :model="formInline" size="small" label-width="110px">
-            <el-form-item label="应用包名">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="应用名称">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="版本名称">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="版本代码">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="指定经销商">
-              <el-input placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="是否核心应用">
-              <el-select filterable clearable placeholder="请选择"></el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="searchData">查询</el-button>
-              <el-button type="warning" @click="resetData">重置</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
 import Api from 'assets/js/api.js'
 export default {
   data() {
-    return {
-      list: {
-        data: [{
-          a: 1
-        }],
-        pagesize: Api.STATIC.pageSizes[2],
-        currentPage: 1,
-        total: 0,
-      },
-    }
+    return {}
   },
   mounted() {
-
+    this.list.data = []
+    this.getData()
   },
   methods: {
-    getData() {},
-    disabled() {
-      this.showCfmBox({
-        message: '确定使记录失效吗？',
-        cb: () => {
-          this.showMsgBox({
-            type: 'success',
-            message: '操作成功！'
-          })
-        }
+    getData() {
+      Api.UNITS.getListData({
+        vue: this,
+        url: _axios.ajaxAd.getPageOta
       })
     },
-    deleteSingle() {
-      this.showCfmBox({
-        message: '确定删除该记录吗？',
-        cb: () => {
-          this.showMsgBox({
-            type: 'success',
-            message: '操作成功！'
-          })
-        }
-      })
-    }
   }
 }
 
