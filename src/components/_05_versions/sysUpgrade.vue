@@ -29,8 +29,9 @@
           <el-table-column prop="packCount" label="版本数量" sortable="custom" align-right="right" width="88"></el-table-column>
           <el-table-column prop="isForced" label="升级方式" sortable="custom" width="95">
             <template slot-scope="scope">
-              <span class="text_success bold" v-if="scope.row.isForced === 1">强制升级</span>
               <span class="text_danger bold" v-if="scope.row.isForced === 0">非强制升级</span>
+              <span class="text_success bold" v-if="scope.row.isForced === 1">强制升级</span>
+              <span class="text_warning bold" v-if="scope.row.isForced === 2">静默安装</span>
             </template>
           </el-table-column>
           <el-table-column prop="timePublish" label="发布时间" sortable="custom" width="90">

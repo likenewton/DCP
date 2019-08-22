@@ -30,6 +30,8 @@ class AXIOS {
       getRedisJson: '/mpk_app/api/simCardTips/getRedisJson', // 缓存地址
       getCustomerNameList: '/mpk_app/api/simCardTips/customerNameList', // 提醒策略-客户名称
       getCustomerProjectNameList: '/mpk_app/api/simCardTips/customerProjectNameList', // 提醒策略-项目名称
+      getCarTypeJson: '/mpk_app/api/ota/getCarTypeJson', // 厂商-车型-车系
+      getNewQueryVersionSoftFor: '/mpk_app/api/version/newQueryVersionSoftFor', // 系统升级-新增-合适的版本号
       // list
       getDeviceBrand: '/mpk_app/api/deviceBrand/pageDeviceBrand',
       getDeviceList: '/mpk_app/api/device/devicelistByOrg',
@@ -57,6 +59,8 @@ class AXIOS {
       getPageJspaerLog: '/mpk_app/api/jspaerLog/pageJspaerLog', // 日志管理
       getPageOta: '/mpk_app/api/ota/pageOta', // 系统升级
       getOtaDetail: '/mpk_app/api/ota/otaDetail', // 系统版本-实例升级
+      getPageOtaDevice: '/mpk_app/api/otaDevice/pageOtaDevice', // 设备升级记录
+      getListVersion: '/mpk_app/api/version/listVersion', // 版本字典
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录
@@ -67,6 +71,7 @@ class AXIOS {
       getObdInfo: '/mpk_app/api/obd/getObdInfo', // 设备查询-OBD参数查询
       getViewJspaerLog: '/mpk_app/api/jspaerLog/viewJspaerLog', // 日志管理-详情
       getOtaHistoryDetail: '/mpk_app/api/ota/otaHistoryDetail', // 系统升级-历史版本-详情
+      updateOta: '/mpk_app/api/ota/updateOta', // 系统升级-历史版本-修改
       // form
       updateDeviceBrand: '/mpk_app/api/deviceBrand/updateDeviceBrand', // 品牌修改
       addDeviceBrand: '/mpk_app/api/deviceBrand/addDeviceBrand',  //品牌新增
@@ -81,6 +86,8 @@ class AXIOS {
       toAddWilteListInfo: '/mpk_app/api/ipwhitelist/toAddWilteListInfo', // IP白名单新增
       toUpdateWilteList: '/mpk_app/api/ipwhitelist/toUpdateWilteList', // IP白名单修改查询
       toUpdateWilteListInfo: '/mpk_app/api/ipwhitelist/toUpdateWilteListInfo', // IP白名单修改
+      toEditVersionPage: '/mpk_app/api/version/toEditVersionPage', // 版本字典-修改查询
+      updateVersion: '/mpk_app/api/version/updateVersion', // 版本字典-修改
       // diabled
       brandChangeState: '/mpk_app/api/deviceBrand/changeState',
       toUpdIsDisable: '/mpk_app/api/device/toUpdIsDisable',  // 设备查询 有效、失效
@@ -106,6 +113,7 @@ class AXIOS {
       importSpecialDeviceSn: '/mpk_app/api/deviceBatchSpecial/importSpecialDeviceSn', // 特殊设备处理-导入
       importDeviceBatchSn: '/mpk_app/api/deviceBatch/importDeviceSn', // 批次管理-导入
       importDeviceImei: '/mpk_app/api/deviceImei/importDeviceImei', // 设备IMEI上传
+      importOta: '/mpk_app/api/ota/addOta', // 系统升级-添加升级包
       // 缓存管理
       refresh: '/mpk_app/api/cache/refresh', // 同步缓存
       carBrandsSync2Redis: '/mpk_app/api/cache/carBrandsSync2Redis', // 汽车品牌同步redis

@@ -10,6 +10,8 @@
   </div>
 </template>
 <script>
+import Api from 'assets/js/api.js'
+
 export default {
   name: 'vUpload',
   data() {
@@ -21,6 +23,10 @@ export default {
     format: {
       type: Array,
       default: []
+    },
+    size: {
+      type: Number,
+      default: Number.MAX_SAFE_INTEGER // 单位：M
     },
     hasPreview: {
       type: Boolean,
@@ -45,17 +51,26 @@ export default {
     uploadHandleChange(file, fileList) {
       this.fileList = fileList
       let type = file.name
+      let size = file.size / (1024 * 1024) // 单位：M
       if (!this.validatorFileType(type)) {
         this.showMsgBox({
           type: 'error',
-          message: `${this.format_upload__tip}！`
+          message: '上传文件格式不正确！'
+        })
+        this.fileList = []
+        return false
+      }
+      if (!this.validatorFileSize(size)) {
+        this.showMsgBox({
+          type: 'error',
+          message: `上传文件大小不能超过${Api.UNITS.formatFlowUnit(this.size, 0)}！`
         })
         this.fileList = []
         return false
       }
     },
     // 验证上传的文件是否符合要求
-    validatorFileType(type) {
+    validatorFileType(type) { // 格式验证
       if (this.format.length === 0) return true
       let valid = false
       this.format.forEach((v) => {
@@ -66,6 +81,9 @@ export default {
       })
       return valid
     },
+    validatorFileSize(size) { // 大小验证
+      if (!this.size || (size <= this.size)) return true
+    },
     clearFileList() {
       this.fileList = []
     },
@@ -75,14 +93,22 @@ export default {
   },
   computed: {
     format_upload__tip() {
-      if (this.format.length === 0) {
+      if (this.format.length === 0 && !this.size) {
         return false
       }
-      let str = '只能上传'
-      this.format.forEach((v) => {
-        str += v + ' '
-      })
-      return str += '格式文件'
+      let str = ''
+      if (this.format.length > 0) {
+        str = '只能上传'
+        this.format.forEach((v) => {
+          str += v + ' '
+        })
+        str += '格式文件'
+      }
+      if (this.size) {
+        if (this.format.length > 0) str += '、'
+        str += `大小不能超过${Api.UNITS.formatFlowUnit(this.size, 0)}`
+      }
+      return str
     }
   }
 }

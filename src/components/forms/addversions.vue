@@ -4,31 +4,31 @@
       <span>版本信息</span>
     </div>
     <el-form class="editor-form" :inline="false" :model="formInline" :rules="rules" ref="ruleForm" label-width="100px" size="small">
-      <el-form-item prop="" v-if="pageType === 'upgrade'">
+      <el-form-item prop="beforeVersionId" v-if="pageType === 'upgrade'">
         <span slot="label">旧版本号：</span>
         <el-input placeholder="旧版本号" disabled></el-input>
       </el-form-item>
-      <el-form-item prop="">
+      <el-form-item prop="versionName">
         <span slot="label">版本号：</span>
-        <el-input placeholder="请输入"></el-input>
+        <el-input v-model="formInline.versionName" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item prop="">
+      <el-form-item prop="versionType">
         <span slot="label">版本类型：</span>
-        <el-select filterable placeholder="请选择" :disabled="pageType === 'update' || pageType === 'upgrade'">
+        <el-select v-model="formInline.versionType" filterable placeholder="请选择" :disabled="pageType === 'update' || pageType === 'upgrade'">
           <el-option label="硬件" :value="0"></el-option>
           <el-option label="软件" :value="1"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="status">
         <span slot="label">启用状态：</span>
-        <el-radio-group>
-          <el-radio :label="0">启用</el-radio>
-          <el-radio :label="1">停用</el-radio>
+        <el-radio-group v-model="formInline.status">
+          <el-radio :label="1">启用</el-radio>
+          <el-radio :label="0">停用</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item prop="">
+      <el-form-item prop="remark">
         <span slot="label">备注：</span>
-        <el-input type="textarea" rows="4" placeholder="请输入"></el-input>
+        <el-input v-model="formInline.remark" type="textarea" rows="4" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item prop="">
         <span slot="label">机构列表：</span>
@@ -52,7 +52,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" type="warning" @click="handleChoiceChange([])">清 空</el-button>
-        <el-button size="small" type="warning" @click="handleChoiceChange(formInline.orgpos)">重 选</el-button>
+        <el-button size="small" type="warning" @click="handleChoiceChange(formInline.checkboxValArr)">重 选</el-button>
         <el-button size="small" type="primary" @click="makesureChoice">保 存</el-button>
       </div>
     </el-dialog>
@@ -71,21 +71,18 @@ export default {
       isIndeterminate: false, // 是否半选
       orgpos_name_arr: [],
       orgpos_name_arr_tmp: [],
-      rules: {},
-      // 假数据
-      orgs: [{
-        label: '云智易联 > 测试机构1',
-        value: 1
-      }, {
-        label: '云智易联 > 测试机构2',
-        value: 2
-      }, {
-        label: '威仕特 > CM01大屏车机-威仕特 CM1DPCJ-WST',
-        value: 3
-      }, {
-        label: '云智易联 > 测试机构4',
-        value: 4
-      }]
+      rules: {
+        versionName: [{
+          required: true,
+          message: '请填写版本号',
+          trigger: 'blur'
+        }],
+        status: [{
+          required: true,
+          message: '请填写版本号',
+          trigger: 'blur'
+        }]
+      }
     }
   },
   mounted() {
@@ -131,9 +128,19 @@ export default {
     // 获取数据
     getData() {
       this.loadData = true
-      setTimeout(() => {
-        this.loadData = false
-      }, 500)
+      _axios.send({
+        method: 'get',
+        url: _axios.ajaxAd.toEditVersionPage,
+        params: { id: Api.UNITS.getQuery('id') },
+        done: ((res) => {
+          this.loadData = false
+          this.formInline = res.data || {}
+          this.formInline.checkboxValArr = this.orgpos_name_arr_tmp = res.data.checkboxVal ? res.data.checkboxVal.split(',') : []
+        }),
+        fail: () => {
+          this.loadData = false
+        }
+      })
     },
     // 重置表单
     resetForm(formName) {
@@ -141,13 +148,31 @@ export default {
       this.formInline = {}
       this.orgpos_name_arr = []
       this.orgpos_name_arr_tmp = []
-      // this.isUpdate && this.getData()
+      if (this.pageType === 'update') {
+        this.getData()
+      }
     },
     // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-
+          if (this.pageType === 'update') {
+            this.formInline.checkboxVal = this.orgpos_name_arr_tmp.join(',')
+            _axios.send({
+              method: 'post',
+              url: _axios.ajaxAd.updateVersion,
+              data: this.formInline,
+              done: ((res) => {
+                this.$router.push({ name: 'dictionary' })
+                setTimeout(() => {
+                  this.showMsgBox({
+                    type: 'success',
+                    message: '修改成功！'
+                  })
+                }, 150)
+              })
+            })
+          }
         } else {
           Api.UNITS.showMsgBox()
           return false;

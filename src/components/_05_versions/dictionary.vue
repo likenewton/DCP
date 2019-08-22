@@ -1,6 +1,6 @@
 <template>
   <div class="dictionary-container">
-    <el-card class="clearfix" shadow="never">
+    <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
           <el-button size="small" type="success" @click="$router.push({name:'addversions'})">添加版本</el-button>
@@ -12,41 +12,18 @@
         </el-form>
       </el-row>
       <el-row :gutter="20" v-shadow:[collapse] class="collapse-wrapper" :style="{height: maxCollapseHeight + 'px'}">
-        <div class="nodata" v-show="dictionary_0.length === 0">暂无数据</div>
-        <el-col :span="8" v-if="dictionary_0.length > 0">
-          <el-collapse accordion @change="handleCollapseChange">
-            <el-collapse-item :title="dir.data[0].text" v-for="(dir, index) in dictionary_0" :key="index">
+        <div class="nodata" v-show="dictionary.length === 0">暂无数据</div>
+        <el-col :span="8" v-if="dictionary.length > 0" v-for="(group, index) in dictionaryDispatch" :key="index">
+          <el-collapse accordion @change="handleCollapseChange" v-if="group.length > 0">
+            <el-collapse-item v-for="(dir, index) in group" :key="index">
+              <template slot="title">
+                <span class="bold" style="color: #666">{{dir[0].versionName}}</span>
+                <span v-if="dir[0].versionType === 0" class="bold" style="color: #666">&nbsp;[硬件]</span>
+                <span v-if="dir[0].versionType === 1" class="bold" style="color: #666">&nbsp;[软件]</span>
+              </template>
               <el-timeline>
-                <el-timeline-item v-for="(item, index) in dir.data" :key="index">
-                  <span class="text">{{item.text}}</span>
-                  <el-button type="text" @click="editorVersions(item)"> [修改]</el-button>
-                  <el-button v-if="index === 0" type="text" @click="upgradeVersions(item)"> [升级]</el-button>
-                  <i v-if="index === 0" class="news iconfont-zuixinnew3"></i>
-                </el-timeline-item>
-              </el-timeline>
-            </el-collapse-item>
-          </el-collapse>
-        </el-col>
-        <el-col :span="8" v-if="dictionary_1.length > 0">
-          <el-collapse accordion @change="handleCollapseChange">
-            <el-collapse-item :title="dir.data[0].text" v-for="(dir, index) in dictionary_1" :key="index">
-              <el-timeline>
-                <el-timeline-item v-for="(item, index) in dir.data" :key="index">
-                  <span class="text">{{item.text}}</span>
-                  <el-button type="text" @click="editorVersions(item)"> [修改]</el-button>
-                  <el-button v-if="index === 0" type="text" @click="upgradeVersions(item)"> [升级]</el-button>
-                  <i v-if="index === 0" class="news iconfont-zuixinnew3"></i>
-                </el-timeline-item>
-              </el-timeline>
-            </el-collapse-item>
-          </el-collapse>
-        </el-col>
-        <el-col :span="8" v-if="dictionary_2.length > 0">
-          <el-collapse accordion @change="handleCollapseChange">
-            <el-collapse-item :title="dir.data[0].text" v-for="(dir, index) in dictionary_2" :key="index">
-              <el-timeline>
-                <el-timeline-item v-for="(item, index) in dir.data" :key="index">
-                  <span class="text">{{item.text}}</span>
+                <el-timeline-item v-for="(item, index) in dir" :key="index">
+                  <span class="text">{{item.versionName}}</span>
                   <el-button type="text" @click="editorVersions(item)"> [修改]</el-button>
                   <el-button v-if="index === 0" type="text" @click="upgradeVersions(item)"> [升级]</el-button>
                   <i v-if="index === 0" class="news iconfont-zuixinnew3"></i>
@@ -69,9 +46,7 @@ export default {
       maxCollapseHeight: Api.UNITS.maxTableHeight(259),
       boxShadow: '',
       dictionary: [], // 总数据
-      dictionary_0: [], // 分支一
-      dictionary_1: [], // 分支二
-      dictionary_2: [], // 分支三
+      dictionaryDispatch: [[], [], []]
     }
   },
   mounted() {
@@ -79,29 +54,19 @@ export default {
   },
   methods: {
     getData() {
-      // 模拟获取数据
-      for (var i = 0; i <= 50; i++) {
-        this.dictionary.push({
-          pid: 1,
-          data: [{
-            ntid: 1,
-            text: `S1.k86m.13_${i}`
-          }, {
-            ntid: 2,
-            text: 'S1.k86m.12'
-          }, {
-            ntid: 3,
-            text: 'S1.k86m.11'
-          }, {
-            ntid: 4,
-            text: 'S1.k86m.10'
-          }, {
-            ntid: 5,
-            text: 'S1.k86m.09'
-          }]
-        })
-      }
-      this.dispatch(this.dictionary)
+      this.loadData = true
+      _axios.send({
+        method: 'get',
+        url: _axios.ajaxAd.getListVersion,
+        done: ((res) => {
+          this.loadData = false
+          this.dictionary = res.data || []
+          this.dispatch(this.dictionary)
+        }),
+        fail: () => {
+          this.loadData = true
+        }
+      })
     },
     handleCollapseChange() {
       // 这里之所有要加一个定时器是因为要在动画结束之后再进行shadow指令计算
@@ -112,7 +77,7 @@ export default {
     filterData() {
       if (this.versions) {
         let dictionary = this.dictionary.filter((v) => {
-          return v.data[0].text.indexOf(this.versions) > -1
+          return v[0].versionName.indexOf(this.versions) > -1
         })
         this.dispatch(dictionary)
       } else {
@@ -121,19 +86,18 @@ export default {
       return false
     },
     dispatch(data) {
-      this.dictionary_0 = []
-      this.dictionary_1 = []
-      this.dictionary_2 = []
+      this.dictionaryDispatch = [[], [], []]
       data.forEach((v, i) => {
         let group = i % 3
-        this[`dictionary_${group}`].push(v)
+        this.dictionaryDispatch[group].push(v)
       })
     },
     editorVersions(item) {
       this.$router.push({
         name: 'addversions',
         query: {
-          type: 'update'
+          type: 'update',
+          id: item.id
         }
       })
     },

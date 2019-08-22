@@ -170,6 +170,33 @@ module.exports = {
     return timeString;
   },
 
+  formatFlowUnit(count = 0, fix = 3, isHtmlStr = false) { // 格式化 流量M / G / T, 默认保留三位小数
+    count -= 0
+    let htmlStr = ''
+    if (isHtmlStr) {
+      if (isNaN(count) || count == '99999999') {
+        htmlStr = `<span style="font-weight:bold" class="text_danger">无限制</span>`
+      } else if (Math.abs(count / 1024) < 1) {
+        htmlStr = `<span>${count.toFixed(fix)}</span><span style="font-weight:bold" class="text_success">&nbsp;M</span>`
+      } else if (Math.abs(count / 1024 / 1024) < 1) {
+        htmlStr = `<span>${(count / 1024).toFixed(fix)}</span><span style="font-weight:bold" class="text_primary">&nbsp;G</span>`
+      } else {
+        htmlStr = `<span>${(count / 1024 / 1024).toFixed(fix)}</span><span style="font-weight:bold" class="text_danger">&nbsp;T</span>`
+      }
+    } else {
+      if (isNaN(count) || count == '99999999') {
+        htmlStr = '无限制'
+      } else if (Math.abs(count / 1024) < 1) {
+        htmlStr = `${count.toFixed(fix)} M`
+      } else if (Math.abs(count / 1024 / 1024) < 1) {
+        htmlStr = `${(count / 1024).toFixed(fix)} G`
+      } else {
+        htmlStr = `${(count / 1024 / 1024).toFixed(fix)} T`
+      }
+    }
+    return htmlStr
+  },
+
   fixed(value, fixed, unit) {
     if (value || value == 0) {
       if (unit) return Number(value).toFixed(fixed) + unit

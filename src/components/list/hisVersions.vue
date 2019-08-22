@@ -23,8 +23,9 @@
           <el-table-column prop="hardCode" label="硬件版本号" sortable="custom" width="150"></el-table-column>
           <el-table-column prop="isForced" label="升级方式" sortable="custom" width="100">
             <template slot-scope="scope">
-              <span class="text_success bold" v-if="scope.row.isForced === 1">强制升级</span>
               <span class="text_danger bold" v-if="scope.row.isForced === 0">非强制升级</span>
+              <span class="text_success bold" v-if="scope.row.isForced === 1">强制升级</span>
+              <span class="text_warning bold" v-if="scope.row.isForced === 2">静默安装</span>
             </template>
           </el-table-column>
           <el-table-column prop="timePublish" label="发布时间" sortable="custom" width="100">
@@ -58,10 +59,11 @@
             <el-form-item label="硬件版本号">
               <el-input v-model="formInline.hardCode" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="强制升级">
+            <el-form-item label="升级方式">
               <el-select v-model="formInline.isForced" filterable clearable placeholder="请选择">
                 <el-option label="非强制升级" :value="0"></el-option>
                 <el-option label="强制升级" :value="1"></el-option>
+                <el-option label="静默升级" :value="2"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="发布时间">
@@ -77,9 +79,9 @@
       </div>
     </el-dialog>
     <!-- 修改版本信息 -->
-    <el-dialog title="修改版本信息" @close="close" :visible.sync="updateVersionInfo" width="600px" :close-on-click-modal="false" class="check-version">
+    <el-dialog title="修改版本信息" @close="close" :visible.sync="updateVersionInfo" width="700px" :close-on-click-modal="false" class="check-version">
       <div slot>
-        <el-form ref="versionForm" :model="versionForm" :inline="false" size="small" label-width="130px">
+        <el-form ref="versionForm" :model="versionForm" :inline="false" :rules="rules" size="small" label-width="130px">
           <el-form-item label="机构名称：" class="text">
             <span>{{versionForm.organCode | valueToLabel(orgs)}}</span>
           </el-form-item>
@@ -100,11 +102,13 @@
           </el-form-item>
           <el-form-item label="SN列表：">
             <el-input v-model="versionForm.snList" type="textarea" rows="4" placeholder="请输入"></el-input>
+            <div class="annotation">当为空时所有SN都可以升级，当有SN时，指定SN才可升级，多个SN使用英文逗号分隔</div>
           </el-form-item>
-          <el-form-item label="是否强制升级：">
-            <el-select v-model="versionForm.isForced" filterable clearable placeholder="请选择">
-              <el-option label="否" :value="0"></el-option>
-              <el-option label="是" :value="1"></el-option>
+          <el-form-item label="升级方式：" prop="isForced">
+            <el-select v-model="versionForm.isForced" filterable placeholder="请选择">
+              <el-option label="非强制升级" :value="0"></el-option>
+              <el-option label="强势升级" :value="1"></el-option>
+              <el-option label="静默升级" :value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="发布时间：" class="text">
@@ -148,9 +152,9 @@
           <el-form-item label="解决方案：">
             <span>{{versionForm.solution === 0 ? '车机' : '车镜'}}</span>
           </el-form-item>
-          <el-form-item label="车型：">
+<!--           <el-form-item label="车型：">
             <span>{{versionForm.carType}}</span>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="版本描述：">
             <el-input v-model="versionForm.softDesc" type="textarea" rows="4" placeholder="请输入" disabled></el-input>
           </el-form-item>
@@ -158,7 +162,7 @@
             <el-input v-model="versionForm.snList" type="textarea" rows="4" placeholder="请输入" disabled></el-input>
           </el-form-item>
           <el-form-item label="升级方式：">
-            <span>{{versionForm.isForced === 0 ? '非强制升级' : '强制升级'}}</span>
+            <span>{{isForced[versionForm.isForced]}}</span>
           </el-form-item>
           <el-form-item label="发布时间：" class="text">
             <span>{{versionForm.timePublish | formatDate('yyyy-mm-dd')}}</span>
@@ -182,10 +186,23 @@ import Api from 'assets/js/api.js'
 export default {
   data() {
     return {
+      curScope: null,
       updateVersionInfo: false,
       checkVersionInfo: false,
       organCode: Api.UNITS.getQuery('organCode'),
-      versionForm: {}
+      versionForm: {},
+      rules: {
+        isForced: [{
+          required: true,
+          message: '请选择升级方式',
+          trigger: 'change'
+        }]
+      },
+      isForced: {
+        '0': '非强制升级',
+        '1': '强制升级',
+        '2': '静默安装'
+      }
     }
   },
   mounted() {
@@ -207,13 +224,16 @@ export default {
         data: { organCode: this.organCode }
       })
     },
-    getVersionFormData(scope) {
+    getVersionFormData() {
       _axios.send({
         method: 'get',
         url: _axios.ajaxAd.getOtaHistoryDetail,
-        params: { id: scope.row.otaId },
+        params: { id: this.curScope.row.otaId },
         done: ((res) => {
           this.versionForm = res.data || {}
+          this.$nextTick(() => {
+            this.$refs.versionForm.clearValidate()
+          })
         })
       })
     },
@@ -251,21 +271,42 @@ export default {
       })
     },
     showCheckVersionInfo(scope) {
+      this.curScope = scope
       this.checkVersionInfo = true
-      this.getVersionFormData(scope)
+      this.getVersionFormData()
     },
     showUpdateVersionInfo(scope) {
+      this.curScope = scope
       this.updateVersionInfo = true
-      this.getVersionFormData(scope)
+      this.getVersionFormData()
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 验证通过
-
+          _axios.send({
+            method: 'post',
+            url: _axios.ajaxAd.updateOta,
+            data: this.versionForm,
+            done: ((res) => {
+              if (res.status === 400) {
+                this.versionForm[res.data] = ''
+                this.$refs.versionForm.validateField([res.data])
+              } else {
+                this.updateVersionInfo = false
+                this.getData()
+                setTimeout(() => {
+                  this.showMsgBox({
+                    type: 'success',
+                    message: res.msg || '操作成功！'
+                  })
+                }, 150)
+              }
+            })
+          })
         } else {
           Api.UNITS.showMsgBox()
-          return false;
+          return false
         }
       })
     },
