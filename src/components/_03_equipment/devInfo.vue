@@ -636,6 +636,7 @@ export default {
       let checkedData = JSON.parse(localStorage.getItem(`__${this.routeName}Check__`))
       if (checkedData) this.checkedData = checkedData
       else this.checkedData = this.defaultData
+      this.getData()
     },
     // === 列表选择性展示 end ===
     createExcel(type) { // 生成报表-语音、蓝牙

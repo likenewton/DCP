@@ -61,6 +61,7 @@ class AXIOS {
       getOtaDetail: '/mpk_app/api/ota/otaDetail', // 系统版本-实例升级
       getPageOtaDevice: '/mpk_app/api/otaDevice/pageOtaDevice', // 设备升级记录
       getListVersion: '/mpk_app/api/version/listVersion', // 版本字典
+      getPageAppVerInfo: '/mpk_app/api/appVerInfo/pageAppVerInfo', // 核心应用升级-查询
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录
@@ -88,12 +89,15 @@ class AXIOS {
       toUpdateWilteListInfo: '/mpk_app/api/ipwhitelist/toUpdateWilteListInfo', // IP白名单修改
       toEditVersionPage: '/mpk_app/api/version/toEditVersionPage', // 版本字典-修改查询
       updateVersion: '/mpk_app/api/version/updateVersion', // 版本字典-修改
+      addVersion: '/mpk_app/api/version/addVersion', // 版本字典-添加
+      toUpdateAppVerInfo: '/mpk_app/api/appVerInfo/toUpdateAppVerInfo', // 核心应用升级-编辑查询
       // diabled
       brandChangeState: '/mpk_app/api/deviceBrand/changeState',
       toUpdIsDisable: '/mpk_app/api/device/toUpdIsDisable',  // 设备查询 有效、失效
       toUpdAdasStatus: '/mpk_app/api/device/toUpdAdasStatus', // 设备查询 adas 开关
       toUpdateIPWhiteListStatus: '/mpk_app/api/ipwhitelist/toUpdateIPWhiteListStatus', // IP白名单失效有效变更
       updateOtaValid: '/mpk_app/api/ota/updateOtaValid', // 系统升级-历史版本-停用启用
+      appVerInfoChangeState:'/mpk_app/api/appVerInfo/appVerInfoChangeState', // 核心应用升级-失效、生效
       // export
       exportDeviceData: '/mpk_app/api/device/exportDeviceData', // 导出设备信息
       exportADASInfo: '/mpk_app/api/device/exportADASInfo', // 设备查询adas导出

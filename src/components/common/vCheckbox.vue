@@ -78,8 +78,10 @@ export default {
     makesureChoice() {
       this.$message.success(`已选择 ${this.checkedData.length} 项`)
       this.checkedSaveData = this.checkedData
-      this.$emit('checkSave', this.checkedSaveData)
       this.checkboxVisible = false
+      setTimeout(() => {
+        this.$emit('checkSave', this.checkedSaveData)
+      }, 200)
     },
     // 全选
     handleCheckAllChange(val) {

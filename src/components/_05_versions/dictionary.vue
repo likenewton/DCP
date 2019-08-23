@@ -105,7 +105,8 @@ export default {
       this.$router.push({
         name: 'addversions',
         query: {
-          type: 'upgrade'
+          type: 'upgrade',
+          id: item.id
         }
       })
     }
