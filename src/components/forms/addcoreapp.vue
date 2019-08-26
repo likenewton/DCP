@@ -7,7 +7,7 @@
       <el-form class="editor-form" :inline="false" :model="formInline" :rules="rules" ref="ruleForm" label-width="140px" size="small">
         <el-form-item prop="">
           <span slot="label">应用列表：</span>
-          <el-select v-model="appIndex" filterable placeholder="请选择应用">
+          <el-select v-model="appIndex" filterable placeholder="请先增加一个应用">
             <el-option v-for="(app, index) in appList" :key="index" :label="app.app_name" :value="index"></el-option>
           </el-select>
           <el-button class="editor" style="margin-left:10px" @click="editorApp" v-if="appList.length !== 0">{{pageType === 'check' ? '查看' : '编辑'}}应用</el-button>
@@ -17,7 +17,7 @@
         </el-form-item>
         <el-form-item>
           <span slot="label">发布数量：</span>
-          <el-input v-model="formInline.release_num" placeholder="请输入" :disabled="pageType==='check'"></el-input>
+          <el-input v-model="formInline.release_num" placeholder="请输入" :disabled="pageType==='check'"></el-input> 
         </el-form-item>
         <el-form-item>
           <span slot="label">指定ROM版本：</span>

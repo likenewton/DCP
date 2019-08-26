@@ -175,7 +175,10 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    this.list.data = []
+    this.getData()
+  },
   methods: {
     getData() {},
     getEchartData() {

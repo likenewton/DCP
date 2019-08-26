@@ -26,7 +26,7 @@
                   <span>{{props.row.app_name}}</span>
                 </el-form-item>
                 <el-form-item label="应用名称：">
-                  <span>{{props.row.deviceBrandName}}</span>
+                  <span>{{props.row.app_name}}</span>
                 </el-form-item>
                 <el-form-item label="版本名称：">
                   <span>{{props.row.version_name}}</span>

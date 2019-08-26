@@ -4,9 +4,10 @@
       <el-row>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
-            <el-select v-model="formInline.batchSn" filterable clearable placeholder="请选择批次号" @change="searchData">
+<!--             <el-select v-model="formInline.batchSn" filterable clearable placeholder="请输入批次号" @change="searchData">
               <el-option v-for="(item, index) in batchs" :key="index" :label="item.label" :value="item.value"></el-option>
-            </el-select>
+            </el-select> -->
+            <el-input v-model="formInline.deviceSn" @keyup.enter.native="searchData" placeholder="请输入设备号"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchData">查询</el-button>
