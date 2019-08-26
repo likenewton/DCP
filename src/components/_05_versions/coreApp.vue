@@ -114,7 +114,7 @@
               <el-button type="text" class="text_editor" @click="$router.push({name:'addcoreapp',query:{type:'update',plan_id:scope.row.plan_id}})">编辑</el-button>
               <el-button v-if="scope.row.status === 1" type="text" class="text_danger" @click="disabled(scope)">失效</el-button>
               <el-button v-if="scope.row.status === 0" type="text" class="text_danger" @click="disabled(scope)">生效</el-button>
-              <el-button type="text" @click="$router.push({name:'relyinfo'})">查看</el-button>
+              <el-button type="text" @click="$router.push({name:'addcoreapp',query:{type:'check',plan_id:scope.row.plan_id}})">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -200,7 +200,6 @@ export default {
   mounted() {
     this.list.data = []
     this.checkGet()
-    this.getData()
   },
   methods: {
     simpleSearchData() { // 简单查询

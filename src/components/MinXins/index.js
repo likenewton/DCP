@@ -60,6 +60,7 @@ export default {
       this.isUpdate && this.getData()
     },
     getColorList: Api.UNITS.getColorList,
+    limitNumber: Api.UNITS.limitNumber,
     showMsgBox: Api.UNITS.showMsgBox,
     showCfmBox: Api.UNITS.showCfmBox,
     fixed: Api.UNITS.fixed,

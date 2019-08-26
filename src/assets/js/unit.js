@@ -230,6 +230,18 @@ module.exports = {
     }
   },
 
+  limitNumber(val, num1 = 8, num2 = 3) { // 限制小数位数和整数位数 num1(整数)， num2(小数)
+    let expStr = ''
+    if (num2 === 0) {
+      // 如果是整数
+      expStr = `^\\d{1,${num1}}`
+    } else {
+      // 如果是小数
+      expStr = `^\\d{1,${num1}}(\\.\\d{0,${num2}})?`
+    }
+    return val.match(new RegExp(expStr)) && val.match(new RegExp(expStr))[0]
+  },
+
   validatorPhoneNumber(value) { // 验证电话号码
     return /^1[3|4|5|6|8|9][0-9]\d{8}$/.test(value)
   },

@@ -91,6 +91,8 @@ class AXIOS {
       updateVersion: '/mpk_app/api/version/updateVersion', // 版本字典-修改
       addVersion: '/mpk_app/api/version/addVersion', // 版本字典-添加
       toUpdateAppVerInfo: '/mpk_app/api/appVerInfo/toUpdateAppVerInfo', // 核心应用升级-编辑查询
+      updateAppVerInfo: '/mpk_app/api/appVerInfo/updateAppVerInfo', // 核心应用升级-编辑
+      addAppVerInfo: '/mpk_app/api/appVerInfo/addAppVerInfo', // 核心应用升级-新增
       // diabled
       brandChangeState: '/mpk_app/api/deviceBrand/changeState',
       toUpdIsDisable: '/mpk_app/api/device/toUpdIsDisable',  // 设备查询 有效、失效

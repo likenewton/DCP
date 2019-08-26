@@ -96,7 +96,7 @@
     },
     {
       "rescCode": "",
-      "resName": "客户管理",
+      "resName": "车主管理",
       "resUrl": "client",
       "level": 3,
       "seqNum": 6,
@@ -279,7 +279,7 @@
   },
   {
     "rescCode": "",
-    "resName": "流量卡管理",
+    "resName": "设备IMEI池",
     "resUrl": "card",
     "level": 2,
     "seqNum": 11,
@@ -287,7 +287,7 @@
     "childResources": [
     {
       "rescCode": "",
-      "resName": "设备管理",
+      "resName": "导入设备IMEI",
       "resUrl": "dev",
       "level": 3,
       "seqNum": 1,
@@ -295,7 +295,7 @@
     },
     {
       "rescCode": "",
-      "resName": "日志管理",
+      "resName": "IMEI变更日志",
       "resUrl": "log",
       "level": 3,
       "seqNum": 2,

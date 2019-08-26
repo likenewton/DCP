@@ -21,7 +21,7 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="firstname" label="客户实名" sortable="custom"></el-table-column>
+          <el-table-column prop="firstname" label="车主实名" sortable="custom"></el-table-column>
           <el-table-column prop="telephone" label="手机号码" sortable="custom"></el-table-column>
           <el-table-column prop="ip" label="IP地址" sortable="custom"></el-table-column>
           <el-table-column prop="status" label="状态" sortable="custom">

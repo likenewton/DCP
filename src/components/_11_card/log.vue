@@ -14,11 +14,11 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="eventId" label="EVENT_ID" sortable="custom" min-width="200"></el-table-column>
-          <el-table-column prop="eventType" label="EVENT_TYPE" sortable="custom" min-width="160"></el-table-column>
+          <el-table-column prop="eventId" label="事件ID" sortable="custom" min-width="200"></el-table-column>
+          <el-table-column prop="eventType" label="事件类型" sortable="custom" min-width="160"></el-table-column>
           <el-table-column prop="iccid" label="ICCID" sortable="custom" width="190"></el-table-column>
-          <el-table-column prop="previousImei" label="PREVIOUS_IMEI" sortable="custom" width="160"></el-table-column>
-          <el-table-column prop="currentImei" label="CURRENT_IMEI" sortable="custom" width="160"></el-table-column>
+          <el-table-column prop="previousImei" label="变更前IMEI" sortable="custom" width="160"></el-table-column>
+          <el-table-column prop="currentImei" label="变更后IMEI" sortable="custom" width="160"></el-table-column>
           <el-table-column prop="createTime" label="创建时间" sortable="custom" width="160">
             <template slot-scope="scope">{{scope.row.createTime | formatDate}}</template>
           </el-table-column>
@@ -62,14 +62,14 @@
     <el-drawer title="查看日志信息" :visible.sync="logInfoVisible" direction="rtl" size="600px" :wrapperClosable="true">
       <div class="para-wrapper" v-shadow:[logInfoVisible]>
         <el-form class="check-form" :inline="false" :model="logInfo" size="small" label-width="140px" style="padding-right: 20px">
-          <el-form-item label="eventId：">
+          <el-form-item label="事件ID：">
             <span>{{logInfo.eventId}}</span>
           </el-form-item>
-          <el-form-item label="eventType：">
+          <el-form-item label="事件类型：">
             <span>{{logInfo.eventType}}</span>
           </el-form-item>
           <el-form-item label="timestamp：">
-            <span>{{logInfo.timestamp}}</span>
+            <span>{{logInfo.timestamp | formatDate}}</span>
           </el-form-item>
           <el-form-item label="signature：">
             <span>{{logInfo.signature}}</span>
@@ -83,13 +83,13 @@
           <el-form-item label="iccid：">
             <span>{{logInfo.iccid}}</span>
           </el-form-item>
-          <el-form-item label="previousImei">
+          <el-form-item label="变更前IMEI：">
             <span>{{logInfo.previousImei}}</span>
           </el-form-item>
-          <el-form-item label="currentImei">
+          <el-form-item label="变更后IMEI：">
             <span>{{logInfo.currentImei}}</span>
           </el-form-item>
-          <el-form-item label="dateChanged">
+          <el-form-item label="更改时间：">
             <span>{{logInfo.dateChanged}}</span>
           </el-form-item>
           <el-form-item label="创建时间：">

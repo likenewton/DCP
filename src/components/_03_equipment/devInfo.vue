@@ -395,7 +395,6 @@ export default {
   mounted() {
     this.list.data = []
     this.checkGet()
-    this.getData()
     this.getBrands()
   },
   activated() {
@@ -405,7 +404,6 @@ export default {
         deviceBrandId: Api.UNITS.getQuery('brandId'),
       }
       this.checkGet()
-      this.getData()
       this.getBrands()
     }
   },

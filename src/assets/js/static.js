@@ -58,7 +58,8 @@ module.exports = {
   }, {
     title: {
       create: '新增核心应用升级配置信息',
-      update: '修改核心应用升级配置信息'
+      update: '修改核心应用升级配置信息',
+      check: '查看核心应用升级配置信息'
     },
     name: 'addcoreapp'
   }, {
