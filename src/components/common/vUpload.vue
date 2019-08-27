@@ -104,7 +104,7 @@ export default {
         })
         str += '格式文件'
       }
-      if (this.size) {
+      if (this.size !== Number.MAX_SAFE_INTEGER) {
         if (this.format.length > 0) str += '、'
         str += `大小不能超过${Api.UNITS.formatFlowUnit(this.size, 0)}`
       }

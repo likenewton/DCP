@@ -62,6 +62,7 @@ class AXIOS {
       getPageOtaDevice: '/mpk_app/api/otaDevice/pageOtaDevice', // 设备升级记录
       getListVersion: '/mpk_app/api/version/listVersion', // 版本字典
       getPageAppVerInfo: '/mpk_app/api/appVerInfo/pageAppVerInfo', // 核心应用升级-查询
+      getIccidList: '/mpk_app/api/llcar/queryList', // imei-流量卡管理
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录
@@ -113,6 +114,7 @@ class AXIOS {
       getDeviceTrack: '/mpk_app/api/device/deviceTrack', // 设备记录-行车轨迹
       deleteCarBrands: '/mpk_app/api/carBrands/deleteCarBrands', // 删除汽车品牌
       toDelIPWhiteList: '/mpk_app/api/ipwhitelist/toDelIPWhiteList', // 删除Ip白名单
+      delIccid: '/mpk_app/api/llcar/toDel', // imei-流量卡管理-删除
       // 上传文件
       importDeviceSn: '/mpk_app/api/deviceBrand/importDeviceSn', // 设备品牌-导入设备
       importAdas: '/mpk_app/api/device/importAdas', // 设备查询-ADAS导入

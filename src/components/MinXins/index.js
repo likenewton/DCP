@@ -70,6 +70,7 @@ export default {
       orgs: 'orgs', // 机构/公司列表
       redis: 'redis', // 缓存地址
       authMenu: 'authMenu', // 菜单权限
+      deviceType: 'deviceType', // 设备类型
       authButtons: 'authButtons', // 按钮权限
       asideCollapse: 'asideCollapse', // 侧边栏是否隐藏
       dialogVisible: 'dialogVisible', // 公共dialog

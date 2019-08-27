@@ -55,8 +55,8 @@
             <el-form-item label="名称">
               <el-input v-model="formInline.batchName" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="批次号">
-              <el-input v-model="formInline.batchSn" placeholder="请输入"></el-input>
+            <el-form-item label="设备SN号">
+              <el-input v-model="formInline.sn" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="公司名称">
               <el-select v-model="formInline.organCode" filterable clearable placeholder="请选择">

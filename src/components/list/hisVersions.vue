@@ -150,11 +150,8 @@
             <span>{{versionForm.softFor}}</span>
           </el-form-item>
           <el-form-item label="解决方案：">
-            <span>{{versionForm.solution === 0 ? '车机' : '车镜'}}</span>
+            <span>{{versionForm.solution | valueToLabel(deviceType)}}</span>
           </el-form-item>
-<!--           <el-form-item label="车型：">
-            <span>{{versionForm.carType}}</span>
-          </el-form-item> -->
           <el-form-item label="版本描述：">
             <el-input v-model="versionForm.softDesc" type="textarea" rows="4" placeholder="请输入" disabled></el-input>
           </el-form-item>
@@ -232,7 +229,7 @@ export default {
         done: ((res) => {
           this.versionForm = res.data || {}
           this.$nextTick(() => {
-            this.$refs.versionForm.clearValidate()
+            this.$refs.versionForm && this.$refs.versionForm.clearValidate()
           })
         })
       })

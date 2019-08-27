@@ -33,9 +33,10 @@ const Summary = r => require.ensure([], () => r(require('@/components/_07_statis
 const C_car = r => require.ensure([], () => r(require('@/components/_07_statistics/c_car.vue')), 'chunk2') // 车机上报统计
 // 缓存同步
 const Sync = r => require.ensure([], () => r(require('@/components/_09_cache/sync.vue')), 'chunk2')
-// 流量卡管理
-const Dev = r => require.ensure([], () => r(require('@/components/_11_card/dev.vue')), 'chunk2')
-const Log = r => require.ensure([], () => r(require('@/components/_11_card/log.vue')), 'chunk2')
+// 设备imei池
+const Dev = r => require.ensure([], () => r(require('@/components/_11_imei/dev.vue')), 'chunk2')
+const Log = r => require.ensure([], () => r(require('@/components/_11_imei/log.vue')), 'chunk2')
+const Card = r => require.ensure([], () => r(require('@/components/_11_imei/card.vue')), 'chunk2')
 // 配置管理
 const Ipwhitelist = r => require.ensure([], () => r(require('@/components/_12_config/ipwhitelist.vue')), 'chunk2')
 
@@ -185,8 +186,8 @@ let menuRoute = {
       component: Sync
     }]
   }, {
-    path: 'card',
-    name: 'card',
+    path: 'imei',
+    name: 'imei',
     component: Blank,
     children: [{
       path: 'dev',
@@ -196,6 +197,10 @@ let menuRoute = {
       path: 'log',
       name: 'log',
       component: Log
+    }, {
+      path: 'card',
+      name: 'card',
+      component: Card
     }]
   }, {
     path: 'config',

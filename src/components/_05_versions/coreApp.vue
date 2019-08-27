@@ -200,6 +200,7 @@ export default {
   mounted() {
     this.list.data = []
     this.checkGet()
+    this.getData()
   },
   methods: {
     simpleSearchData() { // 简单查询
@@ -220,9 +221,14 @@ export default {
     },
     checkGet() {
       let checkedData = JSON.parse(localStorage.getItem(`__${this.routeName}Check__`))
-      if (checkedData) this.checkedData = checkedData
-      else this.checkedData = this.defaultData
-      this.getData()
+      if (checkedData) {
+        this.checkedData = checkedData
+        this.$nextTick(() => {
+          this.$forceUpdate()
+        })
+      } else {
+        this.checkedData = this.defaultData
+      }
     },
     // === 列表选择性展示 end ===
     disabled(scope) {

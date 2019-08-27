@@ -280,7 +280,7 @@
   {
     "rescCode": "",
     "resName": "设备IMEI池",
-    "resUrl": "card",
+    "resUrl": "imei",
     "level": 2,
     "seqNum": 11,
     "iconUrl": "",
@@ -299,6 +299,14 @@
       "resUrl": "log",
       "level": 3,
       "seqNum": 2,
+      "iconUrl": ""
+    },
+    {
+      "rescCode": "",
+      "resName": "流量卡列表",
+      "resUrl": "card",
+      "level": 3,
+      "seqNum": 3,
       "iconUrl": ""
     }],
     "checkedFlag": 0,

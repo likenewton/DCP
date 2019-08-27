@@ -54,7 +54,7 @@ Vue.filter('formatSecond', function(second) {
 Vue.filter('valueToLabel', function(value, data = [], tag = 'label') {
   let label = ''
   data.forEach((v) => {
-    if (v.value === value) {
+    if (v.value == value) {
       label = v[tag]
     }
   })

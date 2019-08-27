@@ -13,6 +13,7 @@ const state = {
   authButtons: {}, // 授权页面中的功能按钮权限
   orgs: [],
   redis: [], // 缓存地址列表
+  deviceType: [{ label: '车机', value: 0 }, { label: '车镜', value: 1 }],
 }
 
 export default new Vuex.Store({

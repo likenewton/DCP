@@ -19,8 +19,7 @@
         <el-form-item prop="solution">
           <span slot="label">解决方案：</span>
           <el-select v-model="formInline.solution" filterable placeholder="请选择">
-            <el-option label="车机" value="0"></el-option>
-            <el-option label="车镜" value="1"></el-option>
+            <el-option v-for="(item, index) in deviceType" :key="index" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item prop="organCode">

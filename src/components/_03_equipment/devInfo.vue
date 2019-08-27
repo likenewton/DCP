@@ -396,6 +396,7 @@ export default {
     this.list.data = []
     this.checkGet()
     this.getBrands()
+    this.getData()
   },
   activated() {
     if (!this.keepAlive) {
@@ -405,6 +406,7 @@ export default {
       }
       this.checkGet()
       this.getBrands()
+      this.getData()
     }
   },
   methods: {
@@ -631,10 +633,15 @@ export default {
       this.checkGet()
     },
     checkGet() {
-      let checkedData = JSON.parse(localStorage.getItem(`__${this.routeName}Check__`))
-      if (checkedData) this.checkedData = checkedData
-      else this.checkedData = this.defaultData
-      this.getData()
+      let checkedData = JSON.parse(localStorage.getItem(`__${this.routeName}Check__`)) || []
+      if (checkedData) {
+        this.checkedData = checkedData
+        this.$nextTick(() => {
+          this.$forceUpdate()
+        })
+      } else {
+        this.checkedData = this.defaultData
+      }
     },
     // === 列表选择性展示 end ===
     createExcel(type) { // 生成报表-语音、蓝牙

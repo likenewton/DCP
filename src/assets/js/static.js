@@ -21,9 +21,9 @@ module.exports = {
     icon: 'iconfont-lucenehuancun',
     name: 'cache'
   }, {
-    title: '流量卡管理',
+    title: '设备IMEI池',
     icon: 'iconfont-cardb',
-    name: 'card'
+    name: 'imei'
   }, {
     title: '配置管理',
     icon: 'iconfont-xitongshezhi',
