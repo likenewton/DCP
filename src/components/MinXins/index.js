@@ -59,6 +59,7 @@ export default {
       this.formInline = {}
       this.isUpdate && this.getData()
     },
+    limitNumberAndLetter: Api.UNITS.limitNumberAndLetter,
     getColorList: Api.UNITS.getColorList,
     limitNumber: Api.UNITS.limitNumber,
     showMsgBox: Api.UNITS.showMsgBox,

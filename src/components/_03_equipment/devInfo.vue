@@ -46,6 +46,9 @@
                 <el-form-item label="设备IMEI：">
                   <span>{{props.row.deviceImei}}</span>
                 </el-form-item>
+                <el-form-item label="设备类型：">
+                  <span>{{props.row.deviceType | valueToLabel(deviceType)}}</span>
+                </el-form-item>
                 <el-form-item label="上网卡IMSI：">
                   <span>{{props.row.deviceImsi}}</span>
                 </el-form-item>
@@ -96,6 +99,9 @@
           <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" min-width="153"></el-table-column>
           <el-table-column v-if="checkedData.includes('deviceIccId')" prop="deviceIccId" label="设备ICCID" sortable="custom" width="182"></el-table-column>
           <el-table-column v-if="checkedData.includes('deviceImei')" prop="deviceImei" label="设备IMEI" sortable="custom" min-width="150"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceType')" prop="deviceType" label="设备类型" sortable="custom" min-width="100">
+            <template slot-scope="scope">{{scope.row.deviceType | valueToLabel(deviceType)}}</template>
+          </el-table-column>
           <el-table-column v-if="checkedData.includes('deviceImsi')" prop="deviceImsi" label="上网卡IMSI" sortable="custom" min-width="150"></el-table-column>
           <el-table-column v-if="checkedData.includes('deviceVersion')" prop="deviceVersion" label="硬件版本" sortable="custom" min-width="150"></el-table-column>
           <el-table-column v-if="checkedData.includes('softVersion')" prop="softVersion" label="软件版本" sortable="custom" min-width="150"></el-table-column>
@@ -324,6 +330,9 @@ export default {
       }, {
         label: '设备IMEI',
         value: 'deviceImei'
+      }, {
+        label: '设备类型',
+        value: 'deviceType'
       }, {
         label: '上网卡IMSI',
         value: 'deviceImsi'

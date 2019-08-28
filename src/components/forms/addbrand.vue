@@ -38,10 +38,18 @@ export default {
           required: true,
           message: '请输入品牌名称',
           trigger: 'blur'
+        }, {
+          max: 18,
+          message: '品牌名称不能超过18字符',
+          trigger: 'blur'
         }],
         distributor: [{
           required: true,
           message: '请输入分销商',
+          trigger: 'blur'
+        }, {
+          max: 18,
+          message: '分销商不能超过18字符',
           trigger: 'blur'
         }],
         organCode: [{

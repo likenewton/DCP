@@ -17,7 +17,7 @@
         </el-form-item>
         <el-form-item>
           <span slot="label">发布数量：</span>
-          <el-input v-model="formInline.release_num" placeholder="请输入" :disabled="pageType==='check'"></el-input> 
+          <el-input v-model="formInline.release_num" @input="formInline.release_num = limitNumber(formInline.release_num, 4, 0)" placeholder="请输入" :disabled="pageType==='check'"></el-input>
         </el-form-item>
         <el-form-item>
           <span slot="label">指定ROM版本：</span>
@@ -79,7 +79,7 @@
           </el-form-item>
           <el-form-item prop="version_code">
             <span slot="label">版本代码：</span>
-            <el-input v-model="appForm.version_code" placeholder="请输入" @input="appForm.version_code = limitNumber(appForm.version_code, 6, 0)" :disabled="pageType==='check'"></el-input>
+            <el-input v-model="appForm.version_code" placeholder="请输入" @input="appForm.version_code = limitNumber(appForm.version_code, 11, 0)" :disabled="pageType==='check'"></el-input>
             <div class="annotation">必须是整数</div>
           </el-form-item>
           <el-form-item prop="url">
@@ -155,21 +155,44 @@ export default {
       configIndex: 0,
       configList: [],
       configForm: {},
-      rules: {},
+      rules: {
+        desc: [{
+          max: 255,
+          message: '版本描述不能超过255字符',
+          trigger: 'blur'
+        }],
+        agreement_id: [{
+          max: 255,
+          message: '协议ID不能超过255字符',
+          trigger: 'blur'
+        }]
+      },
       appRules: {
         pack_name: [{
           required: true,
           message: '请输入应用包名',
+          trigger: 'blur'
+        }, {
+          max: 64,
+          message: '应用包名不能超过64字符',
           trigger: 'blur'
         }],
         app_name: [{
           required: true,
           message: '请输入应用名称',
           trigger: 'blur'
+        }, {
+          max: 64,
+          message: '应用名称不能超过64字符',
+          trigger: 'blur'
         }],
         version_name: [{
           required: true,
           message: '请输入版本名称',
+          trigger: 'blur'
+        }, {
+          max: 64,
+          message: '版本名称不能超过64字符',
           trigger: 'blur'
         }],
         property: [{
@@ -185,6 +208,15 @@ export default {
         url: [{
           required: true,
           message: '请输入配置App下载地址',
+          trigger: 'blur'
+        }, {
+          max: 1024,
+          message: 'App下载地址不能超过1024字符',
+          trigger: 'blur'
+        }],
+        config_url: [{
+          max: 1024,
+          message: '配置文件地址不能超过1024字符',
           trigger: 'blur'
         }]
       },
@@ -235,6 +267,7 @@ export default {
             valid_datetime: baseData.valid_datetime,
             valid_end_datetime: baseData.valid_end_datetime
           }
+          if (baseData.release_num === -1) this.$delete(this.formInline, 'release_num')
           // 应用列表
           this.appList = []
           list.forEach((v) => {
@@ -268,7 +301,6 @@ export default {
     },
     editorApp() { // 编辑应用
       this.appVisible = true
-      this.appIndex = 0
       this.configIndex = 0
       this.appStatus = 'editor'
       this.getAppForm()
@@ -457,7 +489,9 @@ export default {
         cb: () => {
           this.$refs[formName].resetFields()
           this.formInline = {}
+          this.appList = []
           this.configIndex = 0
+          this.appIndex = undefined
           if (this.pageType === 'update') {
             this.getData()
           }

@@ -126,15 +126,27 @@ export default {
           required: true,
           message: '请输入机构编号',
           trigger: 'blur'
+        }, {
+          max: 100,
+          message: '机构编号不能超过100字符',
+          trigger: 'blur'
         }],
         hardCode: [{
           required: true,
           message: '请输入硬件版本号',
           trigger: 'blur'
+        }, {
+          max: 20,
+          message: '硬件版本号不能超过20字符',
+          trigger: 'blur'
         }],
         softCode: [{
           required: true,
           message: '请输入软件版本号',
+          trigger: 'blur'
+        }, {
+          max: 20,
+          message: '软件版本号不能超过20字符',
           trigger: 'blur'
         }],
         softFor: [{

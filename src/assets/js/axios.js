@@ -122,6 +122,7 @@ class AXIOS {
       importDeviceBatchSn: '/mpk_app/api/deviceBatch/importDeviceSn', // 批次管理-导入
       importDeviceImei: '/mpk_app/api/deviceImei/importDeviceImei', // 设备IMEI上传
       importOta: '/mpk_app/api/ota/addOta', // 系统升级-添加升级包
+      importIccid: '/mpk_app/api/llcar/upload', // iccid上传
       // 缓存管理
       refresh: '/mpk_app/api/cache/refresh', // 同步缓存
       carBrandsSync2Redis: '/mpk_app/api/cache/carBrandsSync2Redis', // 汽车品牌同步redis

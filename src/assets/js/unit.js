@@ -242,12 +242,26 @@ module.exports = {
     return val.match(new RegExp(expStr)) && val.match(new RegExp(expStr))[0]
   },
 
+  limitNumberAndLetter(val, num1 = 99) { // 只能输入数字和字母
+    let value = ''
+    val.split('').forEach((v) => {
+      if (/^[0-9a-zA-Z]$/.test(v)) {
+        value += v
+      }
+    })
+    return value
+  },
+
   validatorPhoneNumber(value) { // 验证电话号码
     return /^1[3|4|5|6|8|9][0-9]\d{8}$/.test(value)
   },
 
   validatorIP(value) { // 验证IP地址
     return /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(value)
+  },
+
+  validatorMask(value) { // 子网掩码
+    return /^(254|252|248|240|224|192|128|0)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)$/.test(value)
   },
   // === 格式化 end ===
 

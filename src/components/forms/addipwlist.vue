@@ -44,6 +44,13 @@ export default {
           required: true,
           message: '请输入子网掩码',
           trigger: 'blur'
+        }, {
+          max: 100,
+          message: '子网掩码不能超过100字符',
+          trigger: 'blur'
+        }, {
+          validator: this.maskValidator,
+          trigger: 'blur'
         }]
       }
     }
@@ -131,6 +138,13 @@ export default {
         callback()
       } else {
         callback(new Error('IP格式不正确'))
+      }
+    },
+    maskValidator(rule, value, callback) {
+      if (!value || Api.UNITS.validatorMask(value)) {
+        callback()
+      } else {
+        callback(new Error('子网掩码不正确'))
       }
     }
   }

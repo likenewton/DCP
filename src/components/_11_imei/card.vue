@@ -11,7 +11,7 @@
             <el-input v-model="formInline.batch_no" @keyup.enter.native="searchData" placeholder="批次号"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-input v-model="formInline.iccid" @keyup.enter.native="searchData" placeholder="ICCID"></el-input>
+            <el-input v-model="formInline.iccid" @keyup.enter.native="searchData" @input="formInline.iccid = limitNumberAndLetter(formInline.iccid)" placeholder="ICCID"></el-input>
           </el-form-item>
           <el-form-item>
             <el-select filterable clearable placeholder="卡商列表" v-model="formInline.card_type" @change="searchData">
@@ -170,9 +170,11 @@ export default {
       }
     },
     closeUpload() { // 关闭上传弹框
+      this.importSnVisible = false
       this.uploadForm = {}
       this.$refs.upload.clearFileList()
       this.$nextTick(() => {
+
         this.$refs.uploadForm.clearValidate()
       })
     },
@@ -191,7 +193,7 @@ export default {
           // 验证通过
           _axios.send({
             method: 'post',
-            url: '',
+            url: _axios.ajaxAd.importIccid,
             data: this.formData,
             done: ((res) => {
               if (res.status === 400) {

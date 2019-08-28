@@ -28,6 +28,10 @@ export default {
           required: true,
           message: '请输入品牌',
           trigger: 'blur'
+        }, {
+          max: 100,
+          message: '品牌不能超过100字符',
+          trigger: 'blur'
         }]
       }
     }

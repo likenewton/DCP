@@ -64,6 +64,10 @@ export default {
           required: true,
           message: '请输入型号名称',
           trigger: 'blur'
+        }, {
+          max: 100,
+          message: '型号不能超过100字符',
+          trigger: 'blur'
         }]
       }
     }

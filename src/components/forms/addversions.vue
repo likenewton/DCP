@@ -76,6 +76,9 @@ export default {
       checkAll: false, // 是否全选
       pageType: Api.UNITS.getQuery('type'),
       isIndeterminate: false, // 是否半选
+      formInline: {
+        status: 1
+      },
       jgFitler: '',
       jgs: [],
       orgpos_name_arr: [],
@@ -85,11 +88,15 @@ export default {
           required: true,
           message: '请填写版本号',
           trigger: 'blur'
+        }, {
+          max: 100,
+          message: '版本号不能超过100字符',
+          trigger: 'blur'
         }],
         status: [{
           required: true,
-          message: '请填写版本号',
-          trigger: 'blur'
+          message: '请选择启用状态',
+          trigger: 'change'
         }]
       }
     }
@@ -168,7 +175,9 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
-      this.formInline = {}
+      this.formInline = {
+        status: 1
+      }
       this.orgpos_name_arr = []
       this.orgpos_name_arr_tmp = []
       if (this.pageType === 'update' || this.pageType === 'upgrade') {
@@ -186,13 +195,18 @@ export default {
               url: _axios.ajaxAd.updateVersion,
               data: this.formInline,
               done: ((res) => {
-                this.$router.push({ name: 'dictionary' })
-                setTimeout(() => {
-                  this.showMsgBox({
-                    type: 'success',
-                    message: '修改成功！'
-                  })
-                }, 150)
+                if (res.status === 400) {
+                  this.formInline[res.data] = ''
+                  this.$refs.ruleForm.validateField([res.data])
+                } else {
+                  this.$router.push({ name: 'dictionary' })
+                  setTimeout(() => {
+                    this.showMsgBox({
+                      type: 'success',
+                      message: '修改成功！'
+                    })
+                  }, 150)
+                }
               })
             })
           } else {
@@ -205,13 +219,18 @@ export default {
                 beforeVersionId: Api.UNITS.getQuery('id')
               }),
               done: ((res) => {
-                this.$router.push({ name: 'dictionary' })
-                setTimeout(() => {
-                  this.showMsgBox({
-                    type: 'success',
-                    message: this.pageType === 'upgrade' ? '升级成功！' : '添加成功！'
-                  })
-                }, 150)
+                if (res.status === 400) {
+                  this.formInline[res.data] = ''
+                  this.$refs.ruleForm.validateField([res.data])
+                } else {
+                  this.$router.push({ name: 'dictionary' })
+                  setTimeout(() => {
+                    this.showMsgBox({
+                      type: 'success',
+                      message: this.pageType === 'upgrade' ? '升级成功！' : '添加成功！'
+                    })
+                  }, 150)
+                }
               })
             })
           }

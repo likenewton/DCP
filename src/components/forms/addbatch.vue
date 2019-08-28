@@ -89,15 +89,27 @@ export default {
           required: true,
           message: '请输入批次编号',
           trigger: 'blur'
+        }, {
+          max: 50,
+          message: '批次编号不能超过50字符',
+          trigger: 'blur'
         }],
         batchName: [{
           required: true,
           message: '请输入批次名称',
           trigger: 'blur'
+        }, {
+          max: 50,
+          message: '批次名称不能超过50字符',
+          trigger: 'blur'
         }],
         batchShipper: [{
           required: true,
           message: '请输入发货人姓名',
+          trigger: 'blur'
+        }, {
+          max: 50,
+          message: '发货人姓名不能超过50字符',
           trigger: 'blur'
         }],
         outTime: [{
@@ -118,6 +130,10 @@ export default {
         pickerName: [{
           required: true,
           message: '请输入提货人姓名',
+          trigger: 'blur'
+        }, {
+          max: 50,
+          message: '提货人姓名不能超过50字符',
           trigger: 'blur'
         }],
         pickerPhone: [{
@@ -213,8 +229,8 @@ export default {
     },
     orgsSelect() {
       // 选择公司名称的时候要清空掉硬件与软件版本
-      if (this.formInline.m) this.$delete(this.formInline, 'hardVersionId')
-      if (this.formInline.n) this.$delete(this.formInline, 'softVersionId')
+      if (this.formInline.hardVersionId) this.$delete(this.formInline, 'hardVersionId')
+      if (this.formInline.softVersionId) this.$delete(this.formInline, 'softVersionId')
       _axios.send({
         method: 'get',
         url: _axios.ajaxAd.queryVersionByOrganCode,
