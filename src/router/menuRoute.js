@@ -26,7 +26,6 @@ const CoreApp = r => require.ensure([], () => r(require('@/components/_05_versio
 const Carbrand = r => require.ensure([], () => r(require('@/components/_06_car/carbrand.vue')), 'chunk2')
 // 运营统计07
 const BindAct = r => require.ensure([], () => r(require('@/components/_07_statistics/bindAct.vue')), 'chunk2')
-const Deliver = r => require.ensure([], () => r(require('@/components/_07_statistics/deliver.vue')), 'chunk2')
 const Iccid = r => require.ensure([], () => r(require('@/components/_07_statistics/iccid.vue')), 'chunk2')
 const Active = r => require.ensure([], () => r(require('@/components/_07_statistics/active.vue')), 'chunk2')
 const Summary = r => require.ensure([], () => r(require('@/components/_07_statistics/summary.vue')), 'chunk2') // 汇总统计
@@ -171,10 +170,6 @@ let menuRoute = {
       path: 'c_car',
       name: 'c_car',
       component: C_car
-    }, {
-      path: 'deliver',
-      name: 'deliver',
-      component: Deliver
     }]
   }, {
     path: 'cache',

@@ -14,6 +14,19 @@ const state = {
   orgs: [],
   redis: [], // 缓存地址列表
   deviceType: [{ label: '车机', value: 0 }, { label: '车镜', value: 1 }],
+  iccidCode: [{
+    label: '中国移动',
+    value: 898600
+  }, {
+    label: '中国联通',
+    value: 898601
+  }, {
+    label: '中国电信',
+    value: 898606
+  }, {
+    label: '其他',
+    value: 800000
+  }],
 }
 
 export default new Vuex.Store({

@@ -51,12 +51,6 @@ module.exports = {
     name: 'addcarbrand'
   }, {
     title: {
-      create: '新增汽车型号',
-      update: '修改汽车型号'
-    },
-    name: 'addcarmodel'
-  }, {
-    title: {
       create: '新增核心应用升级配置信息',
       update: '修改核心应用升级配置信息',
       check: '查看核心应用升级配置信息'
@@ -105,9 +99,6 @@ module.exports = {
   }, {
     title: '历史版本',
     name: 'hisVersions'
-  }, {
-    title: '用户反馈处理',
-    name: 'addfeedback'
   }, {
     title: '设备号异常记录',
     name: 'devExcepLog'

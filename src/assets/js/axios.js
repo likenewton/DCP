@@ -63,6 +63,11 @@ class AXIOS {
       getListVersion: '/mpk_app/api/version/listVersion', // 版本字典
       getPageAppVerInfo: '/mpk_app/api/appVerInfo/pageAppVerInfo', // 核心应用升级-查询
       getIccidList: '/mpk_app/api/llcar/queryList', // imei-流量卡管理
+      // echart
+      getIccidReport: '/mpk_app/api/statisticalDeviceIccid/iccidReport', // 运营统计-iccid
+      getDeviceActivitisAsyn: '/mpk_app/api/statisticalDeviceActivity/deviceActivitisAsyn', // 运营统计-活跃天数
+      getSummaryAsyn: '/mpk_app/api/summary/summaryAsyn', // 运营统计-汇总统计
+      getIncreaseReportAsyn: '/mpk_app/api/summary/increaseReportAsyn', // 运营统计-增长率统计
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录

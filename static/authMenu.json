@@ -227,14 +227,6 @@
       "level": 3,
       "seqNum": 5,
       "iconUrl": ""
-    },
-    {
-      "rescCode": "",
-      "resName": "出货统计",
-      "resUrl": "deliver",
-      "level": 3,
-      "seqNum": 6,
-      "iconUrl": ""
     }],
     "checkedFlag": 0,
     "childNum": null

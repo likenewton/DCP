@@ -90,8 +90,16 @@ module.exports = {
         if (list.loadData === undefined) para.vue[para.loadData || 'loadData'] = false
         else list.loadData = false
         para.vue.searchVipVisible = false // 高级查询功能
-        list.data = res.data ? (res.data.data ? res.data.data : []) : []
-        list.total = res.data ? res.data.rowCount : 0
+        let page = {}
+        if (res.data) {
+          if (res.data.page) {
+            page = res.data.page || {}
+          } else {
+            page = res.data || {}
+          }
+        }
+        list.data = page.data || []
+        list.total = page.rowCount || 0
         para.cb && para.cb(res)
       }
     })
@@ -197,7 +205,7 @@ module.exports = {
     return htmlStr
   },
 
-  fixed(value, fixed, unit) {
+  fixed(value, fixed, unit) { // 保留几位小数
     if (value || value == 0) {
       if (unit) return Number(value).toFixed(fixed) + unit
       else return Number(value).toFixed(fixed)
