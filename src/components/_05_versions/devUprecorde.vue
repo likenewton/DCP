@@ -13,8 +13,8 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" width="160">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="deviceSn" fixed="left" label="设备SN号" sortable="custom" width="160">
 <!--             <template slot-scope="scope">
               <el-link type="primary" @click="$router.push({name:'devRecord',query:{deviceId:scope.row.deviceId}})">{{scope.row.deviceSn}}</el-link>
             </template> -->

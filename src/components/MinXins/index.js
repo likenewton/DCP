@@ -5,6 +5,7 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   data() {
     return {
+      isStripe: Api.STATIC.isStripe,
       loadData: true,
       searchVipVisible: false, // 是否显示高级查询dialog
       pageSizes: Api.STATIC.pageSizes,

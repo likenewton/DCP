@@ -145,7 +145,7 @@ class AXIOS {
   send(para) {
     let data = Object.assign({}, this.constData, para)
     data.headers = para.headers || {}
-    data.headers[token] = getCookie(token) || ''
+    data.headers['iov-token'] = getCookie(token) || ''
 
     axios({
       method: data.method,

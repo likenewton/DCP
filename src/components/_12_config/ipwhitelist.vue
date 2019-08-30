@@ -17,7 +17,7 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="ip" label="IP" sortable="custom" min-width="130">
             <template slot-scope="scope">{{scope.row.ip}}</template>
           </el-table-column>

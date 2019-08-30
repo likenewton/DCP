@@ -16,7 +16,7 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="batchId" label="车联网批次" sortable="custom" min-width="96"></el-table-column>
           <el-table-column prop="batchSn" label="批次号" sortable="custom" min-width="145"></el-table-column>
           <el-table-column prop="batchName" label="名称" sortable="custom" min-width="120"></el-table-column>

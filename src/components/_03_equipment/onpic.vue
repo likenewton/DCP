@@ -14,8 +14,8 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="photoUrl" label="图片" width="100">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column fixed="left" prop="photoUrl" label="图片" width="100">
             <template slot-scope="scope">
               <el-tooltip content="点击查看原图" placement="top">
                 <el-image :src="scope.row.photoUrl" fit="cover" @click="$refs.picview.showPicView(scope.row.photoUrl)" class="pointer"></el-image>

@@ -13,15 +13,15 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" width="160"></el-table-column>
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column fixed="left" prop="deviceSn" label="设备SN号" sortable="custom" width="160"></el-table-column>
           <el-table-column prop="extName" label="扩展类型" sortable="custom" width="140"></el-table-column>
           <el-table-column prop="extValue" label="扩展值" sortable="custom"></el-table-column>
           <el-table-column prop="timeAdded" label="激活时间" sortable="custom" width="180">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
         </el-table>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list.currentPage" :page-sizes="pageSizes" :page-size="list.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list.total" class="clearfix pagination-table">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :stripe="isStripe" :current-page="list.currentPage" :page-sizes="pageSizes" :page-size="list.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list.total" class="clearfix pagination-table">
         </el-pagination>
       </el-row>
     </el-card>

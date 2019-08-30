@@ -18,7 +18,7 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="iccidCode" label="运营商" sortable="custom" width="150">
             <template slot-scope="scope">{{scope.row.iccidCode | valueToLabel(iccidCode)}}</template>
           </el-table-column>
@@ -184,7 +184,6 @@ export default {
     }
   },
   mounted() {
-    this.list.data = []
     this.setRegionData('root', 'provinceData')
     this.getData()
   },

@@ -16,8 +16,8 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="deviceImei" label="设备IMEI" sortable="custom" width="160"></el-table-column>
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column fixed="left" prop="deviceImei" label="设备IMEI" sortable="custom" width="160"></el-table-column>
           <el-table-column prop="organCode" label="机构" sortable="custom" min-width="160">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>

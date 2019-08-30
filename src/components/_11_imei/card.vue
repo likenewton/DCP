@@ -25,7 +25,7 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" @selection-change="handleSelectionChange" :row-key="getRowKeys" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" @selection-change="handleSelectionChange" :stripe="isStripe" :row-key="getRowKeys" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column fixed="left" type="selection" :reserve-selection="true" min-width="60"></el-table-column>
           <el-table-column prop="batch_no" label="批次号" sortable="custom" min-width="180"></el-table-column>
           <el-table-column prop="iccid" label="ICCID" sortable="custom" min-width="190"></el-table-column>

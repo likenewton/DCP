@@ -33,7 +33,7 @@
           </el-table-column>
           <el-table-column label="操作" width="100">
             <template slot-scope="scope">
-              <el-button type="text" @click="$router.push({name:'devRecord'})">设备记录</el-button>
+              <el-button type="text" @click="$router.push({name:'devRecord',query:{deviceId:scope.row.deviceId}})">设备记录</el-button>
             </template>
           </el-table-column>
         </el-table>

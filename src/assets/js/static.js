@@ -103,9 +103,10 @@ module.exports = {
     title: '设备号异常记录',
     name: 'devExcepLog'
   }],
-  token: 'iov-token',
+  token: 'iov-token-DCP',
   loadIcon: 'el-icon-loading',
   loadBg: 'rgba(0, 0, 0, 0.7)',
   // 分页器公共配置项
   pageSizes: [10, 20, 40, 60],
+  isStripe: true,
 }

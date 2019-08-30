@@ -17,7 +17,7 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="" label="设备SN" sortable="custom"></el-table-column>
           <el-table-column prop="organCode" label="所属机构" sortable="custom"></el-table-column>
           <el-table-column prop="" label="设备IMEI卡ICCID" sortable="custom"></el-table-column>
@@ -156,7 +156,6 @@ export default {
     }
   },
   mounted() {
-    this.list.data = []
     this.getData()
   },
   methods: {

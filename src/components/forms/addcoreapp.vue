@@ -310,10 +310,11 @@ export default {
       // 再打开应用编辑的时候需要配置依赖
       this.$nextTick(() => {
         this.$refs.appForm.clearValidate()
-        let dependencies = this.appForm.dependencies
+        let dependencies = this.appForm.dependencies || []
         // 深度复制
         if (typeof dependencies === 'object') dependencies = JSON.stringify(dependencies)
         this.configList = JSON.parse(dependencies)
+        if (this.configList.length === 0) this.configIndex = undefined
       })
     },
     deleteApp() { // 删除应用

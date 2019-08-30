@@ -13,7 +13,7 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="eventId" label="事件ID" sortable="custom" min-width="200"></el-table-column>
           <el-table-column prop="eventType" label="事件类型" sortable="custom" min-width="160"></el-table-column>
           <el-table-column prop="iccid" label="ICCID" sortable="custom" width="190"></el-table-column>

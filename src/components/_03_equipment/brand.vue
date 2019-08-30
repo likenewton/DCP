@@ -24,7 +24,7 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="brandName" label="品牌名称"></el-table-column>
           <el-table-column prop="distributor" label="分销商"></el-table-column>
           <el-table-column prop="organCode" label="所属机构" sortable="custom">
@@ -36,7 +36,7 @@
               <span v-else class="text_danger">无效</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="245">
+          <el-table-column fixed="right" label="操作" width="245">
             <template slot-scope="scope">
               <el-button type="text" class="text_editor" @click="$router.push({name:'addbrand',query:{type:'update', id:scope.row.id}})">编辑</el-button>
               <el-button type="text" :class="[scope.row.state===1?'text_danger':'text_success']" @click="disabled(scope)">{{scope.row.state ===1?'失效':'生效'}}</el-button>

@@ -134,6 +134,7 @@ export default {
       .el-collapse-item__header,
       .el-collapse-item__wrap {
         background: transparent;
+        border: 0;
       }
 
       .el-collapse-item__content {
@@ -142,6 +143,10 @@ export default {
 
       .el-collapse-item {
         padding: 0 10px;
+
+        &:nth-child(odd) {
+          background: rgba(0, 0, 0, 0.03);
+        }
 
         .el-timeline {
           padding: 18px 5px 0;

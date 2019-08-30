@@ -14,7 +14,7 @@
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="startTimeAdded" label="激活开始时间" sortable="custom" width="120">
             <template slot-scope="scope">{{scope.row.startTimeAdded | formatDate('yyyy-mm-dd')}}</template>
           </el-table-column>
@@ -30,7 +30,7 @@
               <span v-else>文件未生成</span>
             </template>
           </el-table-column>
-          <el-table-column prop="" label="操作" sortable="custom" width="100">
+          <el-table-column fixed="right" prop="" label="操作" sortable="custom" width="100">
             <template slot-scope="scope">
               <el-button v-if="scope.row.fileName" type="text" @click="rebuild(scope)">重新生成</el-button>
               <el-button v-else type="text" @click="rebuild(scope)">生成文件</el-button>

@@ -52,9 +52,9 @@ Vue.config.productionTip = false
 // 路由进入前的全局钩子
 router.beforeEach((to, from, next) => {
 
-  if (Api.UNITS.getQuery(Api.STATIC.token)) {
+  if (Api.UNITS.getQuery('iov-token')) {
     // 当页面重定向过来的时候带的token 要保存进去
-    Api.UNITS.setCookie(Api.STATIC.token, Api.UNITS.getQuery(Api.STATIC.token))
+    Api.UNITS.setCookie(Api.STATIC.token, Api.UNITS.getQuery('iov-token'))
     let targetHref = sessionStorage.getItem('target_href')
     sessionStorage.removeItem('target_href')
     if (targetHref) location.href = targetHref
