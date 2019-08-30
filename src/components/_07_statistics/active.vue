@@ -32,7 +32,7 @@
                 <el-option v-for="(item, index) in orgs" :key="index" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="活跃天数"> 
+            <el-form-item label="活跃天数">
               <el-input v-model="formInline.dateNum" @input="formInline.dateNum = limitNumber(formInline.dateNum, 4, 0)" placeholder="必须是整数"></el-input>
             </el-form-item>
             <el-form-item label="省/市">
@@ -241,6 +241,13 @@ export default {
     },
     endDatePicker() {
       return Api.UNITS.endDatePicker(this, this.formInline.beginTime)
+    }
+  },
+  watch: {
+    asideCollapse(val, oldVal) {
+      setTimeout(() => {
+        this.myChart.resize()
+      }, 300)
     }
   }
 }

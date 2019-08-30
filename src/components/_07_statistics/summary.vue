@@ -223,6 +223,20 @@ export default {
               normal: {
                 color: Api.UNITS.getColorList('purple'),
               }
+            },
+            markLine: {
+              symbol: "none",
+              label: {
+                position: "end"
+              },
+              data: [{
+                silent: false,
+                lineStyle: {
+                  type: "dashed",
+                  color: '#333',
+                },
+                yAxis: 0
+              }]
             }
           },
           {
@@ -351,6 +365,13 @@ export default {
     },
     endDatePicker() {
       return Api.UNITS.endDatePicker(this, this.formInline_0.beginTime)
+    }
+  },
+  watch: {
+    asideCollapse(val, oldVal) {
+      setTimeout(() => {
+        this.myChart.resize()
+      }, 300)
     }
   }
 }
