@@ -1,80 +1,78 @@
 <template>
   <div class="home_container">
-    <el-row :gutter="20">
-      <el-col :span="9">
-        <el-card class="topleft_card" shadow="never" :body-style="{background: getColorList('success')}">
-          <div class="card_item">
-            <div class="card_title">今日新增设备</div>
-            <div class="card_value">526</div>
+    <el-row>
+      <el-card class="zhuangche" shadow="never">
+        <div slot="header" class="clearfix">
+          <span>装车设备分布</span>
+        </div>
+        <div class="container clearfix">
+          <div class="left">
+            <el-card shadow="hover" style="background: #fafafa">
+              <el-form :model="formInline" size="small">
+                <el-form-item label="选择机构">
+                  <el-select filterable clearable placeholder="请选择" v-model="formInline.organCode">
+                    <el-option v-for="(item, index) in orgs" :key="index" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="设备类型" style="margin-bottom: 0">
+                  <el-select filterable clearable placeholder="请选择" v-model="formInline.deviceType">
+                    <el-option v-for="(item, index) in deviceType" :key="index" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-form>
+            </el-card>
+            <el-card shadow="hover" style="margin-top:20px;background: #fafafa">
+              <el-tabs>
+                <el-tab-pane label="城市排行">
+                  <div id="canvas_2" style="height: 260px"></div>
+                </el-tab-pane>
+              </el-tabs>
+            </el-card>
+            <el-card shadow="hover" style="margin-top:20px;background: #fafafa">
+              <el-tabs>
+                <el-tab-pane label="设备转换统计">
+                  <div id="canvas_0" style="height: 220px"></div>
+                  <div id="canvas_1" style="height: 220px"></div>
+                </el-tab-pane>
+              </el-tabs>
+            </el-card>
           </div>
-          <div class="card_item">
-            <div class="card_title">今日新增用户</div>
-            <div class="card_value">220</div>
+          <div class="right">
+            <div class="card-list">
+              <div class="card-item">
+                <el-card shadow="hover" :body-style="{background: getColorList('primary')}">
+                  <div class="card_title">设备总数</div>
+                  <div class="card_value">526343台</div>
+                </el-card>
+              </div>
+              <div class="card-item">
+                <el-card shadow="hover" :body-style="{background: getColorList('success')}">
+                  <div class="card_title">在线设备数</div>
+                  <div class="card_value">526343台</div>
+                </el-card>
+              </div>
+              <div class="card-item">
+                <el-card shadow="hover" :body-style="{background: getColorList('warning')}">
+                  <div class="card_title">装车设备数</div>
+                  <div class="card_value">526343台</div>
+                </el-card>
+              </div>
+              <div class="card-item">
+                <el-card shadow="hover" :body-style="{background: getColorList('danger')}">
+                  <div class="card_title">绑定设备数</div>
+                  <div class="card_value">526343台</div>
+                </el-card>
+              </div>
+              <div class="card-item">
+                <el-card shadow="hover" :body-style="{background: getColorList('purple')}">
+                  <div class="card_title">充值设备数</div>
+                  <div class="card_value">526343台</div>
+                </el-card>
+              </div>
+            </div>
           </div>
-        </el-card>
-        <el-card class="topleft_card" shadow="never" :body-style="{background: getColorList('primary')}">
-          <div class="card_item">
-            <div class="card_title">当月新增设备</div>
-            <div class="card_value">526</div>
-          </div>
-          <div class="card_item">
-            <div class="card_title">当月新增用户</div>
-            <div class="card_value">220</div>
-          </div>
-        </el-card>
-        <el-card class="topleft_card" shadow="never" :body-style="{background: getColorList('warning')}">
-          <div class="card_item">
-            <div class="card_title">累计设备</div>
-            <div class="card_value">526</div>
-          </div>
-          <div class="card_item">
-            <div class="card_title">累计用户</div>
-            <div class="card_value">220</div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="15">
-        <el-card class="topright-card" shadow="never" :style="{height: '336px'}">
-          <div class="time-filter">
-            <el-date-picker class="date_picker" v-model="timePickData" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" @change="getData" value-format="yyyy-MM-dd" size="small" :clearable="false">
-            </el-date-picker>
-            <el-select class="stype_choice" v-model="stype" placeholder="请选择统计方式" @change="getData" size="small">
-              <el-option label="按日统计" :value="0"></el-option>
-              <el-option label="按月统计" :value="1"></el-option>
-              <el-option label="按年统计" :value="2"></el-option>
-            </el-select>
-          </div>
-          <el-tabs @tab-click="changeTab_1" v-model="tabIndex_2">
-            <el-tab-pane label="新增设备趋势">
-              <div id="canvas_1_0" style="height: 250px"></div>
-            </el-tab-pane>
-            <el-tab-pane label="新增用户趋势">
-              <div id="canvas_1_1"></div>
-            </el-tab-pane>
-          </el-tabs>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :span="24">
-        <el-card class="middle_card" shadow="never" style="margin-top: 20px">
-          <div class="header">数据总览</div>
-          <el-row class="content" :gutter="8">
-            <el-col :span="12">
-              <el-card shadow="hover" style="border: none" class="pointer">
-                <div class="value">52</div>
-                <div class="key">软件数</div>
-              </el-card>
-            </el-col>
-            <el-col :span="12">
-              <el-card shadow="hover" style="border: none" class="pointer">
-                <div class="value">32</div>
-                <div class="key">硬件数</div>
-              </el-card>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col>
+        </div>
+      </el-card>
     </el-row>
     <el-row :gutter="20">
       <el-col>
@@ -88,11 +86,11 @@
               <el-option label="按年统计" :value="2"></el-option>
             </el-select>
           </div>
-          <el-tabs @tab-click="changeTab_2" v-model="tabIndex_1">
-            <el-tab-pane label="设备视频抓拍">
+          <el-tabs @tab-click="changeTab_2" v-model="tabIndex_2">
+            <el-tab-pane label="设备使用趋势">
               <div id="canvas_2_0" style="height: 300px"></div>
             </el-tab-pane>
-            <el-tab-pane label="设备图片抓拍">
+            <el-tab-pane label="设备转化率">
               <div id="canvas_2_1"></div>
             </el-tab-pane>
           </el-tabs>
@@ -106,10 +104,11 @@ import Api from 'assets/js/api.js'
 export default {
   data() {
     return {
-      tabIndex_1: '0',
       tabIndex_2: '0',
+      myChart_0: null,
       myChart_1: null,
       myChart_2: null,
+      myChart_3: null,
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now()
@@ -155,65 +154,220 @@ export default {
             picker.$emit('pick', [start, end]);
           }
         }]
+      },
+      option_0: {
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c}台 ({d}%)"
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          top: '3%',
+          containLabel: true
+        },
+        series: [{
+          name: '设备转换统计',
+          type: 'pie',
+          radius: ['50%', '70%'],
+          hoverAnimation: false,
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: true,
+              // position: 'inside',
+              formatter: '{b}: {c}台',
+              rich: {
+                a: {
+                  color: '#909399',
+                  fontSize: '14',
+                  lineHeight: '30'
+                },
+                b: {
+                  color: '#333',
+                  fontSize: '20',
+                  lineHeight: '30'
+                }
+              }
+            }
+          },
+          itemStyle: {
+            normal: {
+              color(params) {
+                return Api.UNITS.getColorList(['primary', 'danger'])[params.dataIndex]
+              }
+            },
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+          data: [] // 需设置
+        }]
+      },
+      option_1: {
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c}台 ({d}%)"
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        series: [{
+          name: '绑定占比',
+          type: 'pie',
+          radius: ['50%', '70%'],
+          hoverAnimation: false,
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: true,
+              formatter: '{b}: {c}台',
+              rich: {
+                a: {
+                  color: '#909399',
+                  fontSize: '14',
+                  lineHeight: '30'
+                },
+                b: {
+                  color: '#333',
+                  fontSize: '20',
+                  lineHeight: '30'
+                }
+              }
+            }
+          },
+          itemStyle: {
+            normal: {
+              color(params) {
+                return Api.UNITS.getColorList(['success', 'warning', ])[params.dataIndex]
+              }
+            },
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+          data: [] // 需设置
+        }]
+      },
+      option_2: {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          top: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value',
+          splitLine: { show: false },
+        },
+        yAxis: {
+          type: 'category',
+          data: []
+        },
+        series: [{
+          name: '数量',
+          type: 'bar',
+          barMaxWidth: '18',
+          label: {
+            normal: {
+              show: true,
+              position: 'inside'
+            }
+          },
+          itemStyle: {
+            normal: {
+              color(params) {
+                return Api.UNITS.getColorList(['primary', 'danger', 'success', 'purple', 'warning', 'editor', 'primary'])[params.dataIndex]
+              }
+            }
+          },
+          data: []
+        }, ]
       }
     }
   },
   mounted() {
-    this.changeTab_1({ index: 0 })
+    setTimeout(() => {
+      this.myChart_0 = this.$echarts.init(document.getElementById('canvas_0'))
+      this.myChart_1 = this.$echarts.init(document.getElementById('canvas_1'))
+      this.myChart_2 = this.$echarts.init(document.getElementById('canvas_2'))
+      this.myChart_0.resize()
+      this.myChart_1.resize()
+      this.myChart_2.resize()
+      this.getTopData()
+    })
     this.changeTab_2({ index: 0 })
   },
   methods: {
-    changeTab_1(para) {
-      setTimeout(() => {
-        this.myChart_1 = this.$echarts.init(document.getElementById(`canvas_1_${para.index}`))
-        this.myChart_1.resize()
-      }, 0)
-      this.getTopData()
-    },
     changeTab_2(para) {
       setTimeout(() => {
-        this.myChart_2 = this.$echarts.init(document.getElementById(`canvas_2_${para.index}`))
-        this.myChart_2.resize()
+        this.myChart_3 = this.$echarts.init(document.getElementById(`canvas_2_${para.index}`))
+        this.myChart_3.resize()
       }, 0)
       this.getBottomData()
     },
     getTopData() {
       setTimeout(() => {
-        if (this.tabIndex_1 === '0') {
-          const _echart = new Api.ECHARTS({ dataViewTitle: '时间' })
-          _echart.setOption({
-            legend: ['新增设备趋势'],
-            xAxis: { data: ['2019-07-01', '2019-07-02', '2019-07-03'] },
-            series: [{
-              data: [5, 6, 5],
-            }]
-          })
-          Vue.nextTick(() => {
-            this.myChart_1.setOption(_echart.getOption(), true)
-            $("[_echarts_instance_]").find(":last-child").trigger('click')
-          })
-        }
+        this.option_0.series[0].data = [
+          { value: 50, name: '装车' },
+          { value: 50, name: '未装车' }
+        ]
+        this.option_1.series[0].data = [
+          { value: 3353, name: '已绑定' },
+          { value: 30, name: '未绑定' }
+        ]
+        this.option_2.yAxis.data = ['7.北京', '6.上海', '5.内蒙古', '4.呼和浩特', '3.长沙', '2.齐齐哈尔', '1.深圳']
+        this.option_2.series[0].data = [200, 220, 230, 250, 255, 290, 320]
+        Vue.nextTick(() => {
+          this.myChart_0.setOption(this.option_0)
+          this.myChart_1.setOption(this.option_1)
+          this.myChart_2.setOption(this.option_2)
+          $("[_echarts_instance_]").find(":last-child").trigger('click')
+        })
       }, 10)
     },
     getBottomData() {
       setTimeout(() => {
         if (this.tabIndex_2 === '0') {
           let xAxisData = []
-          let data = []
+          let data1 = []
+          let data2 = []
+          let data3 = []
           for (let i = 1; i <= 30; i++) {
             xAxisData.push(`2019-07-${i}`)
-            data.push(200 + Math.ceil(Math.random() * 300))
+            data1.push(200 + Math.ceil(Math.random() * 200))
+            data2.push(200 + Math.ceil(Math.random() * 200))
+            data3.push(200 + Math.ceil(Math.random() * 200))
           }
           const _echart = new Api.ECHARTS({ dataViewTitle: '时间' })
           _echart.setOption({
-            legend: ['设备视频抓拍'],
+            legend: ['装车设备', '绑定设备', '充值设备'],
             xAxis: { data: xAxisData },
             series: [{
-              data: data,
+              data: data1,
+            }, {
+              data: data2,
+            }, {
+              data: data3,
             }]
           })
           Vue.nextTick(() => {
-            this.myChart_2.setOption(_echart.getOption(), true)
+            this.myChart_3.setOption(_echart.getOption(), true)
             $("[_echarts_instance_]").find(":last-child").trigger('click')
           })
         }
@@ -225,104 +379,40 @@ export default {
 </script>
 <style lang="scss">
 .home_container {
-  .topleft_card {
-    margin-bottom: 15px;
+  .zhuangche {
+    .container {
+      position: relative;
+      height: auto;
 
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-
-    * {
-      color: #fff;
-    }
-
-    .el-card__body {
-      display: flex;
-      justify-content: space-around;
-      height: 100px;
-    }
-
-    .card_item {
-      display: inline-block;
-      justify-content: space-around;
-      flex: 1;
-      text-align: center;
-
-      .card_title {
-        font-size: 14px;
-        height: 30px;
-        line-height: 30px;
+      .left {
+        float: left;
+        width: 350px;
+        left: 0;
+        top: 0;
       }
 
-      .card_value {
-        font-weight: bold;
-        height: 30px;
-        line-height: 30px;
-      }
-    }
-  }
+      .right {
+        padding-left: 370px;
 
-  .topright-card {
-    position: relative;
+        .card-list {
+          font-size: 0;
 
-    .time-filter {
+          .card-item {
+            width: 20%;
+            padding: 0 5px;
+            display: inline-block;
+            font-size: 14px;
 
-      .date_picker {
-        position: absolute;
-        right: 20px;
-        top: 18px;
-        z-index: 10;
-        width: 260px;
+            .card_title {
+              font-size: 14px;
+              color: #fff;
+            }
 
-        .el-range__close-icon {
-          display: none;
-        }
-      }
-
-      .stype_choice {
-        position: absolute;
-        width: 150px;
-        right: 290px;
-        top: 18px;
-        z-index: 10;
-      }
-    }
-  }
-
-  .middle_card {
-    >.el-card__body {
-      padding-bottom: 0;
-    }
-
-    .header {
-      padding-bottom: 18px;
-      border-bottom: 1px solid $borderColor;
-    }
-
-    .content {
-      height: 140px;
-
-      .el-col {
-        height: 100%;
-        text-align: center;
-
-        .el-card {
-          height: 100%;
-        }
-
-        .value {
-          font-size: 24px;
-          font-weight: bold;
-          color: $primary;
-          height: 40px;
-          line-height: 40px;
-          margin-top: 10px;
-        }
-
-        .key {
-          font-size: 14px;
-          height: 35px;
-          line-height: 35px;
+            .card_value {
+              font-size: 18px;
+              color: #fff;
+            }
+          }
         }
       }
     }

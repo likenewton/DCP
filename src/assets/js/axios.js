@@ -68,6 +68,7 @@ class AXIOS {
       getDeviceActivitisAsyn: '/mpk_app/api/statisticalDeviceActivity/deviceActivitisAsyn', // 运营统计-活跃天数
       getSummaryAsyn: '/mpk_app/api/summary/summaryAsyn', // 运营统计-汇总统计
       getIncreaseReportAsyn: '/mpk_app/api/summary/increaseReportAsyn', // 运营统计-增长率统计
+      getBindActivityReport: '/mpk_app/api/device/bindReport', // 运营统计-绑定激活
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录

@@ -32,8 +32,8 @@
           </el-table-column>
           <el-table-column prop="state" label="状态" sortable="custom" width="80">
             <template slot-scope="scope">
-              <span v-if="scope.row.state === 1" class="text_success">有效</span>
-              <span v-else class="text_danger">无效</span>
+              <span v-if="scope.row.state === 1" class="text_success bold">有效</span>
+              <span v-else class="text_danger bold">无效</span>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="245">

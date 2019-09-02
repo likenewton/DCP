@@ -2,52 +2,6 @@
   "data": [
   {
     "rescCode": "",
-    "resName": "内容管理",
-    "resUrl": "content",
-    "level": 2,
-    "seqNum": 1,
-    "iconUrl": "",
-    "childResources": [
-    {
-      "rescCode": "",
-      "resName": "频道管理",
-      "resUrl": "channel",
-      "level": 3,
-      "seqNum": 1,
-      "iconUrl": ""
-    },
-    {
-      "rescCode": "",
-      "resName": "资源管理",
-      "resUrl": "resource",
-      "level": 3,
-      "seqNum": 1,
-      "iconUrl": ""
-    }],
-    "checkedFlag": 0,
-    "childNum": null
-  },
-  {
-    "rescCode": "",
-    "resName": "推送管理",
-    "resUrl": "push",
-    "level": 2,
-    "seqNum": 2,
-    "iconUrl": "",
-    "childResources": [
-    {
-      "rescCode": "",
-      "resName": "媒介推送",
-      "resUrl": "multimedia",
-      "level": 3,
-      "seqNum": 1,
-      "iconUrl": ""
-    }],
-    "checkedFlag": 0,
-    "childNum": null
-  },
-  {
-    "rescCode": "",
     "resName": "设备管理",
     "resUrl": "equipment",
     "level": 2,
@@ -190,7 +144,7 @@
     "childResources": [
     {
       "rescCode": "",
-      "resName": "绑定激活统计",
+      "resName": "设备绑定统计",
       "resUrl": "bindAct",
       "level": 3,
       "seqNum": 1,
@@ -218,25 +172,6 @@
       "resUrl": "summary",
       "level": 3,
       "seqNum": 4,
-      "iconUrl": ""
-    }],
-    "checkedFlag": 0,
-    "childNum": null
-  },
-  {
-    "rescCode": "",
-    "resName": "运营管理",
-    "resUrl": "operate",
-    "level": 2,
-    "seqNum": 8,
-    "iconUrl": "",
-    "childResources": [
-    {
-      "rescCode": "",
-      "resName": "用户反馈",
-      "resUrl": "feedback",
-      "level": 3,
-      "seqNum": 1,
       "iconUrl": ""
     }],
     "checkedFlag": 0,

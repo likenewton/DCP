@@ -4,30 +4,34 @@
       <el-row>
         <el-button-group style="margin-bottom: 10px">
           <el-button size="small" type="primary" @click="showEchart">设备绑定趋势</el-button>
+          <el-button size="small" type="primary" @click="">设备绑定分布</el-button>
           <el-button size="small" type="warning" @click="">导出数据</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item label="设备SN">
-            <el-input @keyup.enter.native="" placeholder="请输入"></el-input>
+            <el-input v-model="formInline.deviceSn" @keyup.enter.native="simpleSearchData" placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="">查询</el-button>
+            <el-button type="primary" @click="simpleSearchData">查询</el-button>
             <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="" label="设备SN" sortable="custom"></el-table-column>
-          <el-table-column prop="organCode" label="所属机构" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="设备IMEI卡ICCID" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="车主姓名" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="手机号" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="公众号" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="绑定时间" sortable="custom"></el-table-column>
+          <el-table-column prop="deviceSn" label="设备SN" sortable="custom" width="180"></el-table-column>
+          <el-table-column prop="organCode" label="所属机构" sortable="custom" min-width="200">
+            <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
+          </el-table-column>
+          <el-table-column prop="deviceIccid" label="设备IMEI卡ICCID" sortable="custom" width="182"></el-table-column>
+          <el-table-column prop="autocarName" label="车主姓名" sortable="custom" width="120"></el-table-column>
+          <el-table-column prop="autocarTel" label="手机号" sortable="custom" width="120"></el-table-column>
+          <el-table-column prop="wxDomain" label="公众号" sortable="custom" min-width="180" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="timeAdded" label="绑定时间" sortable="custom" width="160">
+            <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
+          </el-table-column>
         </el-table>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list.currentPage" :page-sizes="pageSizes" :page-size="list.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list.total" class="clearfix pagination-table">
-        </el-pagination>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list.currentPage" :page-sizes="pageSizes" :page-size="list.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list.total" class="clearfix pagination-table"></el-pagination>
       </el-row>
     </el-card>
     <!-- 高级查询 -->
@@ -36,7 +40,7 @@
         <div class="searchForm_vip" style="width:100%;overflow: auto">
           <el-form :inline="false" :model="formInline" size="small" label-width="90px">
             <el-form-item label="设备SN">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.deviceSn" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="所属机构">
               <el-select v-model="formInline.organCode" filterable clearable placeholder="请选择">
@@ -44,13 +48,13 @@
               </el-select>
             </el-form-item>
             <el-form-item label="手机">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.autocarTel" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="公众号">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.wxDomain" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="车主姓名">
-              <el-input placeholder="请输入"></el-input>
+              <el-input v-model="formInline.autocarName" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="筛选方式">
               <el-select v-model="formInline.timeType" placeholder="请选择">
@@ -86,6 +90,7 @@ const _echart = new Api.ECHARTS({
 export default {
   data() {
     return {
+      other: {},
       echartVisible: false,
       echartLoadData: false,
       formInline: {
@@ -159,8 +164,19 @@ export default {
     this.getData()
   },
   methods: {
+    simpleSearchData() {
+      let deviceSn = this.formInline.deviceSn
+      this.formInline = { deviceSn }
+      this.searchData()
+    },
     getData() {
-      this.loadData = false
+      Api.UNITS.getListData({
+        vue: this,
+        url: _axios.ajaxAd.getBindActivityReport,
+        cb: ((res) => {
+          this.other = res.data.other || {}
+        })
+      })
     },
     getEchartData() {
       this.echartLoadData = true
