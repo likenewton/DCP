@@ -25,7 +25,7 @@ const CoreApp = r => require.ensure([], () => r(require('@/components/_05_versio
 // 汽车管理06
 const Carbrand = r => require.ensure([], () => r(require('@/components/_06_car/carbrand.vue')), 'chunk2')
 // 运营统计07
-const BindAct = r => require.ensure([], () => r(require('@/components/_07_statistics/bindAct.vue')), 'chunk2')
+const Bind = r => require.ensure([], () => r(require('@/components/_07_statistics/bind.vue')), 'chunk2')
 const Iccid = r => require.ensure([], () => r(require('@/components/_07_statistics/iccid.vue')), 'chunk2')
 const Active = r => require.ensure([], () => r(require('@/components/_07_statistics/active.vue')), 'chunk2')
 const Summary = r => require.ensure([], () => r(require('@/components/_07_statistics/summary.vue')), 'chunk2') // 汇总统计
@@ -151,9 +151,9 @@ let menuRoute = {
     name: 'statistics',
     component: Blank,
     children: [{
-      path: 'bindAct',
-      name: 'bindAct',
-      component: BindAct
+      path: 'bind',
+      name: 'bind',
+      component: Bind
     }, {
       path: 'iccid',
       name: 'iccid',

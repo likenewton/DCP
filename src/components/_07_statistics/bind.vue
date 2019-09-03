@@ -3,8 +3,8 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="primary" @click="showEchart">设备绑定趋势</el-button>
-          <el-button size="small" type="primary" @click="">设备绑定分布</el-button>
+          <el-button size="small" type="primary" @click="showEchart_0">设备绑定趋势</el-button>
+          <el-button size="small" type="primary" @click="showEchart_1">设备绑定分布</el-button>
           <el-button size="small" type="warning" @click="">导出数据</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
@@ -38,7 +38,7 @@
     <el-dialog title="高级查询" :visible.sync="searchVipVisible" width="700px" :close-on-click-modal="false">
       <div slot>
         <div class="searchForm_vip" style="width:100%;overflow: auto">
-          <el-form :inline="false" :model="formInline" size="small" label-width="90px">
+          <el-form :inline="false" :model="formInline" size="small" label-width="90px" v-loading="loadData">
             <el-form-item label="设备SN">
               <el-input v-model="formInline.deviceSn" placeholder="请输入"></el-input>
             </el-form-item>
@@ -56,11 +56,8 @@
             <el-form-item label="车主姓名">
               <el-input v-model="formInline.autocarName" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="筛选方式">
-              <el-select v-model="formInline.timeType" placeholder="请选择">
-                <el-option label="月份" :value="0"></el-option>
-                <el-option label="年份" :value="1"></el-option>
-              </el-select>
+            <el-form-item label="卡ICCID">
+              <el-input v-model="formInline.deviceIccid" @input="formInline.deviceIccid = limitNumberAndLetter(formInline.deviceIccid)" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="绑定时间">
               <el-date-picker v-model="formInline.beginTime" :picker-options="startDatePicker" type="date" value-format="yyyy-MM-dd" placeholder="绑定时间（起）"></el-date-picker> -
@@ -74,90 +71,30 @@
         </div>
       </div>
     </el-dialog>
-    <!-- 图表 -->
-    <el-dialog title="设备绑定统计(台)" :visible.sync="echartVisible" center width="1200px" :close-on-click-modal="false">
+    <!-- 设备绑定趋势 -->
+    <el-dialog title="设备绑定趋势(台)" :visible.sync="echartVisible_0" center width="1200px" :close-on-click-modal="false">
       <div slot>
-        <div id="myChart" style="height: 400px" v-loading="echartLoadData"></div>
+        <div id="myChart_0" style="height: 400px" v-loading="echartLoadData"></div>
+      </div>
+    </el-dialog>
+    <!-- 图表 -->
+    <el-dialog title="设备绑定分布(台)" :visible.sync="echartVisible_1" center width="1200px" :close-on-click-modal="false">
+      <div slot>
+        <div id="myChart_1" style="height: 400px" v-loading="echartLoadData"></div>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
 import Api from 'assets/js/api.js'
-const _echart = new Api.ECHARTS({
-  dataViewTitle: '时间'
-})
+
 export default {
   data() {
     return {
-      other: {},
-      echartVisible: false,
+      echartVisible_0: false,
+      echartVisible_1: false,
       echartLoadData: false,
-      formInline: {
-        timeType: 0
-      },
       myChart: null,
-      // 展示图表的视图
-      option: {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          },
-          formatter(series) {
-            return `<div>
-            <div>${series[0].axisValueLabel}</div>
-              <div>
-                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${series[0].color}"></span>
-                <span>${series[0].seriesName}:</span>
-                <span>${series[0].data} 台</span>
-              </div>
-            </div>`
-          }
-        },
-        legend: {
-          data: ['绑定']
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        toolbox: _echart.getOption().toolbox,
-        yAxis: {
-          type: 'value',
-          splitLine: { show: false }
-        },
-        xAxis: {
-          type: 'category',
-          data: [], //要设置的
-          axisLabel: {
-            textStyle: {
-              fontSize: 12
-            },
-            interval: 0,
-            rotate: 0
-          },
-        },
-        series: [{
-          name: '绑定设备',
-          type: 'bar',
-          barMaxWidth: 100,
-          label: {
-            normal: {
-              show: true,
-              position: 'inside',
-            }
-          },
-          data: [], //要设置的
-          itemStyle: {
-            normal: {
-              color: Api.UNITS.getColorList('primary')
-            }
-          }
-        }]
-      }
     }
   },
   mounted() {
@@ -172,60 +109,78 @@ export default {
     getData() {
       Api.UNITS.getListData({
         vue: this,
-        url: _axios.ajaxAd.getBindActivityReport,
-        cb: ((res) => {
-          this.other = res.data.other || {}
-        })
+        url: _axios.ajaxAd.getBindActivityReport
       })
     },
-    getEchartData() {
+    getEchartData_0() {
       this.echartLoadData = true
       setTimeout(() => {
         this.echartLoadData = false
-        // 如果是月份横轴要旋转一定的角度
-        if (this.formInline.timeType === 0) {
-          this.option.xAxis.axisLabel.rotate = 40
-        } else {
-          this.option.xAxis.axisLabel.rotate = 0
-        }
         // 获取数据之后渲染
-        let label = this.option.xAxis.data = [] // 底坐标标签
-        let data1 = this.option.series[0].data = [] // 分类一数据
-        // 设置假数据 - start
-        if (this.formInline.timeType === 0) {
-          for (let i = 0; i < 31; i++) {
-            label.push(`2019-01-${i + 1}`)
-            data1.push(420 + i)
-          }
-        } else {
-          for (let i = 0; i < 12; i++) {
-            label.push(`2019-${i + 1}`)
-            data1.push(4022 + 50 * i)
-          }
-        }
-        // end
-        this.myChart.setOption(this.option)
+        const _echart = new Api.ECHARTS({ dataViewTitle: '时间' })
+
+        _echart.setOption({
+          legend: ['绑定设备'],
+          xAxis: { data: ['2019-09-02', '2019-09-03', '2019-09-04'] },
+          series: [{
+            data: [33, 18, 20]
+          }]
+        })
+
+        this.myChart.setOption(_echart.getOption())
         $("[_echarts_instance_]").find(":last-child").trigger('click')
       }, 600)
     },
-    showEchart() {
-      this.echartVisible = true
+    showEchart_0() {
+      this.echartVisible_0 = true
       this.$nextTick(() => {
-        this.myChart = this.$echarts.init(document.getElementById('myChart'))
-        this.getEchartData()
+        this.myChart = this.$echarts.init(document.getElementById('myChart_0'))
+        this.getEchartData_0()
       })
     },
-    resetData() {
-      this.list.currentPage = 1
-      this.formInline = { timeType: 0 }
-      this.sort = {}
-      this.$refs.listTable.clearSort()
-      this.getData()
+    getEchartData_1() {
+      this.echartLoadData = true
+      setTimeout(() => {
+        this.echartLoadData = false
+        // 获取数据之后渲染
+        const _echart = new Api.ECHARTS({ dataViewTitle: '机构' })
+
+        let a = []
+        let b = []
+        for(let i = 0; i < 100; i ++) {
+          a.push('云智测试机构' + i)
+          b.push(20)
+        }
+
+        _echart.setOption({
+          legend: ['绑定设备'],
+          xAxis: { data: a },
+          series: [{
+            data: b,
+            type: 'bar'
+          }]
+        })
+
+        let option = _echart.getOption()
+        option.xAxis.axisLabel.rotate = 40
+
+        this.myChart.setOption(option)
+        $("[_echarts_instance_]").find(":last-child").trigger('click')
+      }, 600)
+    },
+    showEchart_1() {
+      this.echartVisible_1 = true
+      this.$nextTick(() => {
+        this.myChart = this.$echarts.init(document.getElementById('myChart_1'))
+        this.getEchartData_1()
+      })
     }
   },
   computed: {
     startDatePicker() {
-      return Api.UNITS.startDatePicker(this, this.formInline.endTime)
+      return Object.assign({
+        shortcuts: Api.STATIC.shortcuts
+      }, Api.UNITS.startDatePicker(this, this.formInline.endTime))
     },
     endDatePicker() {
       return Api.UNITS.endDatePicker(this, this.formInline.beginTime)

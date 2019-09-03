@@ -40,31 +40,31 @@
           <div class="right">
             <div class="card-list">
               <div class="card-item">
-                <el-card shadow="hover" :body-style="{background: getColorList('primary')}">
+                <el-card shadow="never" :body-style="{background: getColorList('primary')}">
                   <div class="card_title">设备总数</div>
                   <div class="card_value">526343台</div>
                 </el-card>
               </div>
               <div class="card-item">
-                <el-card shadow="hover" :body-style="{background: getColorList('success')}">
+                <el-card shadow="never" :body-style="{background: getColorList('success')}">
                   <div class="card_title">在线设备数</div>
                   <div class="card_value">526343台</div>
                 </el-card>
               </div>
               <div class="card-item">
-                <el-card shadow="hover" :body-style="{background: getColorList('warning')}">
+                <el-card shadow="never" :body-style="{background: getColorList('warning')}">
                   <div class="card_title">装车设备数</div>
                   <div class="card_value">526343台</div>
                 </el-card>
               </div>
               <div class="card-item">
-                <el-card shadow="hover" :body-style="{background: getColorList('danger')}">
+                <el-card shadow="never" :body-style="{background: getColorList('danger')}">
                   <div class="card_title">绑定设备数</div>
                   <div class="card_value">526343台</div>
                 </el-card>
               </div>
               <div class="card-item">
-                <el-card shadow="hover" :body-style="{background: getColorList('purple')}">
+                <el-card shadow="never" :body-style="{background: getColorList('purple')}">
                   <div class="card_title">充值设备数</div>
                   <div class="card_value">526343台</div>
                 </el-card>

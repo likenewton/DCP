@@ -145,7 +145,7 @@
     {
       "rescCode": "",
       "resName": "设备绑定统计",
-      "resUrl": "bindAct",
+      "resUrl": "bind",
       "level": 3,
       "seqNum": 1,
       "iconUrl": ""

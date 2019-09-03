@@ -145,6 +145,9 @@ class Echarts {
     if (this.data.formatter) {
       this.option.tooltip.formatter = this.data.formatter
     }
+    if (this.data.series.length === 1) {
+      this.option.legend.show = false
+    }
     // this.option.toolbox.feature
     this.data.series.forEach((v, i) => {
       this.option.series.push({
