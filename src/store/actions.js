@@ -7,7 +7,8 @@ export default {
   getAuthMenu(context) {
     _axios.send({
       method: 'get',
-      url: '../../static/authMenu.json',
+      // url: '../../static/authMenu.json',
+      url: _axios.ajaxAd.getAuthMenu,
       done: ((res) => {
         context.commit('SET_AUTHMENU', { authMenu: Api.UNITS.getAuthMenu(Api.STATIC.asideData, res.data) }) // 保存菜单数据
         router.addRoutes([Api.UNITS.getMenuRoute(menuRoute, res.data)]) // 生成动态路由

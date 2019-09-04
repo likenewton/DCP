@@ -6,7 +6,7 @@
     <el-container>
       <v-aside></v-aside>
       <el-container>
-        <el-main class="small-scroll">
+        <el-main class="small-scroll" :class="[routeName === 'home' ? 'el-main-home' : 'el-main-menu']">
           <div class="main-inner">
             <v-breadcrumb></v-breadcrumb>
             <keep-alive>
@@ -38,7 +38,6 @@ export default {
 .el-main {
   position: relative;
   padding: 20px 20px 0 !important;
-  background: #f5f5f5;
   overflow-x: hidden;
 
   .main-inner {
@@ -47,6 +46,14 @@ export default {
     width: 100%;
     min-height: 100%;
   }
+}
+
+.el-main-home {
+  background: #fff;
+}
+
+.el-main-menu {
+  background: #f5f5f5
 }
 
 </style>

@@ -24,7 +24,7 @@ export default {
   position: absolute;
   bottom: 0;
   padding: 0;
-  background: #f5f5f5;
+  // background: #f5f5f5;
   width: 100%;
   overflow: hidden;
 }

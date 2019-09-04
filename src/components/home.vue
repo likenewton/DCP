@@ -3,7 +3,7 @@
     <el-row>
       <el-card class="zhuangche" shadow="never">
         <div slot="header" class="clearfix">
-          <span>装车设备分布</span>
+          <span class="bold">装车设备分布</span>
         </div>
         <div class="container clearfix">
           <div class="left">
@@ -30,9 +30,8 @@
             </el-card>
             <el-card shadow="hover" style="margin-top:20px;background: #fafafa">
               <el-tabs>
-                <el-tab-pane label="设备转换统计">
-                  <div id="canvas_0" style="height: 220px"></div>
-                  <div id="canvas_1" style="height: 220px"></div>
+                <el-tab-pane label="转换分析漏斗">
+                  <div id="canvas_0" style="height: 180px"></div>
                 </el-tab-pane>
               </el-tabs>
             </el-card>
@@ -52,7 +51,7 @@
                 </el-card>
               </div>
               <div class="card-item">
-                <el-card shadow="never" :body-style="{background: getColorList('warning')}">
+                <el-card shadow="never" :body-style="{background: getColorList('purple')}">
                   <div class="card_title">装车设备数</div>
                   <div class="card_value">526343台</div>
                 </el-card>
@@ -64,7 +63,7 @@
                 </el-card>
               </div>
               <div class="card-item">
-                <el-card shadow="never" :body-style="{background: getColorList('purple')}">
+                <el-card shadow="never" :body-style="{background: getColorList('editor')}">
                   <div class="card_title">充值设备数</div>
                   <div class="card_value">526343台</div>
                 </el-card>
@@ -74,9 +73,12 @@
         </div>
       </el-card>
     </el-row>
-    <el-row :gutter="20">
-      <el-col>
-        <el-card class="bottom-card" shadow="never" :style="{height: '400px'}" style="margin-top: 20px">
+    <el-card class="pingtai" shadow="never" style="margin-top: 20px">
+      <div slot="header" class="clearfix">
+        <span class="bold">平台设备汇总数据</span>
+      </div>
+      <div class="container">
+        <el-row :gutter="20" class="bottom-card">
           <div class="time-filter">
             <el-date-picker class="date_picker" v-model="timePickData" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" @change="getData" value-format="yyyy-MM-dd" size="small" :clearable="false">
             </el-date-picker>
@@ -93,10 +95,13 @@
             <el-tab-pane label="设备转化率">
               <div id="canvas_2_1"></div>
             </el-tab-pane>
+            <el-tab-pane label="装车设备城市分布">
+              <div id="canvas_2_2"></div>
+            </el-tab-pane>
           </el-tabs>
-        </el-card>
-      </el-col>
-    </el-row>
+        </el-row>
+      </div>
+    </el-card>
   </div>
 </template>
 <script>
@@ -106,7 +111,6 @@ export default {
     return {
       tabIndex_2: '0',
       myChart_0: null,
-      myChart_1: null,
       myChart_2: null,
       myChart_3: null,
       pickerOptions: {
@@ -158,7 +162,7 @@ export default {
       option_0: {
         tooltip: {
           trigger: 'item',
-          formatter: "{a} <br/>{b} : {c}台 ({d}%)"
+          formatter: "{b}：{d}%"
         },
         grid: {
           left: '3%',
@@ -167,94 +171,45 @@ export default {
           top: '3%',
           containLabel: true
         },
+        calculable: true,
         series: [{
-          name: '设备转换统计',
-          type: 'pie',
-          radius: ['50%', '70%'],
-          hoverAnimation: false,
-          avoidLabelOverlap: false,
+          name: '漏斗图',
+          type: 'funnel',
+          left: '10%',
+          top: 15,
+          bottom: 10,
+          width: '80%',
+          min: 0,
+          // max: 100,
+          minSize: '60%',
+          maxSize: '100%',
+          sort: 'descending',
+          gap: 0,
           label: {
-            normal: {
-              show: true,
-              // position: 'inside',
-              formatter: '{b}: {c}台',
-              rich: {
-                a: {
-                  color: '#909399',
-                  fontSize: '14',
-                  lineHeight: '30'
-                },
-                b: {
-                  color: '#333',
-                  fontSize: '20',
-                  lineHeight: '30'
-                }
-              }
-            }
+            show: true,
+            position: 'inside',
+            formatter: '{b} {c}'
           },
           itemStyle: {
+            borderColor: '#fff',
+            borderWidth: 0,
             normal: {
               color(params) {
-                return Api.UNITS.getColorList(['primary', 'danger'])[params.dataIndex]
-              }
-            },
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          },
-          data: [] // 需设置
-        }]
-      },
-      option_1: {
-        tooltip: {
-          trigger: 'item',
-          formatter: "{a} <br/>{b} : {c}台 ({d}%)"
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        series: [{
-          name: '绑定占比',
-          type: 'pie',
-          radius: ['50%', '70%'],
-          hoverAnimation: false,
-          avoidLabelOverlap: false,
-          label: {
-            normal: {
-              show: true,
-              formatter: '{b}: {c}台',
-              rich: {
-                a: {
-                  color: '#909399',
-                  fontSize: '14',
-                  lineHeight: '30'
-                },
-                b: {
-                  color: '#333',
-                  fontSize: '20',
-                  lineHeight: '30'
-                }
+                return Api.UNITS.getColorList(['success', 'primary', 'warning', 'danger'])[params.dataIndex]
               }
             }
           },
-          itemStyle: {
-            normal: {
-              color(params) {
-                return Api.UNITS.getColorList(['success', 'warning', ])[params.dataIndex]
-              }
-            },
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+          emphasis: {
+            label: {
+              fontSize: 12
             }
           },
-          data: [] // 需设置
+          data: [
+            { value: 3254, name: '入库设备' },
+            { value: 1250, name: '通电设备' },
+            { value: 32, name: '装车设备' },
+            { value: 656, name: '绑定设备' },
+          ]
         }]
       },
       option_2: {
@@ -282,17 +237,17 @@ export default {
         series: [{
           name: '数量',
           type: 'bar',
-          barMaxWidth: '18',
+          barMaxWidth: '25',
           label: {
             normal: {
               show: true,
-              position: 'inside'
+              position: 'insideBottom'
             }
           },
           itemStyle: {
             normal: {
               color(params) {
-                return Api.UNITS.getColorList(['primary', 'danger', 'success', 'purple', 'warning', 'editor', 'primary'])[params.dataIndex]
+                return Api.UNITS.getColorList(['primary', 'purple', 'editor', 'danger', 'warning', 'primary', 'success'])[params.dataIndex]
               }
             }
           },
@@ -304,10 +259,8 @@ export default {
   mounted() {
     setTimeout(() => {
       this.myChart_0 = this.$echarts.init(document.getElementById('canvas_0'))
-      this.myChart_1 = this.$echarts.init(document.getElementById('canvas_1'))
       this.myChart_2 = this.$echarts.init(document.getElementById('canvas_2'))
       this.myChart_0.resize()
-      this.myChart_1.resize()
       this.myChart_2.resize()
       this.getTopData()
     })
@@ -323,19 +276,10 @@ export default {
     },
     getTopData() {
       setTimeout(() => {
-        this.option_0.series[0].data = [
-          { value: 50, name: '装车' },
-          { value: 50, name: '未装车' }
-        ]
-        this.option_1.series[0].data = [
-          { value: 3353, name: '已绑定' },
-          { value: 30, name: '未绑定' }
-        ]
         this.option_2.yAxis.data = ['7.北京', '6.上海', '5.内蒙古', '4.呼和浩特', '3.长沙', '2.齐齐哈尔', '1.深圳']
         this.option_2.series[0].data = [200, 220, 230, 250, 255, 290, 320]
         Vue.nextTick(() => {
           this.myChart_0.setOption(this.option_0)
-          this.myChart_1.setOption(this.option_1)
           this.myChart_2.setOption(this.option_2)
           $("[_echarts_instance_]").find(":last-child").trigger('click')
         })
@@ -380,6 +324,10 @@ export default {
 <style lang="scss">
 .home_container {
   .zhuangche {
+    >.el-card__header {
+      background: #fafafa;
+    }
+
     .container {
       position: relative;
       height: auto;
@@ -418,32 +366,39 @@ export default {
     }
   }
 
-  .bottom-card {
-    position: relative;
+  .pingtai {
+    >.el-card__header {
+      background: #fafafa;
+    }
 
-    .time-filter {
+    .bottom-card {
+      position: relative;
 
-      .date_picker {
-        position: absolute;
-        right: 20px;
-        top: 18px;
-        z-index: 10;
-        width: 260px;
+      .time-filter {
 
-        .el-range__close-icon {
-          display: none;
+        .date_picker {
+          position: absolute;
+          right: 10px;
+          top: 0px;
+          z-index: 10;
+          width: 260px;
+
+          .el-range__close-icon {
+            display: none;
+          }
         }
-      }
 
-      .stype_choice {
-        position: absolute;
-        width: 150px;
-        right: 290px;
-        top: 18px;
-        z-index: 10;
+        .stype_choice {
+          position: absolute;
+          width: 150px;
+          right: 280px;
+          top: 0px;
+          z-index: 10;
+        }
       }
     }
   }
+
 }
 
 </style>

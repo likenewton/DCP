@@ -1,11 +1,6 @@
 // [chunk2](侧边栏菜单动态路由)
 const Container = r => require.ensure([], () => r(require('@/components/container/index.vue')), 'chunk2')
 const Blank = r => require.ensure([], () => r(require('@/components/container/blank.vue')), 'chunk2')
-// 内容管理01
-const Channel = r => require.ensure([], () => r(require('@/components/_01_content/channel.vue')), 'chunk2')
-const Resource = r => require.ensure([], () => r(require('@/components/_01_content/resource.vue')), 'chunk2')
-// 推送管理02
-const Multimedia = r => require.ensure([], () => r(require('@/components/_02_push/multimedia.vue')), 'chunk2')
 // 设备管理03
 const Brand = r => require.ensure([], () => r(require('@/components/_03_equipment/brand.vue')), 'chunk2')
 const DevInfo = r => require.ensure([], () => r(require('@/components/_03_equipment/devInfo.vue')), 'chunk2')
@@ -22,14 +17,14 @@ const Dictionary = r => require.ensure([], () => r(require('@/components/_05_ver
 const SysUpgrade = r => require.ensure([], () => r(require('@/components/_05_versions/sysUpgrade.vue')), 'chunk2')
 const DevUprecorde = r => require.ensure([], () => r(require('@/components/_05_versions/devUprecorde.vue')), 'chunk2')
 const CoreApp = r => require.ensure([], () => r(require('@/components/_05_versions/coreApp.vue')), 'chunk2')
-// 汽车管理06
+// 字典库管理06
 const Carbrand = r => require.ensure([], () => r(require('@/components/_06_car/carbrand.vue')), 'chunk2')
 // 运营统计07
+const Truckload = r => require.ensure([], () => r(require('@/components/_07_statistics/truckload.vue')), 'chunk2')
 const Bind = r => require.ensure([], () => r(require('@/components/_07_statistics/bind.vue')), 'chunk2')
 const Iccid = r => require.ensure([], () => r(require('@/components/_07_statistics/iccid.vue')), 'chunk2')
 const Active = r => require.ensure([], () => r(require('@/components/_07_statistics/active.vue')), 'chunk2')
 const Summary = r => require.ensure([], () => r(require('@/components/_07_statistics/summary.vue')), 'chunk2') // 汇总统计
-const C_car = r => require.ensure([], () => r(require('@/components/_07_statistics/c_car.vue')), 'chunk2') // 车机上报统计
 // 缓存同步
 const Sync = r => require.ensure([], () => r(require('@/components/_09_cache/sync.vue')), 'chunk2')
 // 设备imei池
@@ -47,28 +42,6 @@ let menuRoute = {
   redirect: '/menu/content',
   // 侧边栏菜单
   children: [{
-    path: 'content',
-    name: 'content',
-    component: Blank,
-    children: [{
-      path: 'channel',
-      name: 'channel',
-      component: Channel
-    }, {
-      path: 'resource',
-      name: 'resource',
-      component: Resource
-    }]
-  }, {
-    path: 'push',
-    name: 'push',
-    component: Blank,
-    children: [{
-      path: 'multimedia',
-      name: 'multimedia',
-      component: Multimedia
-    }]
-  }, {
     path: 'equipment',
     name: 'equipment',
     component: Blank,
@@ -151,6 +124,10 @@ let menuRoute = {
     name: 'statistics',
     component: Blank,
     children: [{
+      path: 'truckload',
+      name: 'truckload',
+      component: Truckload
+    }, {
       path: 'bind',
       name: 'bind',
       component: Bind
@@ -166,10 +143,6 @@ let menuRoute = {
       path: 'summary',
       name: 'summary',
       component: Summary
-    }, {
-      path: 'c_car',
-      name: 'c_car',
-      component: C_car
     }]
   }, {
     path: 'cache',

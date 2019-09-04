@@ -25,7 +25,7 @@ class AXIOS {
       getBrands: '/mpk_app/api/deviceBrand/getDeviceBrandList',
       getArea: '/mpk_app/api/systemArea/querySystemAreaByParentNo', // 获取地区
       queryVersionByOrganCode: '/mpk_app/api/version/queryVersionByOrganCode', // 根据organCode获取硬件版本与软件版本
-      queryBatchSnList: '/mpk_app/api/deviceExcepLog/queryBatchSnList', // 设备异常记录->获取批次号列表
+      queryBatchSnList: '/mpk_app/api/deviceExcepLog/queryBatchSnList', // 特殊设备处理-设备异常记录->获取批次号列表
       pageDeviceMateriel: '/mpk_app/api/deviceMateriel/pageDeviceMateriel', // 批次管理->导入明细
       getRedisJson: '/mpk_app/api/simCardTips/getRedisJson', // 缓存地址
       getCustomerNameList: '/mpk_app/api/simCardTips/customerNameList', // 提醒策略-客户名称
@@ -42,7 +42,7 @@ class AXIOS {
       getRemotePlat: '/mpk_app/api/device/remotePlatform', // 远程平台查询
       getOnpicList: '/mpk_app/api/photobg/pagePhotobg', // 开机图片列表
       getPageDeviceExt: '/mpk_app/api/deviceExt/pageDeviceExt', // 设备扩展信息
-      getListCustomer: '/mpk_app/api/customer/listCustomer', // 客户管理
+      getListCustomer: '/mpk_app/api/customer/listCustomer', // 车主管理
       getBlueToothReport: '/mpk_app/api/bluetoothReport/pageBluetoothReport', // 蓝牙报表
       getPhotoHistory: '/mpk_app/api/photo/photoHistory', // 设备记录-历史照片
       getPageDrivingBehavior: '/mpk_app/api/drivingBehavior/pageDrivingBehavior', // 设备记录-驾驶行为
@@ -69,6 +69,8 @@ class AXIOS {
       getSummaryAsyn: '/mpk_app/api/summary/summaryAsyn', // 运营统计-汇总统计
       getIncreaseReportAsyn: '/mpk_app/api/summary/increaseReportAsyn', // 运营统计-增长率统计
       getBindActivityReport: '/mpk_app/api/device/bindReport', // 运营统计-绑定激活
+      getBindStatistical: '/mpk_app/api/device/bindStatistical', // 设备绑定统计-趋势
+      getBindStatisticalByOrgancode: '/mpk_app/api/device/bindStatisticalByOrgancode', // 设备绑定统计-分布
       // detail
       detialUpDevBrand: '/mpk_app/api/deviceBrand/toUpdateDeviceBrand', // 品牌修改查询
       getDeviceRecord: '/mpk_app/api/device/deviceRecord', // 设备记录
@@ -101,7 +103,7 @@ class AXIOS {
       updateAppVerInfo: '/mpk_app/api/appVerInfo/updateAppVerInfo', // 核心应用升级-编辑
       addAppVerInfo: '/mpk_app/api/appVerInfo/addAppVerInfo', // 核心应用升级-新增
       // diabled
-      brandChangeState: '/mpk_app/api/deviceBrand/changeState',
+      brandChangeState: '/mpk_app/api/deviceBrand/changeState', // 设备品牌-生效、失效
       toUpdIsDisable: '/mpk_app/api/device/toUpdIsDisable',  // 设备查询 有效、失效
       toUpdAdasStatus: '/mpk_app/api/device/toUpdAdasStatus', // 设备查询 adas 开关
       toUpdateIPWhiteListStatus: '/mpk_app/api/ipwhitelist/toUpdateIPWhiteListStatus', // IP白名单失效有效变更

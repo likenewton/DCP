@@ -14,6 +14,7 @@ export default {
   created() {
     this.getOrgs()
     this.getRedis()
+    this.getAuthButtons()
   },
   methods: {
     ...mapActions([

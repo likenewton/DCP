@@ -80,6 +80,7 @@ export default {
   mounted() {
     this.list.data = []
     this.getData()
+    console.log(this.pageAuthBtn)
   },
   methods: {
     getData() {
