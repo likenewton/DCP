@@ -7,33 +7,33 @@
             <el-input v-model="formInline.deviceSn" @keyup.enter.native="simpleSearchData" placeholder="设备SN号"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_devUprecorde_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_devUprecorde_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="deviceSn" fixed="left" label="设备SN号" sortable="custom" width="160">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_devUprecorde_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="deviceSn" fixed="left" label="设备SN号" :sortable="sortable" width="160">
 <!--             <template slot-scope="scope">
               <el-link type="primary" @click="$router.push({name:'devRecord',query:{deviceId:scope.row.deviceId}})">{{scope.row.deviceSn}}</el-link>
             </template> -->
           </el-table-column>
-          <el-table-column prop="organCode" label="机构名称" sortable="custom" min-width="140">
+          <el-table-column prop="organCode" label="机构名称" :sortable="sortable" min-width="140">
             <template slot-scope="scope">
               <span v-if="scope.row.organCode">{{scope.row.organCode | valueToLabel(orgs)}}</span>
               <span v-else>平台机构</span>
             </template>
           </el-table-column>
-          <el-table-column prop="hardCode" label="硬件版本号" sortable="custom" min-width="100"></el-table-column>
-          <el-table-column prop="softCode" label="软件版本号" sortable="custom" min-width="130"></el-table-column>
-          <el-table-column prop="deviceIp" label="设备IP地址" sortable="custom" width="120"></el-table-column>
-          <el-table-column prop="deviceMac" label="设备MAC地址" sortable="custom" width="160"></el-table-column>
-          <el-table-column prop="upgradeCount" label="升级次数" sortable="custom" align="right" width="88"></el-table-column>
-          <el-table-column prop="addedTime" label="初次升级时间" sortable="custom" width="153">
+          <el-table-column prop="hardCode" label="硬件版本号" :sortable="sortable" min-width="100"></el-table-column>
+          <el-table-column prop="softCode" label="软件版本号" :sortable="sortable" min-width="130"></el-table-column>
+          <el-table-column prop="deviceIp" label="设备IP地址" :sortable="sortable" width="120"></el-table-column>
+          <el-table-column prop="deviceMac" label="设备MAC地址" :sortable="sortable" width="160"></el-table-column>
+          <el-table-column prop="upgradeCount" label="升级次数" :sortable="sortable" align="right" width="88"></el-table-column>
+          <el-table-column prop="addedTime" label="初次升级时间" :sortable="sortable" width="153">
             <template slot-scope="scope">{{scope.row.addedTime | formatDate}}</template>
           </el-table-column>
-          <el-table-column prop="upgradeTime" label="上次升级时间" sortable="custom" width="153">
+          <el-table-column prop="upgradeTime" label="上次升级时间" :sortable="sortable" width="153">
             <template slot-scope="scope">{{scope.row.upgradeTime | formatDate}}</template>
           </el-table-column>
         </el-table>

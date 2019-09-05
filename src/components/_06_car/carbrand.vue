@@ -3,26 +3,26 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="success" @click="$router.push({name:'addcarbrand'})">添加品牌</el-button>
+          <el-button size="small" type="success" @click="$router.push({name:'addcarbrand'})" :disabled="!pageAuthBtn.DCP_carbrand_ADD">添加品牌</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
             <el-input v-model="formInline.brandName" @keyup.enter.native="searchData" placeholder="品牌名称"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchData">查询</el-button>
+            <el-button type="primary" @click="searchData" :disabled="!pageAuthBtn.DCP_carbrand_LIST">查询</el-button>
             <el-button type="warning" @click="resetData">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="brandName" label="品牌名称" sortable="custom"></el-table-column>
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_carbrand_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="brandName" label="品牌名称" :sortable="sortable"></el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
-              <el-button type="text" class="text_editor" @click="$router.push({name:'addcarbrand',query:{type:'update',brandId:scope.row.brandId,parentId:scope.row.parentId}})">修改</el-button>
-              <el-button type="text" @click="$router.push({name:'carmodel',query:{brandName:scope.row.brandName,parentId:scope.row.parentId,brandId:scope.row.brandId}})">型号</el-button>
-              <el-button type="text" class="text_danger" @click="deleteBrand(scope)">删除</el-button>
+              <el-button type="text" class="text_editor" @click="$router.push({name:'addcarbrand',query:{type:'update',brandId:scope.row.brandId,parentId:scope.row.parentId}})" :disabled="!pageAuthBtn.DCP_carbrand_EDITOR">修改</el-button>
+              <el-button type="text" @click="$router.push({name:'carmodel',query:{brandName:scope.row.brandName,parentId:scope.row.parentId,brandId:scope.row.brandId}})" :disabled="!pageAuthBtn.DCP_carbrand_CHECK">型号</el-button>
+              <el-button type="text" class="text_danger" @click="deleteBrand(scope)" :disabled="!pageAuthBtn.DCP_carbrand_DELETE">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

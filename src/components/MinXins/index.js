@@ -6,6 +6,7 @@ export default {
   data() {
     return {
       isStripe: Api.STATIC.isStripe,
+      sortable: Api.STATIC.sortable,
       loadData: true,
       searchVipVisible: false, // 是否显示高级查询dialog
       pageSizes: Api.STATIC.pageSizes,
@@ -60,6 +61,17 @@ export default {
       this.formInline = {}
       this.isUpdate && this.getData()
     },
+    isAuth(flag, msg) { // 测试某个功能是否有权限
+      if (flag) {
+        return true
+      } else {
+        this.showMsgBox({
+          type: 'error',
+          message: msg || '缺少对应的权限！'
+        })
+        return false
+      }
+    },
     limitNumberAndLetter: Api.UNITS.limitNumberAndLetter,
     getColorList: Api.UNITS.getColorList,
     limitNumber: Api.UNITS.limitNumber,
@@ -83,6 +95,7 @@ export default {
     },
     pageAuthBtn() {
       let authArr = this.authButtons[`DCP_${this.routeName}`]
+      console.log(authArr)
       if (!authArr) return {}
       return authArr
     }

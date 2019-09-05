@@ -3,7 +3,7 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="success" @click="$router.push({name: 'addbrand'})">添加品牌</el-button>
+          <el-button size="small" type="success" @click="$router.push({name: 'addbrand'})" :disabled="!pageAuthBtn.DCP_brand_ADD">添加品牌</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
@@ -18,19 +18,19 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchData">查询</el-button>
+            <el-button type="primary" @click="searchData" :disabled="!pageAuthBtn.DCP_brand_LIST">查询</el-button>
             <el-button type="warning" @click="resetData">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_brand_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column prop="brandName" label="品牌名称"></el-table-column>
           <el-table-column prop="distributor" label="分销商"></el-table-column>
-          <el-table-column prop="organCode" label="所属机构" sortable="custom">
+          <el-table-column prop="organCode" label="所属机构" :sortable="sortable">
             <template slot-scope="scope">{{scope.row.organName}}</template>
           </el-table-column>
-          <el-table-column prop="state" label="状态" sortable="custom" width="80">
+          <el-table-column prop="state" label="状态" :sortable="sortable" width="80">
             <template slot-scope="scope">
               <span v-if="scope.row.state === 1" class="text_success bold">有效</span>
               <span v-else class="text_danger bold">无效</span>
@@ -38,10 +38,10 @@
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="245">
             <template slot-scope="scope">
-              <el-button type="text" class="text_editor" @click="$router.push({name:'addbrand',query:{type:'update', id:scope.row.id}})">编辑</el-button>
-              <el-button type="text" :class="[scope.row.state===1?'text_danger':'text_success']" @click="disabled(scope)">{{scope.row.state ===1?'失效':'生效'}}</el-button>
               <el-button type="text" class="text_primary" @click="toDevInfo(scope)">设备详情</el-button>
-              <el-button type="text" class="text_warning" @click="showImportDevSn(scope)">导入设备</el-button>
+              <el-button type="text" class="text_editor" :disabled="!pageAuthBtn.DCP_brand_EDITOR" @click="$router.push({name:'addbrand',query:{type:'update', id:scope.row.id}})">编辑</el-button>
+              <el-button type="text" :class="[scope.row.state===1?'text_danger':'text_success']" :disabled="!pageAuthBtn.DCP_brand_DISABLED" @click="disabled(scope)">{{scope.row.state ===1?'失效':'生效'}}</el-button>
+              <el-button type="text" class="text_warning" :disabled="!pageAuthBtn.DCP_brand_IMPORT" @click="showImportDevSn(scope)">导入设备</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -80,7 +80,6 @@ export default {
   mounted() {
     this.list.data = []
     this.getData()
-    console.log(this.pageAuthBtn)
   },
   methods: {
     getData() {

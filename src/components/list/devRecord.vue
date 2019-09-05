@@ -78,10 +78,10 @@
         <el-tab-pane v-loading="loadData">
           <span slot="label">历史位置</span>
           <el-table ref="listTable" :data="list_2.data" @sort-change="handleSortChange" :max-height="maxTableHeight_2" border resizable size="mini">
-            <el-table-column prop="timeAdded" label="定位时间" sortable="custom">
+            <el-table-column prop="timeAdded" label="定位时间" :sortable="sortable">
               <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
             </el-table-column>
-            <el-table-column prop="location" label="定位地址" sortable="custom"></el-table-column>
+            <el-table-column prop="location" label="定位地址" :sortable="sortable"></el-table-column>
           </el-table>
           <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list_2.currentPage" :page-sizes="pageSizes" :page-size="list_2.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list_2.total" class="clearfix pagination-table"></el-pagination>
         </el-tab-pane>
@@ -100,9 +100,9 @@
             <el-button size="small" type="primary" @click="getParas">查看参数</el-button>
           </el-button-group>
           <el-table ref="listTable" :data="list_4.data" @sort-change="handleSortChange" :max-height="maxTableHeight_4" border resizable size="mini">
-            <el-table-column prop="obdKey" label="故障码" sortable="custom" min-width="120"></el-table-column>
-            <el-table-column prop="obdVal" label="故障描述" sortable="custom" min-width="600"></el-table-column>
-            <el-table-column prop="obdStatus" label="状态" sortable="custom" min-width="120">
+            <el-table-column prop="obdKey" label="故障码" :sortable="sortable" min-width="120"></el-table-column>
+            <el-table-column prop="obdVal" label="故障描述" :sortable="sortable" min-width="600"></el-table-column>
+            <el-table-column prop="obdStatus" label="状态" :sortable="sortable" min-width="120">
               <template slot-scope="scope">
                 <span class="text_success" v-if="scope.row.obdStatus === '01'">正常</span>
                 <span class="text_danger" v-if="scope.row.obdStatus === '02'">故障</span>
@@ -174,33 +174,33 @@
             </el-form-item>
           </el-form>
           <el-table ref="listTable_7" :data="list_7.data" @sort-change="handleSortChange" :max-height="maxTableHeight_7" border resizable size="mini">
-            <el-table-column prop="eventType" label="事件类型" sortable="custom" min-width="160">
+            <el-table-column prop="eventType" label="事件类型" :sortable="sortable" min-width="160">
               <template slot-scope="scope">{{scope.row.eventType | valueToLabel(eventType)}}</template>
             </el-table-column>
-            <el-table-column prop="longitude" label="精度坐标" sortable="custom" width="100" align="right">
+            <el-table-column prop="longitude" label="精度坐标" :sortable="sortable" width="100" align="right">
               <template slot-scope="scope">{{scope.row.longitude | fixed(6)}}</template>
             </el-table-column>
-            <el-table-column prop="latitude" label="纬度坐标" sortable="custom" width="100" align="right">
+            <el-table-column prop="latitude" label="纬度坐标" :sortable="sortable" width="100" align="right">
               <template slot-scope="scope">{{scope.row.latitude | fixed(6)}}</template>
             </el-table-column>
-            <el-table-column prop="gpsTime" label="GPS时间" sortable="custom" width="153">
+            <el-table-column prop="gpsTime" label="GPS时间" :sortable="sortable" width="153">
               <template slot-scope="scope">{{scope.row.gpsTime | formatDate}}</template>
             </el-table-column>
-            <el-table-column prop="gpsOrientation" label="GPS航迹读数" sortable="custom" width="112" align="right"></el-table-column>
-            <el-table-column prop="gpsSpeed" label="GPS速度(KM/H)" sortable="custom" width="130" align="right">
+            <el-table-column prop="gpsOrientation" label="GPS航迹读数" :sortable="sortable" width="112" align="right"></el-table-column>
+            <el-table-column prop="gpsSpeed" label="GPS速度(KM/H)" :sortable="sortable" width="130" align="right">
               <template slot-scope="scope">{{scope.row.gpsSpeed | fixed}}</template>
             </el-table-column>
-            <el-table-column prop="gpsCount" label="连接的卫星数" sortable="custom" width="112" align="right"></el-table-column>
-            <el-table-column prop="batteryVoltage" label="电瓶电压(V)" sortable="custom" width="102" align="right">
+            <el-table-column prop="gpsCount" label="连接的卫星数" :sortable="sortable" width="112" align="right"></el-table-column>
+            <el-table-column prop="batteryVoltage" label="电瓶电压(V)" :sortable="sortable" width="102" align="right">
               <template slot-scope="scope">{{scope.row.batteryVoltage | fixed}}</template>
             </el-table-column>
-            <el-table-column prop="currentOdometer" label="当前车辆总里程(KM)" sortable="custom" width="150" align="right">
+            <el-table-column prop="currentOdometer" label="当前车辆总里程(KM)" :sortable="sortable" width="150" align="right">
               <template slot-scope="scope">{{scope.row.currentOdometer | fixed}}</template>
             </el-table-column>
-            <el-table-column prop="forceSpeed" label="加速度(M/S2)" sortable="custom" width="112" align="right">
+            <el-table-column prop="forceSpeed" label="加速度(M/S2)" :sortable="sortable" width="112" align="right">
               <template slot-scope="scope">{{scope.row.forceSpeed | fixed}}</template>
             </el-table-column>
-            <el-table-column prop="timeAdded" label="记录时间" sortable="custom" width="153">
+            <el-table-column prop="timeAdded" label="记录时间" :sortable="sortable" width="153">
               <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
             </el-table-column>
           </el-table>

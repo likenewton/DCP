@@ -3,31 +3,31 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="success" @click="importIEMIvisible = true">设备导入</el-button>
+          <el-button size="small" type="success" @click="importIEMIvisible = true" :disabled="!pageAuthBtn.DCP_dev_IMPORT">设备导入</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
             <el-input v-model="formInline.deviceImei" @keyup.enter.native="simpleSearchData" placeholder="设备IMEI"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_dev_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_dev_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column fixed="left" prop="deviceImei" label="设备IMEI" sortable="custom" width="160"></el-table-column>
-          <el-table-column prop="organCode" label="机构" sortable="custom" min-width="160">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_dev_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column fixed="left" prop="deviceImei" label="设备IMEI" :sortable="sortable" width="160"></el-table-column>
+          <el-table-column prop="organCode" label="机构" :sortable="sortable" min-width="160">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>
-          <el-table-column prop="organCode" label="公司名称" sortable="custom" min-width="160">
+          <el-table-column prop="organCode" label="公司名称" :sortable="sortable" min-width="160">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs, 'label2')}}</template>
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" sortable="custom" width="180">
+          <el-table-column prop="createTime" label="创建时间" :sortable="sortable" width="180">
             <template slot-scope="scope">{{scope.row.createTime | formatDate}}</template>
           </el-table-column>
-          <el-table-column prop="createPerson" label="创建人" sortable="custom" width="120"></el-table-column>
+          <el-table-column prop="createPerson" label="创建人" :sortable="sortable" width="120"></el-table-column>
         </el-table>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list.currentPage" :page-sizes="pageSizes" :page-size="list.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list.total" class="clearfix pagination-table">
         </el-pagination>

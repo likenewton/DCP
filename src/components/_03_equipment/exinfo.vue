@@ -7,17 +7,17 @@
             <el-input v-model="formInline.deviceSn" @keyup.enter.native="simpleSearchData" placeholder="设备SN号"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_exinfo_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_exinfo_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column fixed="left" prop="deviceSn" label="设备SN号" sortable="custom" width="160"></el-table-column>
-          <el-table-column prop="extName" label="扩展类型" sortable="custom" width="140"></el-table-column>
-          <el-table-column prop="extValue" label="扩展值" sortable="custom"></el-table-column>
-          <el-table-column prop="timeAdded" label="激活时间" sortable="custom" width="180">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_exinfo_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column fixed="left" prop="deviceSn" label="设备SN号" :sortable="sortable" width="160"></el-table-column>
+          <el-table-column prop="extName" label="扩展类型" :sortable="sortable" width="140"></el-table-column>
+          <el-table-column prop="extValue" label="扩展值" :sortable="sortable"></el-table-column>
+          <el-table-column prop="timeAdded" label="激活时间" :sortable="sortable" width="180">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
         </el-table>

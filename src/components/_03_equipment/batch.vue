@@ -3,43 +3,43 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="success" @click="$router.push({name:'addbatch'})">添加批次</el-button>
+          <el-button size="small" type="success" @click="$router.push({name:'addbatch'})" :disabled="!pageAuthBtn.DCP_batch_ADD">添加批次</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
             <el-input v-model="formInline.batchName" @keyup.enter.native="simpleSearchData" placeholder="名称"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_batch_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_batch_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="batchId" label="车联网批次" sortable="custom" min-width="96"></el-table-column>
-          <el-table-column prop="batchSn" label="批次号" sortable="custom" min-width="145"></el-table-column>
-          <el-table-column prop="batchName" label="名称" sortable="custom" min-width="120"></el-table-column>
-          <el-table-column prop="organCode" label="机构" sortable="custom" min-width="150">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_batch_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="batchId" label="车联网批次" :sortable="sortable" min-width="96"></el-table-column>
+          <el-table-column prop="batchSn" label="批次号" :sortable="sortable" min-width="145"></el-table-column>
+          <el-table-column prop="batchName" label="名称" :sortable="sortable" min-width="120"></el-table-column>
+          <el-table-column prop="organCode" label="机构" :sortable="sortable" min-width="150">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>
-          <el-table-column prop="organCode" label="公司名称" sortable="custom" min-width="150">
+          <el-table-column prop="organCode" label="公司名称" :sortable="sortable" min-width="150">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs, 'label2')}}</template>
           </el-table-column>
-          <el-table-column prop="batchShipper" label="发货人" sortable="custom" width="80"></el-table-column>
-          <el-table-column prop="outTime" label="出货时间" sortable="custom" width="96">
+          <el-table-column prop="batchShipper" label="发货人" :sortable="sortable" width="80"></el-table-column>
+          <el-table-column prop="outTime" label="出货时间" :sortable="sortable" width="96">
             <template slot-scope="scope">{{scope.row.outTime | formatDate('yyyy-mm-dd')}}</template>
           </el-table-column>
-          <el-table-column prop="pickerName" label="提货人" sortable="custom" width="80"></el-table-column>
-          <el-table-column prop="timeAdded" label="创建时间" sortable="custom" width="153">
+          <el-table-column prop="pickerName" label="提货人" :sortable="sortable" width="80"></el-table-column>
+          <el-table-column prop="timeAdded" label="创建时间" :sortable="sortable" width="153">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="240">
             <template slot-scope="scope">
               <el-button type="text" @click="showBatchDetail(scope)">详情</el-button>
-              <el-button type="text" @click="$router.push({name:'batImpDetail',query:{batchId:scope.row.batchId}})">导入明细</el-button>
-              <el-button type="text" @click="$router.push({name:'devExcepLog', query:{batchId: scope.row.batchId}})">异常记录</el-button>
-              <el-button type="text" class="text_warning" @click="showImportDevBatchSn(scope)">导入</el-button>
+              <el-button type="text" @click="$router.push({name:'batImpDetail',query:{batchId:scope.row.batchId}})" :disabled="!pageAuthBtn.DCP_batch_IMPORTDETAIL">导入明细</el-button>
+              <el-button type="text" @click="$router.push({name:'devExcepLog', query:{batchId: scope.row.batchId}})" :disabled="!pageAuthBtn.DCP_batch_RECORD">异常记录</el-button>
+              <el-button type="text" class="text_warning" @click="showImportDevBatchSn(scope)" :disabled="!pageAuthBtn.DCP_batch_IMPORT">导入</el-button>
             </template>
           </el-table-column>
         </el-table>

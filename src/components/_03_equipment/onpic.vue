@@ -8,13 +8,13 @@
             <el-date-picker v-model="formInline.endTimeAdded" :picker-options="endDatePicker" type="date" value-format="yyyy-MM-dd" @change="searchData" placeholder="拍摄时间（止）"></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchData">查询</el-button>
+            <el-button type="primary" @click="searchData" :disabled="!pageAuthBtn.DCP_onpic_LIST">查询</el-button>
             <el-button type="warning" @click="resetData">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_onpic_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column fixed="left" prop="photoUrl" label="图片" width="100">
             <template slot-scope="scope">
               <el-tooltip content="点击查看原图" placement="top">
@@ -22,14 +22,14 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" width="155"></el-table-column>
-          <el-table-column prop="autocarName" label="车主姓名" sortable="custom" width="100"></el-table-column>
-          <el-table-column prop="autocarTel" label="车主电话" sortable="custom" width="110"></el-table-column>
-          <el-table-column prop="autocarTag" label="车牌号" sortable="custom" width="100"></el-table-column>
-          <el-table-column prop="longitude" label="经度坐标" sortable="custom" width="100"></el-table-column>
-          <el-table-column prop="latitude" label="纬度坐标" sortable="custom" width="100"></el-table-column>
-          <el-table-column prop="location" label="地理位置" sortable="custom" min-width="200"></el-table-column>
-          <el-table-column prop="timeAdded" label="拍摄时间" sortable="custom" width="160">
+          <el-table-column prop="deviceSn" label="设备SN号" :sortable="sortable" width="155"></el-table-column>
+          <el-table-column prop="autocarName" label="车主姓名" :sortable="sortable" width="100"></el-table-column>
+          <el-table-column prop="autocarTel" label="车主电话" :sortable="sortable" width="110"></el-table-column>
+          <el-table-column prop="autocarTag" label="车牌号" :sortable="sortable" width="100"></el-table-column>
+          <el-table-column prop="longitude" label="经度坐标" :sortable="sortable" width="100"></el-table-column>
+          <el-table-column prop="latitude" label="纬度坐标" :sortable="sortable" width="100"></el-table-column>
+          <el-table-column prop="location" label="地理位置" :sortable="sortable" min-width="200"></el-table-column>
+          <el-table-column prop="timeAdded" label="拍摄时间" :sortable="sortable" width="160">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
         </el-table>

@@ -33,14 +33,6 @@
     }
   }
 
-  .text_editor {
-    color: #3ecec9 !important;
-
-    &:hover {
-      color: #4ed5c9 !important;
-    }
-  }
-
   .purple {
     background: #9a83da !important;
     border-color: #9a83da !important;
@@ -53,11 +45,27 @@
     }
   }
 
+  .text_editor {
+    color: #3ecec9 !important;
+
+    &:hover {
+      color: #4ed5c9 !important;
+    }
+
+    &.is-disabled {
+      color: #ccc !important;
+    }
+  }
+
   .text_purple {
     color: #9a83da !important;
 
     &:hover {
       color: #9a8dda !important;
+    }
+
+    &.is-disabled {
+      color: #ccc !important;
     }
   }
 
@@ -67,6 +75,10 @@
     &:hover {
       color: #ff9092 !important;
     }
+
+    &.is-disabled {
+      color: #ccc !important;
+    }
   }
 
   .text_warning {
@@ -74,6 +86,10 @@
 
     &:hover {
       color: #ffcf85 !important;
+    }
+
+    &.is-disabled {
+      color: #ccc !important;
     }
   }
 
@@ -83,6 +99,10 @@
     &:hover {
       color: #52e1ad !important;
     }
+
+    &.is-disabled {
+      color: #ccc !important;
+    }
   }
 
   .text_primary {
@@ -90,6 +110,10 @@
 
     &:hover {
       color: #63c1ff !important;
+    }
+
+    &.is-disabled {
+      color: #ccc !important;
     }
   }
 

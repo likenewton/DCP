@@ -2,7 +2,7 @@
   <div class="sync-container">
     <el-card class="clearfix" shadow="never">
       <el-row v-for="(item, index) in sync" :key="index">
-        <el-button size="small" type="primary" @click="syncs(item)">{{item.text}}</el-button>
+        <el-button size="small" type="primary" @click="syncs(item)" :disabled="!pageAuthBtn[`DCP_sync_0${index + 1}`]">{{item.text}}</el-button>
       </el-row>
     </el-card>
   </div>

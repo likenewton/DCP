@@ -8,23 +8,23 @@
             <el-date-picker v-model="formInline.startTimeAddedEnd" type="date" :picker-options="endDatePicker_1" value-format="yyyy-MM-dd" @change="simpleSearchData" placeholder="激活开始时间（止）"></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_voicereport_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_voicereport_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="startTimeAdded" label="激活开始时间" sortable="custom" width="120">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_voicereport_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="startTimeAdded" label="激活开始时间" :sortable="sortable" width="120">
             <template slot-scope="scope">{{scope.row.startTimeAdded | formatDate('yyyy-mm-dd')}}</template>
           </el-table-column>
-          <el-table-column prop="endTimeAdded" label="激活结束时间" sortable="custom" width="120">
+          <el-table-column prop="endTimeAdded" label="激活结束时间" :sortable="sortable" width="120">
             <template slot-scope="scope">{{scope.row.endTimeAdded | formatDate('yyyy-mm-dd')}}</template>
           </el-table-column>
-          <el-table-column prop="generateTime" label="生成时间" sortable="custom" width="180">
+          <el-table-column prop="generateTime" label="生成时间" :sortable="sortable" width="180">
             <template slot-scope="scope">{{scope.row.generateTime | formatDate}}</template>
           </el-table-column>
-          <el-table-column prop="fileName" label="文件" sortable="custom">
+          <el-table-column prop="fileName" label="文件" :sortable="sortable">
             <template slot-scope="scope">
               <el-link v-if="scope.row.fileName" type="primary" :href="scope.row.host + scope.row.fileName">{{scope.row.fileName}}</el-link>
               <span v-else>文件未生成</span>
@@ -32,8 +32,8 @@
           </el-table-column>
           <el-table-column fixed="right" prop="" label="操作" width="110">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.fileName" type="text" @click="rebuild(scope)">重新生成</el-button>
-              <el-button v-else type="text" @click="rebuild(scope)">生成文件</el-button>
+              <el-button v-if="scope.row.fileName" type="text" @click="rebuild(scope)" :disabled="!pageAuthBtn.DCP_voicereport_REBUILD">重新生成</el-button>
+              <el-button v-else type="text" @click="rebuild(scope)" :disabled="!pageAuthBtn.DCP_voicereport_REBUILD">生成文件</el-button>
             </template>
           </el-table-column>
         </el-table>

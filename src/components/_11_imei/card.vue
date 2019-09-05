@@ -3,8 +3,8 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="warning" @click="importSnVisible = true">导入</el-button>
-          <el-button size="small" type="danger" @click="deleteDatas">批量删除</el-button>
+          <el-button size="small" type="warning" @click="importSnVisible = true" :disabled="!pageAuthBtn.DCP_card_IMPORT">导入</el-button>
+          <el-button size="small" type="danger" @click="deleteDatas" :disabled="!pageAuthBtn.DCP_card_DELETE">批量删除</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
@@ -19,30 +19,30 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchData">查询</el-button>
+            <el-button type="primary" @click="searchData" :disabled="!pageAuthBtn.DCP_card_LIST">查询</el-button>
             <el-button type="warning" @click="resetData">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" @selection-change="handleSelectionChange" :stripe="isStripe" :row-key="getRowKeys" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_card_LIST && list.data" @sort-change="handleSortChange" @selection-change="handleSelectionChange" :stripe="isStripe" :row-key="getRowKeys" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column fixed="left" type="selection" :reserve-selection="true" min-width="60"></el-table-column>
-          <el-table-column prop="batch_no" label="批次号" sortable="custom" min-width="180"></el-table-column>
-          <el-table-column prop="iccid" label="ICCID" sortable="custom" min-width="190"></el-table-column>
-          <el-table-column prop="card_type" label="厂商" sortable="custom" min-width="140">
+          <el-table-column prop="batch_no" label="批次号" :sortable="sortable" min-width="180"></el-table-column>
+          <el-table-column prop="iccid" label="ICCID" :sortable="sortable" min-width="190"></el-table-column>
+          <el-table-column prop="card_type" label="厂商" :sortable="sortable" min-width="140">
             <template slot-scope="scope">{{scope.row.card_type | valueToLabel(cardType)}}</template>
           </el-table-column>
-          <el-table-column prop="create_datetime" label="创建时间" sortable="custom" width="155">
+          <el-table-column prop="create_datetime" label="创建时间" :sortable="sortable" width="155">
             <template slot-scope="scope">{{scope.row.create_datetime | formatDate}}</template>
           </el-table-column>
-          <el-table-column prop="create_by" label="创建人" sortable="custom" min-width="100"></el-table-column>
-          <el-table-column prop="update_datetime" label="修改时间" sortable="custom" width="155">
+          <el-table-column prop="create_by" label="创建人" :sortable="sortable" min-width="100"></el-table-column>
+          <el-table-column prop="update_datetime" label="修改时间" :sortable="sortable" width="155">
             <template slot-scope="scope">{{scope.row.update_datetime | formatDate}}</template>
           </el-table-column>
-          <el-table-column prop="update_by" label="修改人" sortable="custom" min-width="100"></el-table-column>
+          <el-table-column prop="update_by" label="修改人" :sortable="sortable" min-width="100"></el-table-column>
           <el-table-column fixed="right" label="操作" width="70">
             <template slot-scope="scope">
-              <el-button type="text" class="text_danger" @click="singleDel(scope)">删除</el-button>
+              <el-button type="text" class="text_danger" @click="singleDel(scope)" :disabled="!pageAuthBtn.DCP_card_DELETE">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

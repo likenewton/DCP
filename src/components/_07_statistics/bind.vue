@@ -3,31 +3,31 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="primary" @click="showEchart_0">设备绑定趋势</el-button>
-          <el-button size="small" type="primary" @click="showEchart_1">设备绑定分布</el-button>
-          <el-button size="small" type="warning" @click="">导出数据</el-button>
+          <el-button size="small" type="primary" @click="showEchart_0" :disabled="!pageAuthBtn.DCP_bind_ECHART1">设备绑定趋势</el-button>
+          <el-button size="small" type="primary" @click="showEchart_1" :disabled="!pageAuthBtn.DCP_bind_ECHART2">设备绑定分布</el-button>
+          <el-button size="small" type="warning" @click="" :disabled="!pageAuthBtn.DCP_bind_EXPORT">导出数据</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item label="设备SN">
             <el-input v-model="formInline.deviceSn" @keyup.enter.native="simpleSearchData" placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_bind_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_bind_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="deviceSn" label="设备SN" sortable="custom" width="180"></el-table-column>
-          <el-table-column prop="organCode" label="所属机构" sortable="custom" min-width="200">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_bind_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="deviceSn" label="设备SN" :sortable="sortable" width="180"></el-table-column>
+          <el-table-column prop="organCode" label="所属机构" :sortable="sortable" min-width="200">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>
-          <el-table-column prop="deviceIccid" label="设备IMEI卡ICCID" sortable="custom" width="182"></el-table-column>
-          <el-table-column prop="autocarName" label="车主姓名" sortable="custom" width="120"></el-table-column>
-          <el-table-column prop="autocarTel" label="手机号" sortable="custom" width="120"></el-table-column>
-          <el-table-column prop="wxDomain" label="公众号" sortable="custom" min-width="180" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="timeAdded" label="绑定时间" sortable="custom" width="160">
+          <el-table-column prop="deviceIccid" label="设备IMEI卡ICCID" :sortable="sortable" width="182"></el-table-column>
+          <el-table-column prop="autocarName" label="车主姓名" :sortable="sortable" width="120"></el-table-column>
+          <el-table-column prop="autocarTel" label="手机号" :sortable="sortable" width="120"></el-table-column>
+          <el-table-column prop="wxDomain" label="公众号" :sortable="sortable" min-width="180" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="timeAdded" label="绑定时间" :sortable="sortable" width="160">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
         </el-table>
@@ -134,7 +134,7 @@ export default {
             }]
           })
 
-          this.myChart.setOption(_echart.getOption())
+          this.myChart.setOption(_echart.getOption(), true)
           $("[_echarts_instance_]").find(":last-child").trigger('click')
         })
       })
@@ -169,7 +169,7 @@ export default {
           let option = _echart.getOption()
           option.xAxis.axisLabel.rotate = 40
 
-          this.myChart.setOption(option)
+          this.myChart.setOption(option, true)
           $("[_echarts_instance_]").find(":last-child").trigger('click')
         })
       })

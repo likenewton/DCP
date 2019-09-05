@@ -14,28 +14,28 @@
             <el-date-picker v-model="formInline.createEndTime" :picker-options="startDatePicker" type="date" value-format="yyyy-MM-dd" @change="searchData" placeholder="创建时间（止）"></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchData">查询</el-button>
+            <el-button type="primary" @click="searchData" :disabled="!pageAuthBtn.DCP_client_LIST">查询</el-button>
             <el-button type="warning" @click="resetData">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="firstname" label="车主实名" sortable="custom"></el-table-column>
-          <el-table-column prop="telephone" label="手机号码" sortable="custom"></el-table-column>
-          <el-table-column prop="ip" label="IP地址" sortable="custom"></el-table-column>
-          <el-table-column prop="status" label="状态" sortable="custom">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_client_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="firstname" label="车主实名" :sortable="sortable"></el-table-column>
+          <el-table-column prop="telephone" label="手机号码" :sortable="sortable"></el-table-column>
+          <el-table-column prop="ip" label="IP地址" :sortable="sortable"></el-table-column>
+          <el-table-column prop="status" label="状态" :sortable="sortable">
             <template slot-scope="scope">
               <span class="bold text_success" v-if="scope.row.status === 1">启用</span>
               <span class="bold text_danger" v-else-if="scope.row.status === 0">停用</span>
             </template>
           </el-table-column>
-          <el-table-column prop="dateAdded" label="创建时间" sortable="custom">
+          <el-table-column prop="dateAdded" label="创建时间" :sortable="sortable">
             <template slot-scope="scope">{{scope.row.dateAdded | formatDate}}</template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
-              <el-button type="text" @click="checkDevInfos(scope)">设备信息</el-button>
+              <el-button type="text" @click="checkDevInfos(scope)" :disabled="!pageAuthBtn.DCP_client_INFO">设备信息</el-button>
             </template>
           </el-table-column>
         </el-table>

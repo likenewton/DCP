@@ -3,7 +3,7 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="success" @click="$router.push({name:'addversions'})">添加版本</el-button>
+          <el-button size="small" type="success" @click="$router.push({name:'addversions'})" :disabled="!pageAuthBtn.DCP_dictionary_ADD">添加版本</el-button>
         </el-button-group>
         <el-form :inline="true" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
@@ -12,8 +12,8 @@
         </el-form>
       </el-row>
       <el-row :gutter="20" v-shadow:[collapse] class="collapse-wrapper" :style="{height: maxCollapseHeight + 'px'}">
-        <div class="nodata" v-show="dictionary.length === 0">暂无数据</div>
-        <el-col :span="8" v-if="dictionary.length > 0" v-for="(group, index) in dictionaryDispatch" :key="index">
+        <div class="nodata" v-show="dictionary.length === 0 || !pageAuthBtn.DCP_dictionary_LIST">暂无数据</div>
+        <el-col :span="8" v-if="dictionary.length > 0" v-for="(group, index) in pageAuthBtn.DCP_dictionary_LIST && dictionaryDispatch" :key="index">
           <el-collapse accordion @change="handleCollapseChange" v-if="group.length > 0">
             <el-collapse-item v-for="(dir, index) in group" :key="index">
               <template slot="title">
@@ -24,8 +24,8 @@
               <el-timeline>
                 <el-timeline-item v-for="(item, index) in dir" :key="index">
                   <span class="text">{{item.versionName}}</span>
-                  <el-button type="text" @click="editorVersions(item)"> [修改]</el-button>
-                  <el-button v-if="index === 0" type="text" @click="upgradeVersions(item)"> [升级]</el-button>
+                  <el-button type="text" @click="editorVersions(item)" :disabled="!pageAuthBtn.DCP_dictionary_EDITOR"> [修改]</el-button>
+                  <el-button v-if="index === 0" type="text" @click="upgradeVersions(item)" :disabled="!pageAuthBtn.DCP_dictionary_UPGRADE"> [升级]</el-button>
                   <i v-if="index === 0" class="news iconfont-zuixinnew3"></i>
                 </el-timeline-item>
               </el-timeline>

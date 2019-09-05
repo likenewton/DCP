@@ -16,30 +16,30 @@
             <el-date-picker v-model="formInline.createEndTime" :picker-options="endDatePicker" type="date" value-format="yyyy-MM-dd" placeholder="创建时间（止）" @change="searchData"></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchData">查询</el-button>
+            <el-button type="primary" @click="searchData" :disabled="!pageAuthBtn.DCP_spedev_LIST">查询</el-button>
             <el-button type="warning" @click="resetData">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="batchSn" label="批次号" sortable="custom" width="130"></el-table-column>
-          <el-table-column prop="batchName" label="名称" sortable="custom"></el-table-column>
-          <el-table-column prop="organCode" label="机构" sortable="custom">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_spedev_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="batchSn" label="批次号" :sortable="sortable" width="130"></el-table-column>
+          <el-table-column prop="batchName" label="名称" :sortable="sortable"></el-table-column>
+          <el-table-column prop="organCode" label="机构" :sortable="sortable">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>
-          <el-table-column prop="batchShipper" label="发货人" sortable="custom" width="100"></el-table-column>
-          <el-table-column prop="outTime" label="出货时间" sortable="custom" width="110">
+          <el-table-column prop="batchShipper" label="发货人" :sortable="sortable" width="100"></el-table-column>
+          <el-table-column prop="outTime" label="出货时间" :sortable="sortable" width="110">
             <template slot-scope="scope">{{scope.row.outTime | formatDate('yyyy-mm-dd')}}</template>
           </el-table-column>
-          <el-table-column prop="pickerName" label="提货人" sortable="custom" width="100"></el-table-column>
-          <el-table-column prop="timeAdded" label="创建时间" sortable="custom" width="153">
+          <el-table-column prop="pickerName" label="提货人" :sortable="sortable" width="100"></el-table-column>
+          <el-table-column prop="timeAdded" label="创建时间" :sortable="sortable" width="153">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="130">
             <template slot-scope="scope">
-              <el-button type="text" class="text_warning" @click="showImportSpeDevSn(scope)">导入</el-button>
-              <el-button type="text" class="text_danger" @click="$router.push({name:'devExcepLog', query:{batchId: scope.row.batchId}})">异常记录</el-button>
+              <el-button type="text" class="text_warning" @click="showImportSpeDevSn(scope)" :disabled="!pageAuthBtn.DCP_spedev_IMPORT">导入</el-button>
+              <el-button type="text" class="text_danger" @click="$router.push({name:'devExcepLog', query:{batchId: scope.row.batchId}})" :disabled="!pageAuthBtn.DCP_spedev_RECORD">异常记录</el-button>
             </template>
           </el-table-column>
         </el-table>

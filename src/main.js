@@ -57,10 +57,10 @@ router.beforeEach((to, from, next) => {
     Api.UNITS.setCookie(Api.STATIC.token, Api.UNITS.getQuery('iov-token'))
     let targetHref = sessionStorage.getItem('target_href')
     sessionStorage.removeItem('target_href')
-    if (targetHref) location.href = targetHref
-    else {
-      // location.href = location.href.split('?')[0]
-    }
+    // if (targetHref) location.href = targetHref
+    // else {
+    //   location.href = location.href.split('?')[0]
+    // }
   }
   // 验证是否登录
   if (!store.state.isLogin) {

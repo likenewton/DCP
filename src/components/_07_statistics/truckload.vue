@@ -19,13 +19,13 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="deviceSn" label="设备SN" sortable="custom" width="180"></el-table-column>
-          <el-table-column prop="organCode" label="所属机构" sortable="custom" min-width="200">
+          <el-table-column prop="deviceSn" label="设备SN" :sortable="sortable" width="180"></el-table-column>
+          <el-table-column prop="organCode" label="所属机构" :sortable="sortable" min-width="200">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>
-          <el-table-column prop="" label="车型" sortable="custom" width="182"></el-table-column>
-          <el-table-column prop="" label="设备装车地址" sortable="custom" min-width="182"></el-table-column>
-          <el-table-column prop="timeAdded" label="装车时间" sortable="custom" width="160">
+          <el-table-column prop="" label="车型" :sortable="sortable" width="182"></el-table-column>
+          <el-table-column prop="" label="设备装车地址" :sortable="sortable" min-width="182"></el-table-column>
+          <el-table-column prop="timeAdded" label="装车时间" :sortable="sortable" width="160">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
         </el-table>

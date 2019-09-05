@@ -20,38 +20,38 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="zenCustomerName" label="客户名称" sortable="custom" width="95"></el-table-column>
-          <el-table-column prop="zenCustomerPrj" label="客户项目名称" sortable="custom" width="110"></el-table-column>
-          <el-table-column prop="scenseId" label="适用场景" sortable="custom" min-width="120">
+          <el-table-column prop="zenCustomerName" label="客户名称" :sortable="sortable" width="95"></el-table-column>
+          <el-table-column prop="zenCustomerPrj" label="客户项目名称" :sortable="sortable" width="110"></el-table-column>
+          <el-table-column prop="scenseId" label="适用场景" :sortable="sortable" min-width="120">
             <template slot-scope="scope">{{scope.row.scenseId | valueToLabel(scenseId)}}</template>
           </el-table-column>
-          <el-table-column prop="isPrompt" label="是否提醒" sortable="custom" width="88">
+          <el-table-column prop="isPrompt" label="是否提醒" :sortable="sortable" width="88">
             <template slot-scope="scope">{{scope.row.isPrompt | valueToLabel(isPrompt)}}</template>
           </el-table-column>
-          <el-table-column prop="isClosePromptBox" label="关闭方式" sortable="custom" width="88">
+          <el-table-column prop="isClosePromptBox" label="关闭方式" :sortable="sortable" width="88">
             <template slot-scope="scope">{{scope.row.isClosePromptBox | valueToLabel(isClosePromptBox)}}</template>
           </el-table-column>
-          <el-table-column prop="selfClosingTime" label="自动关闭时间(s)" sortable="custom" width="126" align="right"></el-table-column>k
-          <el-table-column prop="tts" label="提醒内容" sortable="custom" min-width="132" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="tips" label="TTS播报内容" sortable="custom" min-width="132" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="triggerPeriod" label="触发周期" sortable="custom" width="110">
+          <el-table-column prop="selfClosingTime" label="自动关闭时间(s)" :sortable="sortable" width="126" align="right"></el-table-column>k
+          <el-table-column prop="tts" label="提醒内容" :sortable="sortable" min-width="132" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="tips" label="TTS播报内容" :sortable="sortable" min-width="132" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="triggerPeriod" label="触发周期" :sortable="sortable" width="110">
             <template slot-scope="scope">{{scope.row.triggerPeriod | valueToLabel(triggerPeriod)}}</template>
           </el-table-column>
-          <el-table-column prop="period" label="显示周期(H,M,S)" sortable="custom" width="128">
+          <el-table-column prop="period" label="显示周期(H,M,S)" :sortable="sortable" width="128">
             <template slot-scope="scope">
               <span v-if="scope.row.period">{{scope.row.period}}</span>
               <span v-else>仅显示一次</span>
             </template>
           </el-table-column>
-          <el-table-column prop="speed" label="时速(KM/H)" sortable="custom" width="100" align="right"></el-table-column>
-          <el-table-column prop="enable" label="状态" sortable="custom" width="62">
+          <el-table-column prop="speed" label="时速(KM/H)" :sortable="sortable" width="100" align="right"></el-table-column>
+          <el-table-column prop="enable" label="状态" :sortable="sortable" width="62">
             <template slot-scope="scope">
               <span class="text_success bold" v-if="scope.row.enable === '0'">启用</span>
               <span class="text_danger bold" v-if="scope.row.enable === '1'">禁用</span>
             </template>
           </el-table-column>
-          <el-table-column prop="creater" label="创建人" sortable="custom" width="80"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间" sortable="custom" width="153">
+          <el-table-column prop="creater" label="创建人" :sortable="sortable" width="80"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" :sortable="sortable" width="153">
             <template slot-scope="scope">{{scope.row.createTime | formatDate}}</template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="98">

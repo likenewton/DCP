@@ -10,8 +10,8 @@
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="simpleSearchData">查询</el-button>
-              <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+              <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_active_ECHART1">查询</el-button>
+              <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_active_ECHART1">高级查询</el-button>
             </el-form-item>
           </el-form>
         </el-row>
@@ -170,7 +170,17 @@ export default {
   },
   mounted() {
     this.setRegionData('root', 'provinceData')
-    this.showEchart()
+    if (Object.keys(this.authButtons).length > 0) {
+      if (this.pageAuthBtn.DCP_active_ECHART1) {
+        this.showEchart()
+      } else {
+        this.loadData = false
+        this.showMsgBox({
+          type: 'warning',
+          message: '您没有权限访问图表-活跃统计！'
+        })
+      }
+    }
   },
   methods: {
     // === 地区选择 start ===
@@ -219,7 +229,7 @@ export default {
             value: res.data.activity_deviceNum,
             name: '活跃数'
           }]
-          this.myChart.setOption(this.option)
+          if (this.myChart) this.myChart.setOption(this.option)
           $("[_echarts_instance_]").find(":last-child").trigger('click')
         })
       })
@@ -248,6 +258,19 @@ export default {
       setTimeout(() => {
         this.myChart.resize()
       }, 300)
+    },
+    authButtons(val, oldVal) {
+      this.$nextTick(() => {
+        if (this.pageAuthBtn.DCP_active_ECHART1) {
+          this.showEchart()
+        } else {
+          this.loadData = false
+          this.showMsgBox({
+            type: 'warning',
+            message: '您没有权限访问图表-活跃统计！'
+          })
+        }
+      })
     }
   }
 }

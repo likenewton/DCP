@@ -3,11 +3,11 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="warning" @click="exportExcel('exportDeviceData')">导出</el-button>
-          <el-button size="small" type="warning" @click="exportExcel('exportADASInfo')">ADAS导出</el-button>
-          <el-button size="small" type="warning" @click="importADASvisible = true">ADAS导入</el-button>
-          <el-button size="small" type="primary" @click="createExcel('语音')">生成语音报表</el-button>
-          <el-button size="small" type="primary" @click="createExcel('蓝牙')">生成蓝牙报表</el-button>
+          <el-button size="small" type="warning" @click="exportExcel('exportDeviceData')" :disabled="!pageAuthBtn.DCP_devInfo_LIST">导出</el-button>
+          <el-button size="small" type="warning" @click="exportExcel('exportADASInfo')" :disabled="!pageAuthBtn.DCP_devInfo_ADASIMPORT">ADAS导出</el-button>
+          <el-button size="small" type="warning" @click="importADASvisible = true" :disabled="!pageAuthBtn.DCP_devInfo_ADASEXPORT">ADAS导入</el-button>
+          <el-button size="small" type="primary" @click="createExcel('语音')" :disabled="!pageAuthBtn.DCP_devInfo_LANG">生成语音报表</el-button>
+          <el-button size="small" type="primary" @click="createExcel('蓝牙')" :disabled="!pageAuthBtn.DCP_devInfo_BLUETOOTH">生成蓝牙报表</el-button>
           <el-button size="small" type="primary" @click="$refs.vCheckbox.openChoice()">展示列表</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
@@ -15,13 +15,13 @@
             <el-input v-model="formInline.deviceSn" @keyup.enter.native="simpleSearchData" placeholder="设备SN号"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_devInfo_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_devInfo_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_devInfo_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="table-expand">
@@ -88,46 +88,46 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('organCode')" prop="organCode" label="机构" sortable="custom" min-width="150">
+          <el-table-column v-if="checkedData.includes('organCode')" prop="organCode" label="机构" :sortable="sortable" min-width="150">
             <template slot-scope="scope">{{scope.row.organName}}</template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('deviceBrandId')" prop="deviceBrandId" label="设备品牌" sortable="custom" min-width="100">
+          <el-table-column v-if="checkedData.includes('deviceBrandId')" prop="deviceBrandId" label="设备品牌" :sortable="sortable" min-width="100">
             <template slot-scope="scope">{{scope.row.deviceBrandName}}</template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('deviceName')" prop="deviceName" label="设备名称" sortable="custom" min-width="100"></el-table-column>
-          <el-table-column v-if="checkedData.includes('proName')" prop="proName" label="产品型号" sortable="custom" min-width="85"></el-table-column>
-          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" min-width="153"></el-table-column>
-          <el-table-column v-if="checkedData.includes('deviceIccId')" prop="deviceIccId" label="设备ICCID" sortable="custom" width="182"></el-table-column>
-          <el-table-column v-if="checkedData.includes('deviceImei')" prop="deviceImei" label="设备IMEI" sortable="custom" min-width="150"></el-table-column>
-          <el-table-column v-if="checkedData.includes('deviceType')" prop="deviceType" label="设备类型" sortable="custom" min-width="100">
+          <el-table-column v-if="checkedData.includes('deviceName')" prop="deviceName" label="设备名称" :sortable="sortable" min-width="100"></el-table-column>
+          <el-table-column v-if="checkedData.includes('proName')" prop="proName" label="产品型号" :sortable="sortable" min-width="85"></el-table-column>
+          <el-table-column prop="deviceSn" label="设备SN号" :sortable="sortable" min-width="153"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceIccId')" prop="deviceIccId" label="设备ICCID" :sortable="sortable" width="182"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceImei')" prop="deviceImei" label="设备IMEI" :sortable="sortable" min-width="150"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceType')" prop="deviceType" label="设备类型" :sortable="sortable" min-width="100">
             <template slot-scope="scope">{{scope.row.deviceType | valueToLabel(deviceType)}}</template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('deviceImsi')" prop="deviceImsi" label="上网卡IMSI" sortable="custom" min-width="150"></el-table-column>
-          <el-table-column v-if="checkedData.includes('deviceVersion')" prop="deviceVersion" label="硬件版本" sortable="custom" min-width="150"></el-table-column>
-          <el-table-column v-if="checkedData.includes('softVersion')" prop="softVersion" label="软件版本" sortable="custom" min-width="150"></el-table-column>
-          <el-table-column v-if="checkedData.includes('autocarName')" prop="autocarName" label="车主姓名" sortable="custom" min-width="90"></el-table-column>
-          <el-table-column v-if="checkedData.includes('autocarTel')" prop="autocarTel" label="车主电话" sortable="custom" min-width="110"></el-table-column>
-          <el-table-column v-if="checkedData.includes('autocarTag')" prop="autocarTag" label="车牌号码" sortable="custom" min-width="90"></el-table-column>
-          <el-table-column v-if="checkedData.includes('modelName')" prop="modelName" label="车辆型号" sortable="custom" min-width="90"></el-table-column>
-          <el-table-column v-if="checkedData.includes('isDisable')" prop="isDisable" label="失效状态" sortable="custom" min-width="85">
+          <el-table-column v-if="checkedData.includes('deviceImsi')" prop="deviceImsi" label="上网卡IMSI" :sortable="sortable" min-width="150"></el-table-column>
+          <el-table-column v-if="checkedData.includes('deviceVersion')" prop="deviceVersion" label="硬件版本" :sortable="sortable" min-width="150"></el-table-column>
+          <el-table-column v-if="checkedData.includes('softVersion')" prop="softVersion" label="软件版本" :sortable="sortable" min-width="150"></el-table-column>
+          <el-table-column v-if="checkedData.includes('autocarName')" prop="autocarName" label="车主姓名" :sortable="sortable" min-width="90"></el-table-column>
+          <el-table-column v-if="checkedData.includes('autocarTel')" prop="autocarTel" label="车主电话" :sortable="sortable" min-width="110"></el-table-column>
+          <el-table-column v-if="checkedData.includes('autocarTag')" prop="autocarTag" label="车牌号码" :sortable="sortable" min-width="90"></el-table-column>
+          <el-table-column v-if="checkedData.includes('modelName')" prop="modelName" label="车辆型号" :sortable="sortable" min-width="90"></el-table-column>
+          <el-table-column v-if="checkedData.includes('isDisable')" prop="isDisable" label="失效状态" :sortable="sortable" min-width="85">
             <template slot-scope="scope">
               <span class="text_danger" v-if="scope.row.isDisable === 1">失效</span>
               <span class="text_success" v-else-if="scope.row.isDisable === 0">可用</span>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('adasOnoff')" prop="adasOnoff" label="ADAS开关" sortable="custom" min-width="95">
+          <el-table-column v-if="checkedData.includes('adasOnoff')" prop="adasOnoff" label="ADAS开关" :sortable="sortable" min-width="95">
             <template slot-scope="scope">
               <span class="text_danger" v-if="scope.row.adasOnoff===0">关</span>
               <span class="text_success" v-else-if="scope.row.adasOnoff===1">开</span>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('adasUpdateTime')" prop="adasUpdateTime" label="ADAS更新时间" sortable="custom" min-width="153">
+          <el-table-column v-if="checkedData.includes('adasUpdateTime')" prop="adasUpdateTime" label="ADAS更新时间" :sortable="sortable" min-width="153">
             <template slot-scope="scope">{{scope.row.adasUpdateTime | formatDate}}</template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('timeAdded')" prop="timeAdded" label="激活时间" sortable="custom" min-width="153">
+          <el-table-column v-if="checkedData.includes('timeAdded')" prop="timeAdded" label="激活时间" :sortable="sortable" min-width="153">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('timeLast')" prop="timeLast" label="更新时间" sortable="custom" min-width="153">
+          <el-table-column v-if="checkedData.includes('timeLast')" prop="timeLast" label="更新时间" :sortable="sortable" min-width="153">
             <template slot-scope="scope">{{scope.row.timeLast | formatDate}}</template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
@@ -135,14 +135,14 @@
               <el-dropdown split-button type="primary" size="mini" @click="$router.push({name:'devRecord',query: {deviceId:scope.row.deviceId}})" @command="handleCommand">
                 设备记录
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item :command="{command: 'directive', data: scope.row}">下发指令</el-dropdown-item>
-                  <el-dropdown-item :command="{command: 'bandCustomer', data: scope.row}">绑定的客户</el-dropdown-item>
-                  <el-dropdown-item :command="{command: 'lifetrack', data: scope.row}">生命轨迹</el-dropdown-item>
-                  <el-dropdown-item :command="{command: 'disabled', data: scope.row}">
+                  <el-dropdown-item :command="{command: 'directive', data: scope.row}" :disabled="!pageAuthBtn.DCP_devInfo_DIRECTOR">下发指令</el-dropdown-item>
+                  <el-dropdown-item :command="{command: 'bandCustomer', data: scope.row}" :disabled="!pageAuthBtn.DCP_devInfo_BIND">绑定的客户</el-dropdown-item>
+                  <el-dropdown-item :command="{command: 'lifetrack', data: scope.row}" :disabled="!pageAuthBtn.DCP_devInfo_LIFE">生命轨迹</el-dropdown-item>
+                  <el-dropdown-item :command="{command: 'disabled', data: scope.row}" :disabled="!pageAuthBtn.DCP_devInfo_DISABLED">
                     <span v-if="scope.row.isDisable === 1">有效</span>
                     <span v-else-if="scope.row.isDisable === 0">失效</span>
                   </el-dropdown-item>
-                  <el-dropdown-item :command="{command: 'adas', data: scope.row}">
+                  <el-dropdown-item :command="{command: 'adas', data: scope.row}" :disabled="!pageAuthBtn.DCP_devInfo_OCADAS">
                     <span v-if="scope.row.adasOnoff===0">开启ADAS</span>
                     <span v-else-if="scope.row.adasOnoff===1">关闭ADAS</span>
                   </el-dropdown-item>
@@ -247,16 +247,16 @@
     <el-dialog title="查看设备生命轨迹信息" :visible.sync="lifeTrack.lifeTrackVisible" width="1200px" :close-on-click-modal="false">
       <div slot>
         <el-table :data="lifeTrack.data" :max-height="winHeight/2.2" border resizable size="mini" v-loading="lifeTrack.loadData">
-          <el-table-column prop="eventType" label="事件类型" sortable="custom">
+          <el-table-column prop="eventType" label="事件类型" :sortable="sortable">
             <template slot-scope="scope">{{scope.row.eventTypeName}}</template>
           </el-table-column>
-          <el-table-column prop="eventTime" label="事件时间" sortable="custom">
+          <el-table-column prop="eventTime" label="事件时间" :sortable="sortable">
             <template slot-scope="scope">{{scope.row.eventTime | formatDate}}</template>
           </el-table-column>
-          <el-table-column prop="eventDesc" label="事件描述" sortable="custom" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="oldValue" label="原值" sortable="custom"></el-table-column>
-          <el-table-column prop="newValue" label="现值" sortable="custom"></el-table-column>
-          <el-table-column prop="recorder" label="记录员" sortable="custom"></el-table-column>
+          <el-table-column prop="eventDesc" label="事件描述" :sortable="sortable" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="oldValue" label="原值" :sortable="sortable"></el-table-column>
+          <el-table-column prop="newValue" label="现值" :sortable="sortable"></el-table-column>
+          <el-table-column prop="recorder" label="记录员" :sortable="sortable"></el-table-column>
         </el-table>
       </div>
       <div slot="footer">
@@ -267,13 +267,13 @@
     <el-dialog title="绑定该机车的客户" :visible.sync="bandCustomer.bandCustomerVisible" width="1200px" :close-on-click-modal="false">
       <div slot>
         <el-table :data="bandCustomer.data" :max-height="winHeight/2.2" border resizable size="mini" v-loading="bandCustomer.loadData">
-          <el-table-column prop="customerName" label="客户名称" sortable="custom"></el-table-column>
-          <el-table-column prop="customerTelephone" label="客户电话" sortable="custom"></el-table-column>
-          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom"></el-table-column>
-          <el-table-column prop="timeAdded" label="绑定时间" sortable="custom">
+          <el-table-column prop="customerName" label="客户名称" :sortable="sortable"></el-table-column>
+          <el-table-column prop="customerTelephone" label="客户电话" :sortable="sortable"></el-table-column>
+          <el-table-column prop="deviceSn" label="设备SN号" :sortable="sortable"></el-table-column>
+          <el-table-column prop="timeAdded" label="绑定时间" :sortable="sortable">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
-          <el-table-column label="是否解绑" sortable="custom">
+          <el-table-column label="是否解绑" :sortable="sortable">
             <template slot-scope="scope">
               <el-button type="text" @click="unbind(scope)">解绑</el-button>
             </template>

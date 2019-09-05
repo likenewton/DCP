@@ -104,6 +104,7 @@ module.exports = {
     name: 'devExcepLog'
   }],
   token: 'iov-token-DCP',
+  sortable: false,
   loadIcon: 'el-icon-loading',
   loadBg: 'rgba(0, 0, 0, 0.7)',
   // 分页器公共配置项

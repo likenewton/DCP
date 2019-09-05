@@ -14,10 +14,10 @@
       </el-row>
       <el-row>
         <el-table :data="list.data" ref="listTable" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="batchSn" label="批次号" sortable="custom" width="140"></el-table-column>
-          <el-table-column prop="deviceSn" label="设备号" sortable="custom" width="160"></el-table-column>
-          <el-table-column prop="excepDesc" label="异常描述" sortable="custom"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间" sortable="custom" width="160">
+          <el-table-column prop="batchSn" label="批次号" :sortable="sortable" width="140"></el-table-column>
+          <el-table-column prop="deviceSn" label="设备号" :sortable="sortable" width="160"></el-table-column>
+          <el-table-column prop="excepDesc" label="异常描述" :sortable="sortable"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" :sortable="sortable" width="160">
             <template slot-scope="scope">{{scope.row.createTime | formatDate}}</template>
           </el-table-column>
         </el-table>

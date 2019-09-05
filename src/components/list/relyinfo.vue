@@ -23,14 +23,14 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="a" label="依赖APP版本信息ID" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="依赖APP包名" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="依赖APP版本名称" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="依赖APP版本代码" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="创建人" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="最后更新人" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="创建时间" sortable="custom"></el-table-column>
-          <el-table-column prop="" label="更新时间" sortable="custom"></el-table-column>
+          <el-table-column prop="a" label="依赖APP版本信息ID" :sortable="sortable"></el-table-column>
+          <el-table-column prop="" label="依赖APP包名" :sortable="sortable"></el-table-column>
+          <el-table-column prop="" label="依赖APP版本名称" :sortable="sortable"></el-table-column>
+          <el-table-column prop="" label="依赖APP版本代码" :sortable="sortable"></el-table-column>
+          <el-table-column prop="" label="创建人" :sortable="sortable"></el-table-column>
+          <el-table-column prop="" label="最后更新人" :sortable="sortable"></el-table-column>
+          <el-table-column prop="" label="创建时间" :sortable="sortable"></el-table-column>
+          <el-table-column prop="" label="更新时间" :sortable="sortable"></el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button type="text" class="text_editor" @click="showRely('修改')">修改</el-button>

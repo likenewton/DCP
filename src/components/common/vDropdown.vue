@@ -4,8 +4,8 @@
       同步缓存<i class="el-icon-arrow-down el-icon--right"></i>
     </el-button>
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item :command="-1">一键缓存</el-dropdown-item>
-      <el-dropdown-item v-for="(item, index) in redis" :key="index" :command="index">缓存地址：{{item.ip}}:{{item.port}}</el-dropdown-item>
+      <el-dropdown-item :command="-1" :disabled="disabled">一键缓存</el-dropdown-item>
+      <el-dropdown-item v-for="(item, index) in redis" :key="index" :command="index" :disabled="disabled">缓存地址：{{item.ip}}:{{item.port}}</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
@@ -23,7 +23,9 @@ export default {
     infos: {
       type: Object,
       default: {}
-    }
+    },
+    disabled: Boolean,
+    default: false
   },
   created() {
 

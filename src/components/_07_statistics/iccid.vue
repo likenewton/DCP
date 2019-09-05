@@ -3,7 +3,7 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="primary" @click="showEchart">ICCID统计</el-button>
+          <el-button size="small" type="primary" @click="showEchart" :disabled="!pageAuthBtn.DCP_iccid_ECHART1">ICCID统计</el-button>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
@@ -12,18 +12,18 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_iccid_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_iccid_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="iccidCode" label="运营商" sortable="custom" width="150">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_iccid_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="iccidCode" label="运营商" :sortable="sortable" width="150">
             <template slot-scope="scope">{{scope.row.iccidCode | valueToLabel(iccidCode)}}</template>
           </el-table-column>
-          <el-table-column prop="totalNum" label="数量" sortable="custom" align="right" width="100"></el-table-column>
-          <el-table-column prop="organCode" label="机构" sortable="custom">
+          <el-table-column prop="totalNum" label="数量" :sortable="sortable" align="right" width="100"></el-table-column>
+          <el-table-column prop="organCode" label="机构" :sortable="sortable">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>
         </el-table>

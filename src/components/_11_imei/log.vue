@@ -7,19 +7,19 @@
             <el-input v-model="formInline.iccid" @keyup.enter.native="simpleSearchData" placeholder="ICCID"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_log_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_log_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="eventId" label="事件ID" sortable="custom" min-width="200"></el-table-column>
-          <el-table-column prop="eventType" label="事件类型" sortable="custom" min-width="160"></el-table-column>
-          <el-table-column prop="iccid" label="ICCID" sortable="custom" width="190"></el-table-column>
-          <el-table-column prop="previousImei" label="变更前IMEI" sortable="custom" width="160"></el-table-column>
-          <el-table-column prop="currentImei" label="变更后IMEI" sortable="custom" width="160"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间" sortable="custom" width="160">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_log_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="eventId" label="事件ID" :sortable="sortable" min-width="200"></el-table-column>
+          <el-table-column prop="eventType" label="事件类型" :sortable="sortable" min-width="160"></el-table-column>
+          <el-table-column prop="iccid" label="ICCID" :sortable="sortable" width="190"></el-table-column>
+          <el-table-column prop="previousImei" label="变更前IMEI" :sortable="sortable" width="160"></el-table-column>
+          <el-table-column prop="currentImei" label="变更后IMEI" :sortable="sortable" width="160"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" :sortable="sortable" width="160">
             <template slot-scope="scope">{{scope.row.createTime | formatDate}}</template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="80">

@@ -7,28 +7,28 @@
             <el-input v-model="formInline.deviceSn" @keyup.enter.native="simpleSearchData" placeholder="设备SN号"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_remoteplat_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_remoteplat_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="organCode" label="机构" sortable="custom" min-width="165">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_remoteplat_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="organCode" label="机构" :sortable="sortable" min-width="165">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>
-          <el-table-column prop="deviceName" label="设备名称" sortable="custom" width="100"></el-table-column>
-          <el-table-column prop="deviceSn" label="设备SN号" sortable="custom" width="155"></el-table-column>
-          <el-table-column prop="deviceIccId" label="设备ICCID" sortable="custom" width="182"></el-table-column>
-          <el-table-column prop="deviceImei" label="设备IMEI" sortable="custom" width="140"></el-table-column>
-          <el-table-column prop="autocarName" label="车主姓名" sortable="custom" width="90"></el-table-column>
-          <el-table-column prop="autocarTel" label="车主电话" sortable="custom" width="110"></el-table-column>
-          <el-table-column prop="autocarTag" label="车牌号码" sortable="custom" width="110"></el-table-column>
-          <el-table-column prop="modelName" label="车辆型号" sortable="custom" width="110"></el-table-column>
+          <el-table-column prop="deviceName" label="设备名称" :sortable="sortable" width="100"></el-table-column>
+          <el-table-column prop="deviceSn" label="设备SN号" :sortable="sortable" width="155"></el-table-column>
+          <el-table-column prop="deviceIccId" label="设备ICCID" :sortable="sortable" width="182"></el-table-column>
+          <el-table-column prop="deviceImei" label="设备IMEI" :sortable="sortable" width="140"></el-table-column>
+          <el-table-column prop="autocarName" label="车主姓名" :sortable="sortable" width="90"></el-table-column>
+          <el-table-column prop="autocarTel" label="车主电话" :sortable="sortable" width="110"></el-table-column>
+          <el-table-column prop="autocarTag" label="车牌号码" :sortable="sortable" width="110"></el-table-column>
+          <el-table-column prop="modelName" label="车辆型号" :sortable="sortable" width="110"></el-table-column>
           <el-table-column fixed="right" label="操作" width="125">
             <template slot-scope="scope">
               <el-button type="text" class="text_purple" @click="$router.push({name:'devRecord',query: {deviceId:scope.row.deviceId}})">历史记录</el-button>
-              <el-button type="text" @click="capture(scope)">抓拍</el-button>
+              <el-button type="text" @click="capture(scope)" :disabled="!pageAuthBtn.DCP_remoteplat_CANDID">抓拍</el-button>
             </template>
           </el-table-column>
         </el-table>

@@ -3,8 +3,8 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="success" @click="$router.push({name: 'addupinfo'})">添加升级包</el-button>
-          <v-dropdown></v-dropdown>
+          <el-button size="small" type="success" @click="$router.push({name: 'addupinfo'})" :disabled="!pageAuthBtn.DCP_sysUpgrade_ADD">添加升级包</el-button>
+          <v-dropdown :disabled="!pageAuthBtn.DCP_sysUpgrade_CACHE"></v-dropdown>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
@@ -13,34 +13,34 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchData">查询</el-button>
+            <el-button type="primary" @click="searchData" :disabled="!pageAuthBtn.DCP_sysUpgrade_LIST">查询</el-button>
             <el-button type="warning" @click="resetData">重置</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="organCode" label="机构名称" sortable="custom" min-width="140">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_sysUpgrade_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+          <el-table-column prop="organCode" label="机构名称" :sortable="sortable" min-width="140">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>
-          <el-table-column prop="hardCode" label="硬件版本号" sortable="custom" width="130"></el-table-column>
-          <el-table-column prop="softCode" label="软件版本号 " sortable="custom" width="130"></el-table-column>
-          <el-table-column prop="softFor" label="适合版本号" sortable="custom" min-width="150"></el-table-column>
-          <el-table-column prop="packCount" label="版本数量" sortable="custom" align-right="right" width="88"></el-table-column>
-          <el-table-column prop="isForced" label="升级方式" sortable="custom" width="95">
+          <el-table-column prop="hardCode" label="硬件版本号" :sortable="sortable" width="130"></el-table-column>
+          <el-table-column prop="softCode" label="软件版本号 " :sortable="sortable" width="130"></el-table-column>
+          <el-table-column prop="softFor" label="适合版本号" :sortable="sortable" min-width="150"></el-table-column>
+          <el-table-column prop="packCount" label="版本数量" :sortable="sortable" align-right="right" width="88"></el-table-column>
+          <el-table-column prop="isForced" label="升级方式" :sortable="sortable" width="95">
             <template slot-scope="scope">
               <span class="text_danger bold" v-if="scope.row.isForced === 0">非强制升级</span>
               <span class="text_success bold" v-if="scope.row.isForced === 1">强制升级</span>
               <span class="text_warning bold" v-if="scope.row.isForced === 2">静默安装</span>
             </template>
           </el-table-column>
-          <el-table-column prop="timePublish" label="发布时间" sortable="custom" width="90">
+          <el-table-column prop="timePublish" label="发布时间" :sortable="sortable" width="90">
             <template slot-scope="scope">{{scope.row.timePublish | formatDate('yyy-mm-dd')}}</template>
           </el-table-column>
-          <el-table-column prop="packUrl" label="升级包地址" sortable="custom" min-width="180"></el-table-column>
+          <el-table-column prop="packUrl" label="升级包地址" :sortable="sortable" min-width="180"></el-table-column>
           <el-table-column fixed="right" label="操作" width="60">
             <template slot-scope="scope">
-              <el-button type="text" @click="$router.push({name:'hisVersions',query:{organCode:scope.row.organCode}})">版本</el-button>
+              <el-button type="text" @click="$router.push({name:'hisVersions',query:{organCode:scope.row.organCode}})" :disabled="!pageAuthBtn.DCP_sysUpgrade_VERSION">版本</el-button>
             </template>
           </el-table-column>
         </el-table>

@@ -3,22 +3,22 @@
     <el-card class="clearfix" shadow="never" v-loading="loadData">
       <el-row>
         <el-button-group style="margin-bottom: 10px">
-          <el-button size="small" type="success" @click="$router.push({name:'addcoreapp'})">添加核心应用配置</el-button>
+          <el-button size="small" type="success" @click="$router.push({name:'addcoreapp'})" :disabled="!pageAuthBtn.DCP_coreApp_ADD">添加核心应用配置</el-button>
           <el-button size="small" type="primary" @click="$refs.vCheckbox.openChoice()">展示列表</el-button>
-          <v-dropdown></v-dropdown>
+          <v-dropdown :disabled="!pageAuthBtn.DCP_coreApp_CACHE"></v-dropdown>
         </el-button-group>
         <el-form :inline="true" :model="formInline" class="search-form" size="small" @submit.native.prevent>
           <el-form-item>
             <el-input v-model="formInline.pack_name" @keyup.enter.native="simpleSearchData" placeholder="应用包名"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="simpleSearchData">查询</el-button>
-            <el-button type="primary" @click="searchVipVisible = true">高级查询</el-button>
+            <el-button type="primary" @click="simpleSearchData" :disabled="!pageAuthBtn.DCP_coreApp_LIST">查询</el-button>
+            <el-button type="primary" @click="searchVipVisible = true" :disabled="!pageAuthBtn.DCP_coreApp_LIST">高级查询</el-button>
           </el-form-item>
         </el-form>
       </el-row>
       <el-row>
-        <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
+        <el-table ref="listTable" :data="pageAuthBtn.DCP_coreApp_LIST && list.data" @sort-change="handleSortChange" :stripe="isStripe" :max-height="maxTableHeight" border resizable size="mini">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="table-expand">
@@ -64,57 +64,57 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column prop="pack_name" label="应用包名" sortable="custom" min-width="160">
+          <el-table-column prop="pack_name" label="应用包名" :sortable="sortable" min-width="160">
             <template slot-scope="scope">
               <div v-for="(item, index) in scope.row.pack_name.split(',')" :key="index">{{item}}</div>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('app_name')" prop="app_name" label="应用名称" sortable="custom" min-width="160">
+          <el-table-column v-if="checkedData.includes('app_name')" prop="app_name" label="应用名称" :sortable="sortable" min-width="160">
             <template slot-scope="scope">
               <div v-for="(item, index) in scope.row.app_name.split(',')" :key="index">{{item}}</div>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('version_name')" prop="version_name" label="版本名称" sortable="custom" min-width="160">
+          <el-table-column v-if="checkedData.includes('version_name')" prop="version_name" label="版本名称" :sortable="sortable" min-width="160">
             <template slot-scope="scope">
               <div v-for="(item, index) in scope.row.version_name.split(',')" :key="index">{{item}}</div>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('version_code')" prop="version_code" label="版本代码" sortable="custom" width="88">
+          <el-table-column v-if="checkedData.includes('version_code')" prop="version_code" label="版本代码" :sortable="sortable" width="88">
             <template slot-scope="scope">
               <div v-for="(item, index) in scope.row.version_code.split(',')" :key="index">{{item}}</div>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('roms')" prop="roms" label="指定ROM版本" sortable="custom" min-width="260"></el-table-column>
-          <el-table-column v-if="checkedData.includes('config_url')" prop="config_url" label="配置文件下载地址" sortable="custom" min-width="300" show-overflow-tooltip>
+          <el-table-column v-if="checkedData.includes('roms')" prop="roms" label="指定ROM版本" :sortable="sortable" min-width="260"></el-table-column>
+          <el-table-column v-if="checkedData.includes('config_url')" prop="config_url" label="配置文件下载地址" :sortable="sortable" min-width="300" show-overflow-tooltip>
             <template slot-scope="scope">
               <div v-for="(item, index) in scope.row.config_url.split(',')" :key="index">{{item}}</div>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('url')" prop="url" label="APP下载地址" sortable="custom" min-width="300" show-overflow-tooltip>
+          <el-table-column v-if="checkedData.includes('url')" prop="url" label="APP下载地址" :sortable="sortable" min-width="300" show-overflow-tooltip>
             <template slot-scope="scope">
               <div v-for="(item, index) in scope.row.url.split(',')" :key="index">{{item}}</div>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('desc')" prop="desc" label="版本描述" sortable="custom" min-width="150" show-overflow-tooltip></el-table-column>
-          <el-table-column v-if="checkedData.includes('sn_list')" prop="sn_list" label="指定设备SN" sortable="custom" width="155" show-overflow-tooltip>
+          <el-table-column v-if="checkedData.includes('desc')" prop="desc" label="版本描述" :sortable="sortable" min-width="150" show-overflow-tooltip></el-table-column>
+          <el-table-column v-if="checkedData.includes('sn_list')" prop="sn_list" label="指定设备SN" :sortable="sortable" width="155" show-overflow-tooltip>
             <template slot-scope="scope">
               <div v-for="(item, index) in scope.row.sn_list.split(',')" :key="index">{{item}}</div>
             </template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('create_by')" prop="create_by" label="创建人" sortable="custom" width="100"></el-table-column>
-          <el-table-column v-if="checkedData.includes('update_by')" prop="update_by" label="最后更新人" sortable="custom" width="100"></el-table-column>
-          <el-table-column v-if="checkedData.includes('create_datetime')" prop="create_datetime" label="创建时间" sortable="custom" width="153">
+          <el-table-column v-if="checkedData.includes('create_by')" prop="create_by" label="创建人" :sortable="sortable" width="100"></el-table-column>
+          <el-table-column v-if="checkedData.includes('update_by')" prop="update_by" label="最后更新人" :sortable="sortable" width="100"></el-table-column>
+          <el-table-column v-if="checkedData.includes('create_datetime')" prop="create_datetime" label="创建时间" :sortable="sortable" width="153">
             <template slot-scope="scope">{{scope.row.create_datetime | formatDate}}</template>
           </el-table-column>
-          <el-table-column v-if="checkedData.includes('update_datetime')" prop="update_datetime" label="更新时间" sortable="custom" width="153">
+          <el-table-column v-if="checkedData.includes('update_datetime')" prop="update_datetime" label="更新时间" :sortable="sortable" width="153">
             <template slot-scope="scope">{{scope.row.update_datetime | formatDate}}</template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="150">
             <template slot-scope="scope">
-              <el-button type="text" class="text_editor" @click="$router.push({name:'addcoreapp',query:{type:'update',plan_id:scope.row.plan_id}})">编辑</el-button>
-              <el-button v-if="scope.row.status === 1" type="text" class="text_danger" @click="disabled(scope)">失效</el-button>
-              <el-button v-if="scope.row.status === 0" type="text" class="text_danger" @click="disabled(scope)">生效</el-button>
-              <el-button type="text" @click="$router.push({name:'addcoreapp',query:{type:'check',plan_id:scope.row.plan_id}})">查看</el-button>
+              <el-button type="text" class="text_editor" @click="$router.push({name:'addcoreapp',query:{type:'update',plan_id:scope.row.plan_id}})" :disabled="!pageAuthBtn.DCP_coreApp_EDITOR">编辑</el-button>
+              <el-button v-if="scope.row.status === 1" type="text" class="text_danger" @click="disabled(scope)" :disabled="!pageAuthBtn.DCP_coreApp_DISABLED">失效</el-button>
+              <el-button v-if="scope.row.status === 0" type="text" class="text_danger" @click="disabled(scope)" :disabled="!pageAuthBtn.DCP_coreApp_DISABLED">生效</el-button>
+              <el-button type="text" @click="$router.push({name:'addcoreapp',query:{type:'check',plan_id:scope.row.plan_id}})" :disabled="!pageAuthBtn.DCP_coreApp_CHECK">查看</el-button>
             </template>
           </el-table-column>
         </el-table>

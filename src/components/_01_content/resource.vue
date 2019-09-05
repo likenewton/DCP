@@ -27,15 +27,15 @@
           <el-row>
             <el-table ref="listTable" :data="list.data" @selection-change="handleSelectionChange" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
               <el-table-column fixed="left" type="selection" min-width="60"></el-table-column>
-              <el-table-column prop="" label="示例图" sortable="custom"></el-table-column>
-              <el-table-column prop="" label="频道" sortable="custom"></el-table-column>
-              <el-table-column prop="" label="资源类型" sortable="custom"></el-table-column>
-              <el-table-column prop="" label="资源名称" sortable="custom"></el-table-column>
-              <el-table-column prop="" label="资源状态" sortable="custom"></el-table-column>
-              <el-table-column prop="" label="状态" sortable="custom"></el-table-column>
-              <el-table-column prop="" label="是否静态化" sortable="custom"></el-table-column>
-              <el-table-column prop="" label="创建时间" sortable="custom"></el-table-column>
-              <el-table-column prop="" label="操作" sortable="custom"></el-table-column>
+              <el-table-column prop="" label="示例图" :sortable="sortable"></el-table-column>
+              <el-table-column prop="" label="频道" :sortable="sortable"></el-table-column>
+              <el-table-column prop="" label="资源类型" :sortable="sortable"></el-table-column>
+              <el-table-column prop="" label="资源名称" :sortable="sortable"></el-table-column>
+              <el-table-column prop="" label="资源状态" :sortable="sortable"></el-table-column>
+              <el-table-column prop="" label="状态" :sortable="sortable"></el-table-column>
+              <el-table-column prop="" label="是否静态化" :sortable="sortable"></el-table-column>
+              <el-table-column prop="" label="创建时间" :sortable="sortable"></el-table-column>
+              <el-table-column prop="" label="操作" :sortable="sortable"></el-table-column>
             </el-table>
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="list.currentPage" :page-sizes="pageSizes" :page-size="list.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="list.total" class="clearfix pagination-table">
             </el-pagination>

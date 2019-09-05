@@ -19,20 +19,20 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="softCode" label="软件版本号" sortable="custom" width="150"></el-table-column>
-          <el-table-column prop="hardCode" label="硬件版本号" sortable="custom" width="150"></el-table-column>
-          <el-table-column prop="isForced" label="升级方式" sortable="custom" width="100">
+          <el-table-column prop="softCode" label="软件版本号" :sortable="sortable" width="150"></el-table-column>
+          <el-table-column prop="hardCode" label="硬件版本号" :sortable="sortable" width="150"></el-table-column>
+          <el-table-column prop="isForced" label="升级方式" :sortable="sortable" width="100">
             <template slot-scope="scope">
               <span class="text_danger bold" v-if="scope.row.isForced === 0">非强制升级</span>
               <span class="text_success bold" v-if="scope.row.isForced === 1">强制升级</span>
               <span class="text_warning bold" v-if="scope.row.isForced === 2">静默安装</span>
             </template>
           </el-table-column>
-          <el-table-column prop="timePublish" label="发布时间" sortable="custom" width="100">
+          <el-table-column prop="timePublish" label="发布时间" :sortable="sortable" width="100">
             <template slot-scope="scope">{{scope.row.timePublish | formatDate('yyy-mm-dd')}}</template>
           </el-table-column>
-          <el-table-column prop="packUrl" label="升级包地址" sortable="custom" min-width="180"></el-table-column>
-          <el-table-column prop="timeAdded" label="增加时间" sortable="custom" width="155">
+          <el-table-column prop="packUrl" label="升级包地址" :sortable="sortable" min-width="180"></el-table-column>
+          <el-table-column prop="timeAdded" label="增加时间" :sortable="sortable" width="155">
             <template slot-scope="scope">{{scope.row.timeAdded | formatDate}}</template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="150">

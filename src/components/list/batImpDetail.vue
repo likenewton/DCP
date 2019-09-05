@@ -23,12 +23,12 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="batchSn" label="批次号" sortable="custom"></el-table-column>
-          <el-table-column prop="sn" label="设备SN号" sortable="custom"></el-table-column>
-          <el-table-column prop="organCode" label="机构" sortable="custom">
+          <el-table-column prop="batchSn" label="批次号" :sortable="sortable"></el-table-column>
+          <el-table-column prop="sn" label="设备SN号" :sortable="sortable"></el-table-column>
+          <el-table-column prop="organCode" label="机构" :sortable="sortable">
             <template slot-scope="scope">{{scope.row.organCode | valueToLabel(orgs)}}</template>
           </el-table-column>
-          <el-table-column prop="createTime" label="导入时间" sortable="custom">
+          <el-table-column prop="createTime" label="导入时间" :sortable="sortable">
             <template slot-scope="scope">{{scope.row.createTime | formatDate}}</template>
           </el-table-column>
           <el-table-column label="操作" width="100">

@@ -55,20 +55,20 @@ class AXIOS {
       getListCarModels: '/mpk_app/api/carBrands/listCarModels', // 汽车型号查询
       getIpwhiteInfo: '/mpk_app/api/ipwhitelist/ipwhiteInfo', // IP白名单管理
       getPageTips: '/mpk_app/api/simCardTips/pageTips', // 提醒策略缓存地址
-      getPageDeviceImei: '/mpk_app/api/deviceImei/pageDeviceImei', // 设备管理
-      getPageJspaerLog: '/mpk_app/api/jspaerLog/pageJspaerLog', // 日志管理
+      getPageDeviceImei: '/mpk_app/api/deviceImei/pageDeviceImei', // 导入设备IMEI
+      getPageJspaerLog: '/mpk_app/api/jspaerLog/pageJspaerLog', // IMEI变更日志
       getPageOta: '/mpk_app/api/ota/pageOta', // 系统升级
       getOtaDetail: '/mpk_app/api/ota/otaDetail', // 系统版本-实例升级
       getPageOtaDevice: '/mpk_app/api/otaDevice/pageOtaDevice', // 设备升级记录
       getListVersion: '/mpk_app/api/version/listVersion', // 版本字典
       getPageAppVerInfo: '/mpk_app/api/appVerInfo/pageAppVerInfo', // 核心应用升级-查询
       getIccidList: '/mpk_app/api/llcar/queryList', // imei-流量卡管理
+      getBindActivityReport: '/mpk_app/api/device/bindReport', // 运营统计-绑定激活列表
       // echart
       getIccidReport: '/mpk_app/api/statisticalDeviceIccid/iccidReport', // 运营统计-iccid
       getDeviceActivitisAsyn: '/mpk_app/api/statisticalDeviceActivity/deviceActivitisAsyn', // 运营统计-活跃天数
       getSummaryAsyn: '/mpk_app/api/summary/summaryAsyn', // 运营统计-汇总统计
       getIncreaseReportAsyn: '/mpk_app/api/summary/increaseReportAsyn', // 运营统计-增长率统计
-      getBindActivityReport: '/mpk_app/api/device/bindReport', // 运营统计-绑定激活
       getBindStatistical: '/mpk_app/api/device/bindStatistical', // 设备绑定统计-趋势
       getBindStatisticalByOrgancode: '/mpk_app/api/device/bindStatisticalByOrgancode', // 设备绑定统计-分布
       // detail

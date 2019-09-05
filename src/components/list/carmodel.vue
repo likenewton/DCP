@@ -20,7 +20,7 @@
       </el-row>
       <el-row>
         <el-table ref="listTable" :data="list.data" @sort-change="handleSortChange" :max-height="maxTableHeight" border resizable size="mini">
-          <el-table-column prop="brandName" label="型号名称" sortable="custom"></el-table-column>
+          <el-table-column prop="brandName" label="型号名称" :sortable="sortable"></el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="openUpdateBrand(scope)">修改</el-button>
